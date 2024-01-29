@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   soTime.h                                           :+:      :+:    :+:   */
+/*   so_struct.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/24 22:52:37 by marvin            #+#    #+#             */
-/*   Updated: 2024/01/24 22:52:37 by marvin           ###   ########.fr       */
+/*   Created: 2024/01/29 21:01:35 by marvin            #+#    #+#             */
+/*   Updated: 2024/01/29 21:01:35 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SO_TIME_H
-# define SO_TIME_H
+#ifndef SO_TYPES_H
+# define SO_TYPES_H
 
 typedef unsigned long long uint64_t;
 typedef unsigned int uint32_t;
@@ -22,10 +22,22 @@ typedef int t_bool;
 
 typedef struct s_so_chrono
 {
+	t_bool	stop;
+	t_bool	restart;
+	double	chrono_start;
+	double	millis;
+	int		hours;
+	int		minutes;
+	int		seconds;
+	int		milliseconde;
 }	t_so_chrono;
 
 typedef struct s_so_timer
 {
+	t_bool	stop;
+	double	timer_start;
+	double	timer_end;
+	double	timer_ttc;
 }	t_so_timer;
 
 typedef struct s_so_clock
@@ -48,18 +60,16 @@ typedef struct s_so_ticks
 	double ticks;
 }	t_so_ticks;
 
-//Cycles
-uint64_t	so_get_cycles(void);
-double		mhz_to_cycles_per_ms(double frequencyMHz);
-double		cycles_to_ms(uint64_t cycles, double cpuFrequencyPerMs);
-double		fps_to_ms(int fps);
-int 		ms_to_fps(double ms);
-
-t_so_ticks	so_init_ticks(double cpuFrequencyMHz);
-void		so_update_ticks(t_so_ticks *soTicks, uint64_t *startCycles);
-
-//Utils
-void	get_time_by_millis(double millis, int *hours, int	*minutes, int *seconds, int	*milliseconds);
+typedef struct s_so
+{
+	void		*minilibx;
+	void		*window;
+	char		*name;
+	int			target_frame;
+	t_so_clock	so_update;
+	t_so_clock	so_render;
+	t_so_ticks	so_ticks;
+}	t_so;
 
 
 #endif

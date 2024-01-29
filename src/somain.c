@@ -10,11 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "mysolonglib.h"
 
 //séxecute au debut pendant le main 
-t_bool so_setup(int argc, char const **argv, t_so *so)
+t_bool so_start(int argc, char const **argv, t_so *so)
 {
 	t_solong 	solong;
 
@@ -28,17 +27,10 @@ t_bool so_setup(int argc, char const **argv, t_so *so)
 	return (FALSE);
 }
 
-//séxecute frame 1 de Update 
-t_bool so_start(t_so *so)
+t_bool callback_timer(t_so *so)
 {
 	(void)so;
-	return (FALSE);
-}
-
-t_bool testeee(t_so *so)
-{
-	(void)so;
-	printf("hello\n");
+	//so->target_frame = 300;
 	return (FALSE);
 }
 
@@ -46,8 +38,16 @@ t_bool testeee(t_so *so)
 t_bool so_update(t_so *so)
 {
 	(void)so;
-	//so_close(so, FALSE);
-	//printf("Update : %d -- Render : %d\n", so->so_update.fps, so->so_render.fps);
+	t_so_chrono chrono;
+	t_so_timer timer;
+
+	chrono = so_chrono(so, chrono);
+	timer = so_timer(so, timer, 20000, callback_timer);
+	printf("Update : %d -- Render : %d -- renderframe -- renderframe : %d || %02d:%02d:%02d:%04d stop : %d\n", so->so_update.fps, so->so_render.fps, so->so_render.frame, chrono.hours, chrono.minutes, chrono.seconds, chrono.milliseconde, chrono.stop);
+	if (so->so_render.frame == 500)
+		chrono.stop = TRUE;
+	if (so->so_render.frame == 1000)
+		chrono.restart = TRUE;
 	return (FALSE);
 }
 
@@ -55,5 +55,6 @@ t_bool so_update(t_so *so)
 t_bool so_render(t_so *so)
 {
 	(void)so;
+	//printf("Update : %d -- Render : %d -- renderframe -- renderframe : %d\n", so->so_update.fps, so->so_render.fps, so->so_render.frame);
 	return (FALSE);
 }

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../solib.h"
+#include "so_time.h"
 
 t_so_ticks	so_init_ticks(double mhz)
 {

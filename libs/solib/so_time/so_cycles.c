@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../solib.h"
+#include "so_time.h"
 
 uint64_t so_get_cycles(void) {
     uint32_t lo, hi;
@@ -26,12 +26,4 @@ double mhz_to_cycles_per_ms(double frequencyMHz) {
 // Fonction pour convertir les cycles en millisecondes
 double cycles_to_ms(uint64_t cycles, double cpuFrequencyPerMs) {
     return cycles / cpuFrequencyPerMs;
-}
-
-double fps_to_ms(int fps) {
-    return 1000.0 / fps;
-}
-
-int ms_to_fps(double ms) {
-    return (int)(1000.0 / ms);
 }

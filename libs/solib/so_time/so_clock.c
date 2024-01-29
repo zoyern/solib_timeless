@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../solib.h"
+#include "so_time.h"
 
 t_so_clock	so_clock_init(double ms)
 { 
@@ -22,7 +22,7 @@ t_so_clock	so_clock_init(double ms)
     so_clock.fps_count = 0;
 
     so_clock.clock_start = 0;
-    so_clock.clock_end = 0;
+	so_clock.clock_end = 0;
     so_clock.fps_start = 0;
     so_clock.fps_end = 0;
 

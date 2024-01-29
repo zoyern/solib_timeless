@@ -1,0 +1,7 @@
+{
+	"files.associations": {
+		"solib.h": "c",
+		"so_time.h": "c",
+		"so_types.h": "c"
+	}
+}

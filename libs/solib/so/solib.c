@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "solib.h"
+#include "../solib.h"
 
 //so = soInit(solong.mlx, "solong", 60);
 t_so so_init(void *minilibx, char *name, int target_frame)
