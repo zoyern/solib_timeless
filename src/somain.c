@@ -70,7 +70,7 @@ t_bool so_start(int argc, char const **argv, t_so *so)
 
 	solong.mlx = NULL;
 	solong.test = 2;
-	so = so_init(solong.mlx, solong.win, so_update, so_render, &solong, "solong", 60);
+	*so = so_init(solong.mlx, solong.win, so_update, so_render, &solong, "solong", 60);
 	printf("HHHHHHHHBBBBBBBBBBBBBBBBBBBBB :%p\n", so->so_env);
 	printf("start :%p\n", &so->so_env->test);
 	printf("start :%d\n", so->so_env->test);

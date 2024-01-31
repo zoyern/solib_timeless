@@ -25,7 +25,7 @@ int main(int argc, char const **argv)
 	so_start(argc, argv, &so);
 	printf("so.env :%p\n", so.so_env);
 	testing = &so.so_env->test;
-	printf("main :%d\n", testing[1]);
+	printf("main :%d\n", testing[0]);
 	printf("main t :%d\n", so.so_env->test);
 	while (!so.close)
 	{
