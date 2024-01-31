@@ -24,19 +24,19 @@ t_so_timer so_timer_init(double ms, double millis)
 	return (so_timer);
 }
 
-t_so_timer so_timer(t_so *so, t_so_timer so_timer, double ms, t_bool (*callback)(t_so *))
+t_so_timer so_timer(t_so *so, t_so_timer *so_timer, double ms, t_bool (*callback)(t_so *))
 {
-	if ((int)so_timer.timer_end <= 0)
-		so_timer = so_timer_init(ms, so->so_ticks.millis);
-	if (!so_timer.stop)
+	if ((int)so_timer->timer_end <= 0)
+		*so_timer = so_timer_init(ms, so->so_ticks.millis);
+	if (!so_timer->stop)
 	{
-		if ((so_timer.timer_end - so_timer.timer_start) <= 0)
+		if ((so_timer->timer_end - so_timer->timer_start) <= 0)
 		{
 			if (callback(so))
-				return (so_timer);
-			so_timer.stop = TRUE;
+				return (*so_timer);
+			so_timer->stop = TRUE;
 		}
-		so_timer.timer_start = so->so_ticks.millis;
+		so_timer->timer_start = so->so_ticks.millis;
 	}
-	return so_timer;
+	return (*so_timer);
 }

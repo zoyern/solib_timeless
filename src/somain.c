@@ -41,8 +41,8 @@ t_bool so_update(t_so *so)
 	t_so_chrono chrono;
 	t_so_timer timer;
 
-	chrono = so_chrono(so, chrono);
-	timer = so_timer(so, timer, 20000, callback_timer);
+	chrono = so_chrono(so, &chrono);
+	timer = so_timer(so, &timer, 20000, callback_timer);
 	printf("Update : %d -- Render : %d -- renderframe -- renderframe : %d || %02d:%02d:%02d:%04d stop : %d\n", so->so_update.fps, so->so_render.fps, so->so_render.frame, chrono.hours, chrono.minutes, chrono.seconds, chrono.milliseconde, chrono.stop);
 	if (so->so_render.frame == 500)
 		chrono.stop = TRUE;

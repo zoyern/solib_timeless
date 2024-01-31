@@ -21,9 +21,9 @@
 //Setup
 t_so		so_init(void *minilibx, char *name, int target_frame);
 t_so		so_init_s(void *minilibx, int width, int height, char *name, int target_frame);
-t_so_clock	so_clock(t_so *so, t_so_clock soClock, double ms, t_bool (*callback)(t_so *));
-t_so_timer	so_timer(t_so *so, t_so_timer so_timer, double ms, t_bool (*callback)(t_so *));
-t_so_chrono so_chrono(t_so *so, t_so_chrono so_chrono);
+t_so_clock	so_clock(t_so *so, t_so_clock *soClock, double ms, t_bool (*callback)(t_so *));
+t_so_timer	so_timer(t_so *so, t_so_timer *so_timer, double ms, t_bool (*callback)(t_so *));
+t_so_chrono so_chrono(t_so *so, t_so_chrono *so_chrono);
 t_bool		so_close(t_so *so, t_bool err);
 
 //Extern

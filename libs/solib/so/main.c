@@ -23,8 +23,8 @@ int main(int argc, char const **argv)
 		so_close(&so, TRUE);
 	while (1)
 		{
-			so.so_update = so_clock(&so, so.so_update,  fps_to_ms(240), so_update);
-			so.so_render = so_clock(&so, so.so_render,  fps_to_ms(so.target_frame), so_render);
+			so.so_update = so_clock(&so, &so.so_update,  fps_to_ms(240), so_update);
+			so.so_render = so_clock(&so, &so.so_render,  fps_to_ms(so.target_frame), so_render);
 			so_update_ticks(&so.so_ticks, &cycles_state);
 		}
     return (so_close(&so, FALSE));
