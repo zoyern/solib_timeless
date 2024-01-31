@@ -30,7 +30,7 @@ t_so_clock	so_clock_init(double ms)
 	return (so_clock);
 }
 
-t_so_clock	so_clock(t_so *so, t_so_clock so_clock, double ms, t_bool (*callback)(t_so *))
+t_so_clock	so_clock(t_so *so, void *solong, t_so_clock so_clock, double ms, t_bool (*callback)(t_so *, void *))
 {
 	if ((int)so_clock.clock_end <= 0)
 		so_clock = so_clock_init(ms);
@@ -38,7 +38,8 @@ t_so_clock	so_clock(t_so *so, t_so_clock so_clock, double ms, t_bool (*callback)
 	{
 		if ((so_clock.clock_end - so_clock.clock_start) <= 0)
 		{
-			if (callback(so))
+			//printf("solong :%p\n", solong);
+			if (callback(so, solong))
 				return (so_clock);
 			so_clock.frame += 1;
 			so_clock.fps_count += 1;

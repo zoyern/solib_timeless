@@ -60,16 +60,28 @@ typedef struct s_so_ticks
 	double ticks;
 }	t_so_ticks;
 
+typedef struct s_solong
+{
+	void		*mlx;
+	void		*win;
+	int			test;
+}	t_solong;
+
 typedef struct s_so
 {
+	t_bool		close;
 	void		*minilibx;
 	void		*window;
 	char		*name;
+	int			width;
+	int			height;
 	int			target_frame;
 	t_so_clock	so_update;
 	t_so_clock	so_render;
 	t_so_ticks	so_ticks;
+	t_solong	*so_env;
+	t_bool		(*func_update)();
+	t_bool		(*func_render)();
 }	t_so;
-
 
 #endif

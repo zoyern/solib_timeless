@@ -14,6 +14,7 @@
 # define SO_TIME_H
 
 # include "../so_types.h"
+# include <stdio.h>
 
 //Cycles
 uint64_t	so_get_cycles(void);

@@ -12,9 +12,5 @@
 
 #include "../libs/solib/solib.h"
 
-typedef struct s_solong
-{
-	void		*mlx;
-	void		*win;
-	t_so		so;
-}	t_solong;
+t_bool		so_update(t_so *so, t_solong *so_env);
+t_bool		so_render(t_so *so, t_solong *so_env);

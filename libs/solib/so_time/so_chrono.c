@@ -45,5 +45,5 @@ t_so_chrono so_chrono(t_so *so, t_so_chrono so_chrono)
 		//printf("millis:%0.6f -- millis:%0.6f -- millis:%0.6f\n", so->so_ticks.millis, so_chrono.chrono_start, so->so_ticks.millis - so_chrono.chrono_start);
 		get_time_by_millis(so_chrono.millis, &so_chrono.hours, &so_chrono.minutes, &so_chrono.seconds, &so_chrono.milliseconde);
 	}
-	return so_chrono;
+	return (so_chrono);
 }
