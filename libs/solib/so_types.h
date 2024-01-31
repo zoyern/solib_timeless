@@ -79,7 +79,7 @@ typedef struct s_so
 	t_so_clock	so_update;
 	t_so_clock	so_render;
 	t_so_ticks	so_ticks;
-	t_solong	*so_env;
+	void		*so_env;
 	t_bool		(*func_update)();
 	t_bool		(*func_render)();
 }	t_so;

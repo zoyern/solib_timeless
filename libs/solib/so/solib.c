@@ -28,7 +28,7 @@ t_so so_init(void *minilibx, void *window, void *func_update, void *func_render,
 	so.func_update = func_update;
 	so.func_render = func_render;
 	so.so_ticks = so_init_ticks(3000);
-	printf("HHHHHHHHAAAAAAAAAAAAAAAAAA :%p -- %p\n", so.so_env, so_env);
+	//printf("HHHHHHHHAAAAAAAAAAAAAAAAAA :%p -- %p\n", so.so_env, so_env);
 	return (so);
 }
 

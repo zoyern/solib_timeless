@@ -29,9 +29,9 @@ t_bool so_update(t_so *so, t_solong *so_env)
 	//t_so_chrono chrono;
 	//t_so_timer timer;
 	//printf("Update : %d -- Render : %d -- renderframe : %d -- test : %d\n", so->so_update.fps, so->so_render.fps, so->so_render.frame, so_env->test);
-	//chrono = so_chrono(so, chrono);
+	//chrono = so_chrono(so, &chrono);
 	//printf("hey : %d\n", chrono.stop);
-	//timer = so_timer(so, timer, 20000, callback_timer);
+	//timer = so_timer(so, &timer, 20000, callback_timer);
 	//printf("Update : %d -- Render : %d -- updateframe %d-- renderframe : %d|| %02d:%02d:%02d:%04d stop : %d -- test : %d\n", so->so_update.fps, so->so_render.fps, so->so_update.frame, so->so_render.frame, chrono.hours, chrono.minutes, chrono.seconds, chrono.milliseconde, chrono.stop, so_env->test);
 	if (so->so_render.frame == 500)
 	{
@@ -71,8 +71,8 @@ t_bool so_start(int argc, char const **argv, t_so *so)
 	solong.mlx = NULL;
 	solong.test = 2;
 	*so = so_init(solong.mlx, solong.win, so_update, so_render, &solong, "solong", 60);
-	printf("HHHHHHHHBBBBBBBBBBBBBBBBBBBBB :%p\n", so->so_env);
-	printf("start :%p\n", &so->so_env->test);
-	printf("start :%d\n", so->so_env->test);
+	//printf("HHHHHHHHBBBBBBBBBBBBBBBBBBBBB :%p\n", so->so_env);
+	//printf("start :%p\n", &so->so_env->test);
+	//printf("start :%d\n", so->so_env->test);
 	return (FALSE);
 }

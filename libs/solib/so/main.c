@@ -17,21 +17,20 @@
 int main(int argc, char const **argv)
 {
 	t_so		so;
-	//t_solong	*solong;
 	uint64_t	cycles_state;
-	int	*testing;
+	int i = 0;
 
 	cycles_state = so_get_cycles();
 	so_start(argc, argv, &so);
-	printf("so.env :%p\n", so.so_env);
-	testing = &so.so_env->test;
-	printf("main :%d\n", testing[0]);
-	printf("main t :%d\n", so.so_env->test);
-	while (!so.close)
+	//printf("so.env :%p\n", so.so_env);
+	//printf("main :%d\n", testing[0]);
+	while (!so.close && i < 20)
 	{
-		so.so_update = so_clock(&so, so.so_env, so.so_update,  fps_to_ms(240), so.func_update);
-		so.so_render = so_clock(&so, so.so_env, so.so_render,  fps_to_ms(so.target_frame), so.func_render);
+		//printf("main t :%d\n", ((t_solong *)so.so_env)->test);
+		so.so_update = so_clock(&so, so.so_env, &so.so_update,  fps_to_ms(240), so.func_update);
+		so.so_render = so_clock(&so, so.so_env, &so.so_render,  fps_to_ms(so.target_frame), so.func_render);
 		so_update_ticks(&so.so_ticks, &cycles_state);
+		i++;
 	}
     return (so_close(&so, FALSE));
 }
