@@ -1,24 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so.h                                               :+:      :+:    :+:   */
+/*   solong.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/29 03:55:15 by marvin            #+#    #+#             */
-/*   Updated: 2024/01/29 03:55:15 by marvin           ###   ########.fr       */
+/*   Created: 2024/02/08 17:59:30 by marvin            #+#    #+#             */
+/*   Updated: 2024/02/08 17:59:30 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SOLIB_H
-# define SOLIB_H
+#ifndef SOLONG_H
+# define SOLONG_H
 
-# include "../minilibx/mlx.h"
-# include "solib_types.h"
-
-//Setup
-void	*solib_init(char *name);
-int		solib_start(t_solib *solib);
-int		solib_close(t_solib *solib);
-
+#include "libs/solib/solib.h"
 #endif

@@ -20,6 +20,10 @@ typedef int t_bool;
 # define TRUE 1
 # define FALSE 0
 
+# include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
+
 typedef struct s_so_chrono
 {
 	t_bool	stop;

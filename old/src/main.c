@@ -12,38 +12,44 @@
 
 #include "mysolonglib.h"
 
-t_bool callback_timer(t_so *so, void *so_env)
+t_bool callback(t_so *so, void *so_env)
 {
 	(void)so;
 	(void)so_env;
-	so->target_frame = 300;
-	return (FALSE);
+	//do somthing all 2000ms
+	return (FALSE); 
 }
+
+
 
 //sexecute tout les 240htz (valeur max de boucle)
 t_bool so_update(t_so *so, t_solong *so_env)
 {
-	(void)so;
-	(void)so_env;
 	//printf("update :%d\n", so_env->test);
 	//t_so_chrono chrono;
 	//t_so_timer timer;
+	t_so_clock tclock ;
+	printf("%p -- ", &tclock);
+	tclock = so_clock_init(fps_to_ms(60));
+    tclock = so_clock(so, so_env, &tclock, 2000, callback);
+	printf("Update : %d -- renderframe : %d -- %p\n", tclock.fps, tclock.frame, &tclock);
 	//printf("Update : %d -- Render : %d -- renderframe : %d -- test : %d\n", so->so_update.fps, so->so_render.fps, so->so_render.frame, so_env->test);
 	//chrono = so_chrono(so, &chrono);
 	//printf("hey : %d\n", chrono.stop);
 	//timer = so_timer(so, &timer, 20000, callback_timer);
 	//printf("Update : %d -- Render : %d -- updateframe %d-- renderframe : %d|| %02d:%02d:%02d:%04d stop : %d -- test : %d\n", so->so_update.fps, so->so_render.fps, so->so_update.frame, so->so_render.frame, chrono.hours, chrono.minutes, chrono.seconds, chrono.milliseconde, chrono.stop, so_env->test);
-	if (so->so_render.frame == 500)
+	/*if (so->so_render->frame == 500)
 	{
 		//chrono.stop = TRUE;
 		so_env->test = 10;
 	}
-	if (so->so_render.frame == 1000)
+	if (&so->so_render->frame == 1000)
 	{
 		//chrono.restart = TRUE;
 		so_env->test = 20;
-	}
+	}*/
 	//printf("Update : %d -- Render : %d -- renderframe : %d -- test : %d\n", so->so_update.fps, so->so_render.fps, so->so_render.frame, so_env->test);
+
 	return (FALSE);
 }
 

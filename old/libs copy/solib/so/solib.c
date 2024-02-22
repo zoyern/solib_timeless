@@ -25,6 +25,8 @@ t_so so_init(void *minilibx, void *window, void *func_update, void *func_render,
 	so.height = 1080 - 75;
 	so.target_frame = target_frame;
 	so.so_env = so_env;
+	so.so_update = so_clock_init(fps_to_ms(240));
+	so.so_render = so_clock_init(fps_to_ms(240));
 	so.func_update = func_update;
 	so.func_render = func_render;
 	so.so_ticks = so_init_ticks(3000);
@@ -54,5 +56,6 @@ t_bool	so_close(t_so *so, t_bool err)
 {
 	//free all
 	(void)so;
+	so->close = TRUE;
 	return (err);
 }

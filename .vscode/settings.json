@@ -3,6 +3,17 @@
 		"solib.h": "c",
 		"so_time.h": "c",
 		"so_types.h": "c",
-		"mysolonglib.h": "c"
+		"mysolonglib.h": "c",
+		"cstdlib": "c",
+		"stdio.h": "c",
+		"mlx.h": "c",
+		"solib_types.h": "c",
+		"solong.h": "c",
+		"mlx_int.h": "c",
+		"*.a": "c",
+		"solib_hooks.h": "c",
+		"stdlib.h": "c",
+		"solib_keys_settings": "c",
+		"solib_keys_settings copy": "c"
 	}
 }
