@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   solib_key_press.c                                  :+:      :+:    :+:   */
+/*   soTime.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/11 02:15:15 by marvin            #+#    #+#             */
-/*   Updated: 2024/02/11 02:15:15 by marvin           ###   ########.fr       */
+/*   Created: 2024/01/24 22:52:37 by marvin            #+#    #+#             */
+/*   Updated: 2024/01/24 22:52:37 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "solib_hooks.h"
+#ifndef SOLIB_TIME_H
+# define SOLIB_TIME_H
 
-int	solib_key_press(int keycode, t_solib *solib)
-{
-	if (keycode < 256)
-		solib->inputs->keys[keycode] = TRUE;
-	//printf("keyPress keycode :%d -- %c\n", keycode, (unsigned char)keycode);
-	if (solib->events->key_press)
-		solib->events->key_press(solib, keycode);
-    return 0;
-}
+#include "../solib.h"
+
+//Cycles
+uint64_t	so_get_cycles(void);
+double		mhz_to_cycles_per_ms(double frequencyMHz);
+double		cycles_to_ms(uint64_t cycles, double cpuFrequencyPerMs);
+
+
+
+#endif

@@ -12,29 +12,40 @@
 
 #include "solong.h"
 
-int		key_test(int keycode)
+int		key_test(t_solib *solib, int keycode)
 {
-	(void)keycode;
-	//printf ("laaaaaaaaaaaaaaaaaa - keycode : %d\n", keycode);
+	if (keycode == 65307)
+		solib->close(solib);
 	return (0);
 }
 
 int		solib_start(t_solib *solib)
 {
-	solib->events.key_press = key_test;
-	return (free(tab), 1);
+	(void)solib;
+	solib->events->key_press = key_test;
+	return (0);
 }
+
+int		solib_update(t_solib *solib)
+{
+	printf("bouton a pressed and fpsupdate : %d -- fpsrender : %d -- ms : %0.3f\n", solib->time->update.fps,solib->time->render.fps, solib->time->ticks.millis);
+	return (0);
+}
+
+int		solib_render(t_solib *solib)
+{
+	(void)solib;
+	return (0);
+}
+
 
 int main(int argc, char const *argv[])
 {
 	(void)argc;
 	(void)argv;
 
-	t_solib *solib;
-
-	solib = solib_init("solong");
-	if (!solib)
+	//solib = solib_init("solong",1905, 1050, 60);
+	if (solib_init("solong",1905, 675, 60))
 		return (1);
-	solib->close(solib);
 	return 0;
 }

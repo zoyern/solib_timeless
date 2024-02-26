@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_time.h"
+#include "solib_time.h"
 
 uint64_t so_get_cycles(void) {
     uint32_t lo, hi;

@@ -13,29 +13,11 @@
 #ifndef SOLIB_TYPES_H
 # define SOLIB_TYPES_H
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#define TRUE	1
-#define FALSE	0
-typedef int t_bool;
-
-
-//regles !!
-// so_solib big struct
-// so_		game struct
-// so_class big class struct
-// soc_		class struct
-// soc_		class struct
-// soc_e		class struct enum
-// soc_e_name		class struct enum classname
-// soc_e_args		class struct enum args
-// soc_e_var		class struct enum var type
+# include "solib_types_time.h"
+# include "solib_err.h"
 
 typedef struct s_solib t_solib;
 typedef struct s_soc t_soc;
-
-
 
 typedef enum {
 	VOID_TYPE,
@@ -99,7 +81,7 @@ typedef struct s_soc{
 
 // Structure représentant les classes dynamiques
 typedef struct s_so_classes{
-    t_soc class[10];
+    t_soc class_[10];
     t_soc* (*find)(t_solib *solib, const char *soc_name);
     t_soc* (*add)(t_solib *solib, const char *soc_name, t_soc_args* args);
     void* (*get)(t_solib *solib, const char *soc_name, const char* propName);
@@ -113,39 +95,49 @@ typedef struct s_solib_vector2 {
 } t_solib_vector2;
 
 typedef struct s_solib_events {
-	int (*key_press)(int keycode);
-	int (*key_release)(int keycode);
+	int (*key_press)(t_solib *solib, int keycode);
+	int (*key_release)(t_solib *solib, int keycode);
 } t_solib_events;
 
-typedef struct s_solib_key
-{
-	t_bool			pressed;
-	char			*name;
-	int				keycode;
-	char			*symbol;
-} t_solib_key;
-
+typedef struct s_solib_keys {
+	char	*name;
+	t_bool	pressed;
+} t_solib_keys;
 
 typedef struct s_solib_inputs {
-	t_bool			anyKeyDown;
 	t_solib_vector2	mousePosition;
-	t_solib_key		keys[256];
+	int				level;
+	t_bool			keys[256];
 } t_solib_inputs;
 
 // Structure représentant une fenetre
 typedef struct s_solib_windows {
+	char	*name;
 	void	*window;
 	int		width;
 	int		height;
+	int		target_frame;
 } t_solib_windows;
+
+typedef struct s_solib_time {
+	t_solib_ticks	ticks;
+	t_solib_clock	update;
+	t_solib_clock	render;
+} t_solib_time;
+
+typedef struct s_solib_memory {
+	void	*ptr;
+	void	*next;
+} t_solib_memory;
 
 // Structure représentant solib
 typedef struct s_solib{
 	void			*minilibx;
 	t_solib_windows	*windows;
-	t_solib_inputs	inputs;
-	t_solib_events	events;
-	int			(*close)(t_solib *solib);
+	t_solib_inputs	*inputs;
+	t_solib_events	*events;
+	t_solib_time	*time;
+	int				(*close)(t_solib *solib);
 } t_solib;
 
 

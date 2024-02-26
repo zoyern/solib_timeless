@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../solib.h"
+/*#include "../solib.h"
 
 t_so_timer so_timer_init(double ms, double millis)
 { 
@@ -39,4 +39,4 @@ t_so_timer so_timer(t_so *so, t_so_timer *so_timer, double ms, t_bool (*callback
 		so_timer->timer_start = so->so_ticks.millis;
 	}
 	return (*so_timer);
-}
+}*/

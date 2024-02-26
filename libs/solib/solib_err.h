@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   solib_key_press.c                                  :+:      :+:    :+:   */
+/*   solib_err.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/11 02:15:15 by marvin            #+#    #+#             */
-/*   Updated: 2024/02/11 02:15:15 by marvin           ###   ########.fr       */
+/*   Created: 2024/02/26 21:27:21 by marvin            #+#    #+#             */
+/*   Updated: 2024/02/26 21:27:21 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "solib_hooks.h"
+#ifndef SOLIB_ERR_H
+# define SOLIB_ERR_H
 
-int	solib_key_press(int keycode, t_solib *solib)
-{
-	if (keycode < 256)
-		solib->inputs->keys[keycode] = TRUE;
-	//printf("keyPress keycode :%d -- %c\n", keycode, (unsigned char)keycode);
-	if (solib->events->key_press)
-		solib->events->key_press(solib, keycode);
-    return 0;
-}
+typedef enum {
+	SUCCES,
+	ERROR_SOLIB,
+	ERROR_WINDOWS,
+
+} t_solib_err;
+
+
+#endif

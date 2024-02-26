@@ -14,11 +14,10 @@
 
 int solib_key_release (int keycode, t_solib *solib)
 {
-	if (((unsigned char)keycode >= 'a' && (unsigned char)keycode >= 'z') && solib->inputs.keys[255].pressed)
-		solib->inputs.keys[(unsigned char)keycode - 32].pressed = FALSE;                             
-	solib->inputs.keys[(unsigned char)keycode].pressed = FALSE;
-	//printf("keyRelease keycode :%d -- %c\n", (unsigned char)keycode, (unsigned char)keycode);
-	if (solib->events.key_release)
-		solib->events.key_release((unsigned char)keycode);
+	if (keycode < 256)
+		solib->inputs->keys[keycode] = FALSE;
+	//printf("keyRelease keycode :%d -- %c\n", keycode, (unsigned char)keycode);
+	if (solib->events->key_release)
+		solib->events->key_release(solib, keycode);
     return 0;
 }

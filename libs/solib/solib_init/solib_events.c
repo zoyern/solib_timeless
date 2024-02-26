@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   solib_key_press.c                                  :+:      :+:    :+:   */
+/*   solib_events.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/11 02:15:15 by marvin            #+#    #+#             */
-/*   Updated: 2024/02/11 02:15:15 by marvin           ###   ########.fr       */
+/*   Created: 2024/02/26 23:15:39 by marvin            #+#    #+#             */
+/*   Updated: 2024/02/26 23:15:39 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "solib_hooks.h"
+#include "../solib.h"
 
-int	solib_key_press(int keycode, t_solib *solib)
+t_bool	solib_events_init(t_solib *solib)
 {
-	if (keycode < 256)
-		solib->inputs->keys[keycode] = TRUE;
-	//printf("keyPress keycode :%d -- %c\n", keycode, (unsigned char)keycode);
-	if (solib->events->key_press)
-		solib->events->key_press(solib, keycode);
-    return 0;
+	t_solib_events *events;
+
+	events = (t_solib_events *)malloc(sizeof(t_solib_events));
+	if (!events)
+		return (free(solib->windows), free(solib->minilibx),free(solib), TRUE);
+
+	events->key_press = NULL;
+	events->key_release = NULL;
+	solib->events = events;
+	return (FALSE);
 }

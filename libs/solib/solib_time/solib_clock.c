@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_time.h"
+#include "solib_time.h"
 #include "../solib.h"
 
-t_so_clock so_clock_init(double ms)
+t_solib_clock solib_clock_init(double ms)
 {
-	t_so_clock so_clock;
+	t_solib_clock so_clock;
 
 	so_clock.stop = FALSE;
 	so_clock.frame = 0;
@@ -31,15 +31,13 @@ t_so_clock so_clock_init(double ms)
 	return (so_clock);
 }
 
-t_so_clock so_clock(t_so *so, void *solong, t_so_clock *clock, double ms, t_bool (*callback)(t_so *, void *))
+t_solib_clock solib_clock(t_solib *solib, t_solib_clock *clock, double ms, t_bool (*callback)(t_solib *))
 {
-	if (!clock)
-		*clock = so_clock_init(ms);
 	if (!clock->stop)
 	{
 		if ((clock->clock_end - clock->clock_start) <= 0)
 		{
-			if (callback(so, solong))
+			if (callback(solib))
 				return *clock;
 			clock->frame += 1;
 			clock->fps_count += 1;
@@ -51,8 +49,8 @@ t_so_clock so_clock(t_so *so, void *solong, t_so_clock *clock, double ms, t_bool
 			clock->fps_count = 0;
 			clock->fps_end = clock->fps_start + 1000.0f;
 		}
-		clock->clock_start = so->so_ticks.millis;
-		clock->fps_start = so->so_ticks.millis;
+		clock->clock_start = solib->time->ticks.millis;
+		clock->fps_start = solib->time->ticks.millis;
 	}
 	else
 		clock->fps = 0;

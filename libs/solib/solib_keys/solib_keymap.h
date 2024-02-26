@@ -1,3 +1,6 @@
+#ifndef SOLIB_KEYS_SETTINGS_H
+# define SOLIB_KEYS_SETTINGS_H
+
 typedef enum
 {
 	SOKEY_VOIDSYMBOL = 0xFFFFFF, /*VOIDSYMBOL*/
@@ -959,3 +962,5 @@ typedef enum
 	SOKEY_HEBREW_TAW = 0xCFA,
 	SOKEY_HEBREW_SWITCH = 0xFF7E, /*Aliasformode_switch*/
 } myKeyTable;
+
+#endif
