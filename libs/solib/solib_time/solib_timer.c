@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../solib.h"
+/*#include "../solib.h"
 
 t_so_timer so_timer_init(double ms, double millis)
 { 
@@ -24,7 +24,11 @@ t_so_timer so_timer_init(double ms, double millis)
 	return (so_timer);
 }
 
+<<<<<<< HEAD:libs/solib/so_time/so_timer.c
 t_so_timer so_timer(t_so *so, t_so_timer *so_timer, double ms, t_bool (*callback)(t_so *))
+=======
+t_so_timer so_timer(t_so *so, t_so_timer *so_timer, double ms, t_bool (*callback)(t_so *, void *))
+>>>>>>> 219fddf0229d67aa579b1fcedaa712a12327e966:libs/solib/solib_time/solib_timer.c
 {
 	if ((int)so_timer->timer_end <= 0)
 		*so_timer = so_timer_init(ms, so->so_ticks.millis);
@@ -32,11 +36,19 @@ t_so_timer so_timer(t_so *so, t_so_timer *so_timer, double ms, t_bool (*callback
 	{
 		if ((so_timer->timer_end - so_timer->timer_start) <= 0)
 		{
+<<<<<<< HEAD:libs/solib/so_time/so_timer.c
 			if (callback(so))
+=======
+			if (callback(so, so->so_env))
+>>>>>>> 219fddf0229d67aa579b1fcedaa712a12327e966:libs/solib/solib_time/solib_timer.c
 				return (*so_timer);
 			so_timer->stop = TRUE;
 		}
 		so_timer->timer_start = so->so_ticks.millis;
 	}
 	return (*so_timer);
+<<<<<<< HEAD:libs/solib/so_time/so_timer.c
 }
+=======
+}*/
+>>>>>>> 219fddf0229d67aa579b1fcedaa712a12327e966:libs/solib/solib_time/solib_timer.c

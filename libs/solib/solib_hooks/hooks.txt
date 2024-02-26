@@ -1,0 +1,204 @@
+/* 3. ButtonPress */
+	/*     Prototype : int buttonPressCallback(int button, int x, int y, t_solib_inputs *inputs);
+	*     Valeur : button - Code du bouton de la souris pressé, x et y - Coordonnées du curseur.
+	*     Utilisation : Utilisez button, x et y pour réagir au bouton de la souris pressé. */
+	mlx_hook(solib->windows->window, ButtonPress, ButtonPressMask, &buttonPressCallback, solib);
+
+	/* 4. ButtonRelease */
+	/*     Prototype : int buttonReleaseCallback(int button, int x, int y, t_solib_inputs *inputs);
+	*     Valeur : button - Code du bouton de la souris relâché, x et y - Coordonnées du curseur.
+	*     Utilisation : Utilisez button, x et y pour réagir au bouton de la souris relâché. */
+	mlx_hook(solib->windows->window, ButtonRelease, ButtonReleaseMask, &buttonReleaseCallback, solib);
+
+	/* 5. MotionNotify */
+	/*     Prototype : int motionNotifyCallback(int x, int y, t_solib_inputs *inputs);
+	*     Valeur : x et y - Coordonnées du curseur.
+	*     Utilisation : Utilisez x et y pour réagir au mouvement de la souris. */
+	mlx_hook(solib->windows->window, MotionNotify, PointerMotionMask, &motionNotifyCallback, solib);
+
+	/* 6. EnterNotify */
+	/*     Prototype : int enterNotifyCallback(t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir à l'entrée du curseur dans la fenêtre. */
+	mlx_hook(solib->windows->window, EnterNotify, EnterWindowMask, &enterNotifyCallback, solib);
+
+	/* 7. LeaveNotify */
+	/*     Prototype : int leaveNotifyCallback(t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir à la sortie du curseur de la fenêtre. */
+	mlx_hook(solib->windows->window, LeaveNotify, LeaveWindowMask, &leaveNotifyCallback, solib);
+
+	/* 8. FocusIn */
+	/*     Prototype : int focusInCallback(t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir au changement de focus sur la fenêtre. */
+	mlx_hook(solib->windows->window, FocusIn, FocusChangeMask, &focusInCallback, solib);
+
+	/* 9. FocusOut */
+	/*     Prototype : int focusOutCallback(t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir au changement de focus hors de la fenêtre. */
+	mlx_hook(solib->windows->window, FocusOut, FocusChangeMask, &focusOutCallback, solib);
+
+	/* 10. VisibilityNotify */
+	/*     Prototype : int visibilityNotifyCallback(int state, t_solib_inputs *inputs);
+	*     Valeur : state - Nouvel état de visibilité (VisibilityUnobscured, VisibilityPartiallyObscured, VisibilityFullyObscured).
+	*     Utilisation : Utilisez state pour réagir aux changements de visibilité de la fenêtre. */
+	mlx_hook(solib->windows->window, VisibilityNotify, VisibilityChangeMask, &visibilityNotifyCallback, solib);
+
+	/* 11. ConfigureNotify */
+	/*     Prototype : int configureNotifyCallback(int width, int height, t_solib_inputs *inputs);
+	*     Valeur : width et height - Nouvelles dimensions de la fenêtre.
+	*     Utilisation : Utilisez width et height pour réagir aux changements dans la structure de la fenêtre. */
+	mlx_hook(solib->windows->window, ConfigureNotify, StructureNotifyMask, &configureNotifyCallback, solib);
+
+	/* 12. ConfigureRequest */
+	/*     Prototype : int configureRequestCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir aux demandes de changement de configuration. */
+	mlx_hook(solib->windows->window, ConfigureRequest, StructureNotifyMask, &configureRequestCallback, solib);
+
+	/* 13. ResizeRequest */
+	/*     Prototype : int resizeRequestCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir aux demandes de redimensionnement de la fenêtre. */
+	mlx_hook(solib->windows->window, ResizeRequest, StructureNotifyMask, &resizeRequestCallback, solib);
+
+	/* 14. CirculateNotify */
+	/*     Prototype : int circulateNotifyCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir aux notifications de changement de position de sous-fenêtres. */
+	mlx_hook(solib->windows->window, CirculateNotify, StructureNotifyMask, &circulateNotifyCallback, solib);
+
+	/* 15. VisibilityNotify */
+	/*     Prototype : int visibilityNotifyCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir aux changements de visibilité de la fenêtre. */
+	mlx_hook(solib->windows->window, VisibilityNotify, VisibilityChangeMask, &visibilityNotifyCallback, solib);
+
+	/* 16. CreateNotify */
+	/*     Prototype : int createNotifyCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir à la création de la fenêtre. */
+	mlx_hook(solib->windows->window, CreateNotify, StructureNotifyMask, &createNotifyCallback, solib);
+
+	/* 17. DestroyNotify */
+	/*     Prototype : int destroyNotifyCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir à la destruction de la fenêtre. */
+	mlx_hook(solib->windows->window, DestroyNotify, StructureNotifyMask, &destroyNotifyCallback, solib);
+
+	/* 18. UnmapNotify */
+	/*     Prototype : int unmapNotifyCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir au démontage de la fenêtre. */
+	mlx_hook(solib->windows->window, UnmapNotify, StructureNotifyMask, &unmapNotifyCallback, solib);
+
+	/* 19. MapNotify */
+	/*     Prototype : int mapNotifyCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir à l'affichage de la fenêtre. */
+	mlx_hook(solib->windows->window, MapNotify, StructureNotifyMask, &mapNotifyCallback, solib);
+
+	/* 20. MapRequest */
+	/*     Prototype : int mapRequestCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir aux demandes d'affichage de la fenêtre. */
+	mlx_hook(solib->windows->window, MapRequest, StructureNotifyMask, &mapRequestCallback, solib);
+
+	/* 21. ReparentNotify */
+	/*     Prototype : int reparentNotifyCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir aux notifications de changement de parent de la fenêtre. */
+	mlx_hook(solib->windows->window, ReparentNotify, StructureNotifyMask, &reparentNotifyCallback, solib);
+
+	/* 22. ConfigureRequest */
+	/*     Prototype : int configureRequestCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir aux demandes de changement de configuration. */
+	mlx_hook(solib->windows->window, ConfigureRequest, StructureNotifyMask, &configureRequestCallback, solib);
+
+	/* 23. GravityNotify */
+	/*     Prototype : int gravityNotifyCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir aux notifications de changement de gravité de la fenêtre. */
+	mlx_hook(solib->windows->window, GravityNotify, StructureNotifyMask, &gravityNotifyCallback, solib);
+
+
+	/* 24. ResizeRequest */
+	/*     Prototype : int resizeRequestCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir aux demandes de redimensionnement de la fenêtre. */
+	mlx_hook(solib->windows->window, ResizeRequest, StructureNotifyMask, &resizeRequestCallback, solib);
+
+	/* 25. Expose */
+	/*     Prototype : int exposeCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir aux événements d'exposition lorsque la fenêtre doit être redessinée. */
+	mlx_hook(solib->windows->window, Expose, ExposureMask, &exposeCallback, solib);
+
+	/* 26. GraphicsExpose */
+	/*     Prototype : int graphicsExposeCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir aux événements d'exposition graphique. */
+	mlx_hook(solib->windows->window, GraphicsExpose, ExposureMask, &graphicsExposeCallback, solib);
+
+	/* 27. NoExpose */
+	/*     Prototype : int noExposeCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir aux événements d'exposition manqués. */
+	mlx_hook(solib->windows->window, NoExpose, ExposureMask, &noExposeCallback, solib);
+
+	/* 28. VisibilityNotify */
+	/*     Prototype : int visibilityNotifyCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir aux changements de visibilité de la fenêtre. */
+	mlx_hook(solib->windows->window, VisibilityNotify, VisibilityChangeMask, &visibilityNotifyCallback, solib);
+
+	/* 29. SelectionClear */
+	/*     Prototype : int selectionClearCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir aux événements de nettoyage de la sélection. */
+	mlx_hook(solib->windows->window, SelectionClear, StructureNotifyMask, &selectionClearCallback, solib);
+
+	/* 30. SelectionRequest */
+	/*     Prototype : int selectionRequestCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir aux demandes de sélection. */
+	mlx_hook(solib->windows->window, SelectionRequest, StructureNotifyMask, &selectionRequestCallback, solib);
+
+	/* 31. SelectionNotify */
+	/*     Prototype : int selectionNotifyCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir aux notifications de sélection. */
+	mlx_hook(solib->windows->window, SelectionNotify, StructureNotifyMask, &selectionNotifyCallback, solib);
+
+	/* 32. ColormapNotify */
+	/*     Prototype : int colormapNotifyCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir aux changements dans la colormap. */
+	mlx_hook(solib->windows->window, ColormapNotify, ColormapChangeMask, &colormapNotifyCallback, solib);
+
+	/* 33. ClientMessage */
+	/*     Prototype : int clientMessageCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir aux messages client. */
+	mlx_hook(solib->windows->window, ClientMessage, StructureNotifyMask, &clientMessageCallback, solib);
+
+	/* 34. MappingNotify */
+	/*     Prototype : int mappingNotifyCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir aux notifications de changement de mapping. */
+	mlx_hook(solib->windows->window, MappingNotify, StructureNotifyMask, &mappingNotifyCallback, solib);
+
+	/* 35. GenericEvent */
+	/*     Prototype : int genericEventCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir aux événements génériques. */
+	mlx_hook(solib->windows->window, GenericEvent, StructureNotifyMask, &genericEventCallback, solib);
+
+	/* 36. LASTEvent */
+	/*     Prototype : int lastEventCallback(XEvent *event, t_solib_inputs *inputs);
+	*     Valeur : Aucune valeur particulière.
+	*     Utilisation : Utilisez cette fonction pour réagir au dernier événement. */
+	mlx_hook(solib->windows->window, LASTEvent, StructureNotifyMask, &lastEventCallback, solib);

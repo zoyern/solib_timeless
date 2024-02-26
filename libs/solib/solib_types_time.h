@@ -10,15 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SO_TYPES_H
-# define SO_TYPES_H
+#ifndef SOLIB_TYPES_TIME_H
+# define SOLIB_TYPES_TIME_H
 
-typedef unsigned long long uint64_t;
-typedef unsigned int uint32_t;
-typedef int t_bool;
-
-# define TRUE 1
-# define FALSE 0
+# include "solib_def.h"
 
 typedef struct s_so_chrono
 {
@@ -40,7 +35,7 @@ typedef struct s_so_timer
 	double	timer_ttc;
 }	t_so_timer;
 
-typedef struct s_so_clock
+typedef struct s_solib_clock
 {
 	t_bool	stop;
     int		frame;
@@ -51,25 +46,14 @@ typedef struct s_so_clock
 	double	fps_start;
     double	fps_end;
 	double	clock_ttc;
-}	t_so_clock;
+}	t_solib_clock;
 
-typedef struct s_so_ticks
+typedef struct s_solib_ticks
 {
-	double mhz;
-	double millis;
-	double ticks;
-}	t_so_ticks;
-
-typedef struct s_so
-{
-	void		*minilibx;
-	void		*window;
-	char		*name;
-	int			target_frame;
-	t_so_clock	so_update;
-	t_so_clock	so_render;
-	t_so_ticks	so_ticks;
-}	t_so;
-
+	uint64_t	cycles_state;
+	double		mhz;
+	double		millis;
+	double		ticks;
+}	t_solib_ticks;
 
 #endif

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_time.h"
+/*#include "solib_time_f.h"
 #include "../solib.h"
 
 t_so_chrono so_chrono_init(double millis)
@@ -46,4 +46,8 @@ t_so_chrono so_chrono(t_so *so, t_so_chrono *so_chrono)
 		get_time_by_millis(so_chrono->millis, &so_chrono->hours, &so_chrono->minutes, &so_chrono->seconds, &so_chrono->milliseconde);
 	}
 	return (*so_chrono);
+<<<<<<< HEAD:libs/solib/so_time/so_chrono.c
 }
+=======
+}*/
+>>>>>>> 219fddf0229d67aa579b1fcedaa712a12327e966:libs/solib/solib_time/solib_chrono.c
