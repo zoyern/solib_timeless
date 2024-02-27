@@ -14,6 +14,7 @@
 
 void	solib_hooks(t_solib *solib)
 {
+	mlx_hook(solib->windows->window, 17, 1L << 0, &solib_close, solib);
 	/* 1. KeyPress */
 	/*     Prototype : int keyPressCallback(int keycode, t_solib_inputs *inputs);
 	*     Valeur : keycode - Code de la touche pressée.
@@ -25,5 +26,4 @@ void	solib_hooks(t_solib *solib)
 	*     Valeur : keycode - Code de la touche relâchée.
 	*     Utilisation : Utilisez keycode pour réagir à la touche relâchée. */
 	mlx_hook(solib->windows->window, KeyRelease, KeyReleaseMask, &solib_key_release, solib);
-
 }

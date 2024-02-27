@@ -17,7 +17,7 @@
 #include <stdio.h>
 
 # include "../minilibx/mlx.h"
-# include "solib_types.h"
+# include "./solib_types/solib_types.h"
 
 //Setup
 t_bool			solib_init(char *name,int width, int height, int target_frame);
@@ -31,6 +31,9 @@ t_solib_clock	solib_clock_init(double ms);
 
 t_solib_ticks	solib_init_ticks(double mhz);
 void			solib_ticks(t_solib_ticks *so_ticks, uint64_t *cycles_state);
+
+//Memory
+void	*solib_malloc(t_solib *solib, int size);
 
 //Utils
 void			get_time_by_millis(double millis, int *hours, int	*minutes, int *seconds, int	*milliseconds);

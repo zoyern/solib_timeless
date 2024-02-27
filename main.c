@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "solong.h"
+#include "./libs/solib/solib_init/solib_init.h"
 
 int		key_test(t_solib *solib, int keycode)
 {
@@ -23,12 +24,14 @@ int		solib_start(t_solib *solib)
 {
 	(void)solib;
 	solib->events->key_press = key_test;
+	solib_memory_show(solib);
 	return (0);
 }
 
 int		solib_update(t_solib *solib)
 {
-	printf("bouton a pressed and fpsupdate : %d -- fpsrender : %d -- ms : %0.3f\n", solib->time->update.fps,solib->time->render.fps, solib->time->ticks.millis);
+	(void)solib;
+	//printf("bouton a pressed and fpsupdate : %d -- fpsrender : %d -- ms : %0.3f\n", solib->time->update.fps,solib->time->render.fps, solib->time->ticks.millis);
 	return (0);
 }
 

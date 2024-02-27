@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   solib_time.c                                       :+:      :+:    :+:   */
+/*   solib_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/26 23:26:32 by marvin            #+#    #+#             */
-/*   Updated: 2024/02/26 23:26:32 by marvin           ###   ########.fr       */
+/*   Created: 2024/02/27 19:20:45 by marvin            #+#    #+#             */
+/*   Updated: 2024/02/27 19:20:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../solib.h"
+#include "../solib_init/solib_init.h"
 
-
-void	solib_time_init(t_solib *solib, int mhz, int targf_update, int targf_render)
+void	*solib_free(t_solib *solib, int size)
 {
-	t_solib_time	*time;
+	void	*ptr;
 
-	time = solib_malloc(solib, sizeof(t_solib_time));
-	time->ticks = solib_init_ticks(mhz);
-	time->update = solib_clock_init(fps_to_ms(targf_update));
-	time->render = solib_clock_init(fps_to_ms(targf_render));
-
-	solib->time = time;
+	ptr = (void *)malloc(size);
+	if (!ptr)
+		solib_close(solib);
+	solib_memory_add(solib, ptr);
+	return (ptr);
 }

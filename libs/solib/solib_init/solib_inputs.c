@@ -12,14 +12,13 @@
 
 #include "../solib.h"
 
-t_bool solib_inputs_init(t_solib *solib)
+
+void	solib_inputs_init(t_solib *solib)
 {
 	t_solib_inputs	*inputs;
-	unsigned long	i;
+	int				i;
 
-	inputs = (t_solib_inputs *)malloc(sizeof(t_solib_inputs));
-	if (!inputs)
-		return (free(solib->windows), free(solib->minilibx),free(solib), TRUE);
+	inputs = solib_malloc(solib, sizeof(t_solib_inputs));
 	i = 0;
     while (i < 256)
 	{
@@ -27,5 +26,4 @@ t_bool solib_inputs_init(t_solib *solib)
 		i++;
 	}
 	solib->inputs = inputs;
-	return (FALSE);
 }

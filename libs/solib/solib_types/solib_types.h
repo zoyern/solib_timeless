@@ -18,6 +18,7 @@
 
 typedef struct s_solib t_solib;
 typedef struct s_soc t_soc;
+typedef struct s_solib_memory t_solib_memory;
 
 typedef enum {
 	VOID_TYPE,
@@ -126,8 +127,8 @@ typedef struct s_solib_time {
 } t_solib_time;
 
 typedef struct s_solib_memory {
-	void	*ptr;
-	void	*next;
+	void			*ptr;
+	t_solib_memory	*next;
 } t_solib_memory;
 
 // Structure représentant solib
@@ -137,6 +138,7 @@ typedef struct s_solib{
 	t_solib_inputs	*inputs;
 	t_solib_events	*events;
 	t_solib_time	*time;
+	t_solib_memory	*memory;
 	int				(*close)(t_solib *solib);
 } t_solib;
 

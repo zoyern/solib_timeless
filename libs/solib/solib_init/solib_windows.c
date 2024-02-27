@@ -28,13 +28,11 @@ void	solib_windows_init_size(t_solib *solib, int width, int height)
 		height = _height;
 }
 
-t_bool	solib_windows_init(t_solib *solib, char *name, int width, int height, int target_frame)
+void	solib_windows_init(t_solib *solib, char *name, int width, int height, int target_frame)
 {
 	t_solib_windows	*windows;
 
-	windows = (t_solib_windows *)malloc(sizeof(t_solib_windows));
-	if (!windows)
-		return (free(solib->minilibx),free(solib), TRUE);
+	windows = solib_malloc(solib, sizeof(t_solib_windows));
 	windows->name = name;
 	windows->target_frame = target_frame;
 	solib_windows_init_size(solib, width, height);
@@ -42,7 +40,6 @@ t_bool	solib_windows_init(t_solib *solib, char *name, int width, int height, int
 	windows->height = height;
 	windows->window = mlx_new_window(solib->minilibx, width, height, name);
 	if (!windows->window)
-		return (free(solib->minilibx), free(solib->windows), free(solib), TRUE);
+		solib_close(solib);
 	solib->windows = windows;
-	return (FALSE);
 }

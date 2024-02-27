@@ -18,20 +18,22 @@ int solib_close(t_solib *solib)
 {
 	if (solib)
 	{
-		free(solib->events);
-		free(solib->time);
-		free(solib->inputs);
 		if (solib->windows)
 		{
 			if (solib->windows->window)
 				mlx_destroy_window(solib->minilibx, solib->windows->window);
 			free(solib->windows);
 		}
-
 		if (solib->minilibx)
 		{
 			mlx_destroy_display(solib->minilibx);
 			free(solib->minilibx);
+		}
+		if (solib->memory)
+		{
+			free(solib->events);
+			free(solib->time);
+			free(solib->inputs);
 		}
 		free(solib);
 	}
@@ -53,23 +55,16 @@ t_bool solib_init(char *name, int width, int height, int target_frame)
 	solib = (t_solib *)malloc(sizeof(t_solib));
 	if (!solib)
 		return (TRUE);
-
+	solib_memory_init(solib);
 	solib->minilibx = mlx_init();
 	if (!solib->minilibx)
-		return (free(solib), TRUE);
-
-	if (solib_windows_init(solib, name, width, height, target_frame))
-		return (TRUE);
-	if (solib_inputs_init(solib))
-		return (TRUE);
-	if (solib_events_init(solib))
-		return (TRUE);
-	if (solib_time_init(solib, 3000, 240, target_frame))
-		return (TRUE);
+		return (solib_close(solib));
+	solib_windows_init(solib, name, width, height, target_frame);
+	solib_inputs_init(solib);
+	solib_events_init(solib);
+	solib_time_init(solib, 3000, 240, target_frame);
 	solib->close = solib_close;
-	mlx_hook(solib->windows->window, 17, 1L << 0, &solib_close, solib);
 	solib_hooks(solib);
-
 	solib_start(solib);
 	mlx_loop_hook(solib->minilibx, solib_loop, solib);
 	mlx_loop(solib->minilibx);
