@@ -50,4 +50,3 @@ t_so_chrono so_chrono(t_so *so, t_so_chrono *so_chrono)
 }
 =======
 }*/
->>>>>>> 219fddf0229d67aa579b1fcedaa712a12327e966:libs/solib/solib_time/solib_chrono.c
