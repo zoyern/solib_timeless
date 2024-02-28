@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   solib_hooks.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 02:01:52 by marvin            #+#    #+#             */
-/*   Updated: 2024/02/11 02:01:52 by marvin           ###   ########.fr       */
+/*   Updated: 2024/02/28 08:22:11 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SOLIB_HOOKS_H
 # define SOLIB_HOOKS_H
 
-# include "../solib.h"
+# include "../solib_init/solib_init.h"
 
-typedef enum {
+enum e_solib_event{
 	KeyPress = 2,
 	KeyRelease,
 	ButtonPress,
@@ -51,9 +51,9 @@ typedef enum {
 	MappingNotify,
 	GenericEvent,
 	LASTEvent,
-}	solib_events ;
+};
 
-typedef enum {
+enum e_solib_mask{
 	NoEventMask = 0L,
 	KeyPressMask = (1L<<0),
 	KeyReleaseMask = (1L<<1),
@@ -80,10 +80,10 @@ typedef enum {
 	PropertyChangeMask = (1L<<22),
 	ColormapChangeMask = (1L<<23),
 	OwnerGrabButtonMask = (1L<<24),
-}	solib_mask ;
+};
 
 void	solib_hooks(t_solib *solib);
 int		solib_key_press(int keycode, t_solib *solib);
-int		solib_key_release (int keycode, t_solib *solib);
+int		solib_key_release(int keycode, t_solib *solib);
 
 #endif

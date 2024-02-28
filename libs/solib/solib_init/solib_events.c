@@ -6,22 +6,18 @@
 /*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:15:39 by marvin            #+#    #+#             */
-/*   Updated: 2024/02/28 06:04:50 by almounib         ###   ########.fr       */
+/*   Updated: 2024/02/28 08:23:49 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../solib.h"
+#include "solib_init.h"
 
-t_bool	solib_events_init(t_solib *solib)
+void	solib_events_init(t_solib *solib)
 {
-	t_solib_events *events;
+	t_solib_events	*events;
 
 	events = (t_solib_events *)solib_malloc(solib, sizeof(t_solib_events));
-	if (!events)
-		return (free(solib->windows), free(solib->minilibx),free(solib), TRUE);
-
 	events->key_press = NULL;
 	events->key_release = NULL;
 	solib->events = events;
-	return (FALSE);
 }

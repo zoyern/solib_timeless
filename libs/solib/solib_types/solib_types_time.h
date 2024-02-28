@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_struct.h                                        :+:      :+:    :+:   */
+/*   solib_types_time.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 21:01:35 by marvin            #+#    #+#             */
-/*   Updated: 2024/01/29 21:01:35 by marvin           ###   ########.fr       */
+/*   Updated: 2024/02/28 09:40:31 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,42 +15,31 @@
 
 # include "solib_def.h"
 
-typedef struct s_so_chrono
+typedef struct s_solib_timing
 {
-	t_bool	stop;
-	t_bool	restart;
-	double	chrono_start;
 	double	millis;
 	int		hours;
 	int		minutes;
 	int		seconds;
-	int		milliseconde;
-}	t_so_chrono;
-
-typedef struct s_so_timer
-{
-	t_bool	stop;
-	double	timer_start;
-	double	timer_end;
-	double	timer_ttc;
-}	t_so_timer;
+	int		milliseconds;
+}	t_solib_timing;
 
 typedef struct s_solib_clock
 {
 	t_bool	stop;
-    int		frame;
+	int		frame;
 	int		fps;
 	int		fps_count;
 	double	clock_start;
 	double	clock_end;
 	double	fps_start;
-    double	fps_end;
+	double	fps_end;
 	double	clock_ttc;
 }	t_solib_clock;
 
 typedef struct s_solib_ticks
 {
-	uint64_t	cycles_state;
+	t_uint64	cycles_state;
 	double		mhz;
 	double		millis;
 	double		ticks;

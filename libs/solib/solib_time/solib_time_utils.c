@@ -1,29 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_time_utils.c                                    :+:      :+:    :+:   */
+/*   solib_time_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 03:47:51 by marvin            #+#    #+#             */
-/*   Updated: 2024/01/26 03:47:51 by marvin           ###   ########.fr       */
+/*   Updated: 2024/02/28 09:37:28 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	get_time_by_millis(double millis, int *hours, int *minutes, int *seconds, int *milliseconds)
+#include "../solib_init/solib_init.h"
+
+t_solib_timing	get_time_by_millis(double millis)
 {
-	*hours = ((int)millis / (3600 * 1000));
-	*minutes = (((int)millis / 60000) % 60);
-	*seconds = (((int)millis / 1000) % 60);
-    *milliseconds = ((int)millis - (*hours * 3600 * 1000) - (*minutes * 60000) - (*seconds * 1000));
+	t_solib_timing	time;
+
+	time.millis = millis;
+	time.hours = ((int)millis / (3600 * 1000));
+	time.minutes = (((int)millis / 60000) % 60);
+	time.seconds = (((int)millis / 1000) % 60);
+	time.milliseconds = ((int)millis - (time.hours * 3600 * 1000)
+			- (time.minutes * 60000) - (time.seconds * 1000));
+	return (time);
 }
 
-double fps_to_ms(int fps)
+double	fps_to_ms(int fps)
 {
-    return 1000.0 / fps;
+	return (1000.0 / fps);
 }
 
-int ms_to_fps(double ms)
+int	ms_to_fps(double ms)
 {
-    return (int)(1000.0 / ms);
+	return ((int)(1000.0 / ms));
 }

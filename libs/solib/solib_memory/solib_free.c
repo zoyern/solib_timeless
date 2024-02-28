@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   solib_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 19:20:45 by marvin            #+#    #+#             */
-/*   Updated: 2024/02/27 19:20:45 by marvin           ###   ########.fr       */
+/*   Updated: 2024/02/28 08:37:22 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../solib.h"
 #include "../solib_init/solib_init.h"
 
 void	*solib_free(t_solib *solib, int size)

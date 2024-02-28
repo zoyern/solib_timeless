@@ -17,6 +17,8 @@
 		"solib_keys_settings copy": "c",
 		"solib_keymap.h": "c",
 		"solib_time_f.h": "c",
-		"solib_init.h": "c"
+		"solib_init.h": "c",
+		"solib_utils.h": "c",
+		"solib_time.h": "c"
 	}
 }

@@ -1,16 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mysolonglib.h                                      :+:      :+:    :+:   */
+/*   solib_utils.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/29 04:59:15 by marvin            #+#    #+#             */
-/*   Updated: 2024/01/29 04:59:15 by marvin           ###   ########.fr       */
+/*   Created: 2024/02/28 06:40:28 by almounib          #+#    #+#             */
+/*   Updated: 2024/02/28 09:27:50 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libs/solib/solib.h"
+#ifndef SOLIB_UTILS_H
+# define SOLIB_UTILS_H
 
-t_bool		so_update(t_so *so, t_solong *so_env);
-t_bool		so_render(t_so *so, t_solong *so_env);
+//Utils
+t_solib_timing	get_time_by_millis(double millis);
+double			fps_to_ms(int fps);
+int				ms_to_fps(double ms);
+
+#endif

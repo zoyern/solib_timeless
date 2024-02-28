@@ -6,11 +6,11 @@
 /*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:07:34 by marvin            #+#    #+#             */
-/*   Updated: 2024/02/28 06:01:45 by almounib         ###   ########.fr       */
+/*   Updated: 2024/02/28 08:34:28 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../solib.h"
+#include "solib_init.h"
 
 void	solib_windows_init_size(t_solib *solib, int width, int height)
 {
@@ -28,18 +28,17 @@ void	solib_windows_init_size(t_solib *solib, int width, int height)
 		height = _height;
 }
 
-void	solib_windows_init(t_solib *solib, char *name, int width, int height, int target_frame)
+void	solib_windows_init(t_solib *solib, char *name, int width, int height)
 {
 	t_solib_windows	*windows;
 
 	windows = (t_solib_windows *)solib_malloc(solib, sizeof(t_solib_windows));
 	windows->name = name;
-	windows->target_frame = target_frame;
 	solib_windows_init_size(solib, width, height);
 	windows->width = width;
 	windows->height = height;
 	windows->window = mlx_new_window(solib->minilibx, width, height, name);
 	if (!windows->window)
-		solib_close(solib);
+		solib->close(solib);
 	solib->windows = windows;
 }

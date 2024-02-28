@@ -6,15 +6,16 @@
 /*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:43:15 by marvin            #+#    #+#             */
-/*   Updated: 2024/02/28 06:02:07 by almounib         ###   ########.fr       */
+/*   Updated: 2024/02/28 09:28:53 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "solib.h"
+#include "solib_utils.h"
 #include "solib_hooks/solib_hooks.h"
-#include "./solib_init/solib_init.h"
+#include "solib_init/solib_init.h"
 
-int solib_close(t_solib *solib)
+int	solib_close(t_solib *solib)
 {
 	if (solib)
 	{
@@ -32,20 +33,23 @@ int solib_close(t_solib *solib)
 			solib_memory_clear(solib);
 		free(solib);
 	}
-	exit(1);
+	exit(0);
 }
 
-int solib_loop(t_solib *solib)
+int	solib_loop(t_solib *solib)
 {
-	solib_ticks(&solib->time->ticks, &solib->time->ticks.cycles_state);
-	solib->time->update = solib_clock(solib, &solib->time->update, fps_to_ms(240), solib_update);
-	solib->time->render = solib_clock(solib, &solib->time->render, fps_to_ms(solib->windows->target_frame), solib_render);
+	solib_ticks(&solib->time->ticks);
+	solib->time->update = solib_clock(
+			solib, &solib->time->update, fps_to_ms(240), solib_update);
+	solib->time->render = solib_clock(
+			solib, &solib->time->render, fps_to_ms(
+				solib->target_frame), solib_render);
 	return (0);
 }
 
-t_bool solib_init(char *name, int width, int height, int target_frame)
+t_bool	solib_init(char *name, int width, int height, int target_frame)
 {
-	t_solib *solib;
+	t_solib	*solib;
 
 	solib = (t_solib *)malloc(sizeof(t_solib));
 	if (!solib)
@@ -54,10 +58,11 @@ t_bool solib_init(char *name, int width, int height, int target_frame)
 	solib->minilibx = mlx_init();
 	if (!solib->minilibx)
 		return (solib_close(solib));
-	solib_windows_init(solib, name, width, height, target_frame);
+	solib->target_frame = target_frame;
+	solib_windows_init(solib, name, width, height);
 	solib_inputs_init(solib);
 	solib_events_init(solib);
-	solib_time_init(solib, 3000, 240, target_frame);
+	solib_time_init(solib, SIMUL_MHZ, 240, target_frame);
 	solib->close = solib_close;
 	solib_hooks(solib);
 	solib_start(solib);

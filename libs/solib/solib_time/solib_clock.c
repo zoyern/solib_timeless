@@ -1,44 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_clock.c                                         :+:      :+:    :+:   */
+/*   solib_clock.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 03:44:22 by marvin            #+#    #+#             */
-/*   Updated: 2024/01/26 03:44:22 by marvin           ###   ########.fr       */
+/*   Updated: 2024/02/28 09:33:08 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "solib_time.h"
-#include "../solib.h"
+#include "../solib_init/solib_init.h"
 
-t_solib_clock solib_clock_init(double ms)
+t_solib_clock	solib_clock_init(double ms)
 {
-	t_solib_clock so_clock;
+	t_solib_clock	so_clock;
 
 	so_clock.stop = FALSE;
 	so_clock.frame = 0;
 	so_clock.fps = 0;
 	so_clock.fps_count = 0;
-
 	so_clock.clock_start = 0;
 	so_clock.clock_end = 0;
 	so_clock.fps_start = 0;
 	so_clock.fps_end = 0;
-
 	so_clock.clock_ttc = ms;
 	return (so_clock);
 }
 
-t_solib_clock solib_clock(t_solib *solib, t_solib_clock *clock, double ms, t_bool (*callback)(t_solib *))
+t_solib_clock	solib_clock(t_solib *solib,
+	t_solib_clock *clock, double ms, t_bool (*callback)(t_solib *))
 {
 	if (!clock->stop)
 	{
 		if ((clock->clock_end - clock->clock_start) <= 0)
 		{
 			if (callback(solib))
-				return *clock;
+				return (*clock);
 			clock->frame += 1;
 			clock->fps_count += 1;
 			clock->clock_end = clock->clock_start + ms;
@@ -54,5 +52,5 @@ t_solib_clock solib_clock(t_solib *solib, t_solib_clock *clock, double ms, t_boo
 	}
 	else
 		clock->fps = 0;
-	return *clock;
+	return (*clock);
 }

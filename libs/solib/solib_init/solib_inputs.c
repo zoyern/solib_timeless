@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   solib_inputs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:23:00 by marvin            #+#    #+#             */
-/*   Updated: 2024/02/26 23:23:00 by marvin           ###   ########.fr       */
+/*   Updated: 2024/02/28 08:30:30 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../solib.h"
-
+#include "solib_init.h"
 
 void	solib_inputs_init(t_solib *solib)
 {
@@ -20,9 +19,9 @@ void	solib_inputs_init(t_solib *solib)
 
 	inputs = solib_malloc(solib, sizeof(t_solib_inputs));
 	i = 0;
-    while (i < 256)
+	while (i < 256)
 	{
-        inputs->keys[i] = FALSE;
+		inputs->keys[i] = FALSE;
 		i++;
 	}
 	solib->inputs = inputs;

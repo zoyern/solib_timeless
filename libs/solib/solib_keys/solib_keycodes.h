@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   solib_keycodes.h                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/28 08:34:39 by almounib          #+#    #+#             */
+/*   Updated: 2024/02/28 08:41:48 by almounib         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef SOLIB_KEYCODES_H
 # define SOLIB_KEYCODES_H
 
@@ -8,7 +20,7 @@ Niveau 3	Alt gr (2)
 Niveau 4	Alt gr + ⇧ (2 + 1 = 3)
 */
 
-typedef struct s_solib_keycode {
+/*typedef struct s_solib_keycode {
 	int	space = 32;
 	int	exclam = 33;
 	int	quotedbl = 34;
@@ -201,6 +213,6 @@ typedef struct s_solib_keycode {
 	int	alt = 65513;
 	int	alt_gr = 65514;
 	int	delete_ = 65535;
-} t_solib_keycode;
+} t_solib_keycode;*/
 
 #endif
