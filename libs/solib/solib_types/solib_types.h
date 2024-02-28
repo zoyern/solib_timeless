@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   solib_types.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:57:58 by marvin            #+#    #+#             */
-/*   Updated: 2024/02/08 17:57:58 by marvin           ###   ########.fr       */
+/*   Updated: 2024/02/28 05:39:16 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 typedef struct s_solib t_solib;
 typedef struct s_soc t_soc;
 typedef struct s_solib_memory t_solib_memory;
+typedef struct s_solib_memory_var t_solib_memory_var;
 
 typedef enum {
 	VOID_TYPE,
@@ -125,6 +126,11 @@ typedef struct s_solib_time {
 	t_solib_clock	update;
 	t_solib_clock	render;
 } t_solib_time;
+
+typedef struct s_solib_memory_var {
+	void			*ptr;
+	t_solib_memory	*next;
+} t_solib_memory_var;
 
 typedef struct s_solib_memory {
 	void			*ptr;

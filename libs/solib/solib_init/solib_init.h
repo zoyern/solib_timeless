@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   solib_init.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:08:27 by marvin            #+#    #+#             */
-/*   Updated: 2024/02/26 23:08:27 by marvin           ###   ########.fr       */
+/*   Updated: 2024/02/28 02:16:10 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_bool	solib_windows_init(t_solib *solib, char *name, int width, int height, int
 t_bool	solib_memory_init(t_solib *solib);
 void	solib_memory_add(t_solib *solib, void *ptr);
 void	solib_memory_show(t_solib *solib);
+void	solib_memory_clear(t_solib *solib);
 
 //events :
 t_bool	solib_events_init(t_solib *solib);

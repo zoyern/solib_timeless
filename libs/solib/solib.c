@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   solib.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:43:15 by marvin            #+#    #+#             */
-/*   Updated: 2024/02/08 17:43:15 by marvin           ###   ########.fr       */
+/*   Updated: 2024/02/28 06:02:07 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int solib_close(t_solib *solib)
 		{
 			if (solib->windows->window)
 				mlx_destroy_window(solib->minilibx, solib->windows->window);
-			free(solib->windows);
 		}
 		if (solib->minilibx)
 		{
@@ -30,11 +29,7 @@ int solib_close(t_solib *solib)
 			free(solib->minilibx);
 		}
 		if (solib->memory)
-		{
-			free(solib->events);
-			free(solib->time);
-			free(solib->inputs);
-		}
+			solib_memory_clear(solib);
 		free(solib);
 	}
 	exit(1);

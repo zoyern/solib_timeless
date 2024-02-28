@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   solib_events.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:15:39 by marvin            #+#    #+#             */
-/*   Updated: 2024/02/26 23:15:39 by marvin           ###   ########.fr       */
+/*   Updated: 2024/02/28 06:04:50 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_bool	solib_events_init(t_solib *solib)
 {
 	t_solib_events *events;
 
-	events = (t_solib_events *)malloc(sizeof(t_solib_events));
+	events = (t_solib_events *)solib_malloc(solib, sizeof(t_solib_events));
 	if (!events)
 		return (free(solib->windows), free(solib->minilibx),free(solib), TRUE);
 

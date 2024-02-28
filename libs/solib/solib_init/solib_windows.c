@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   solib_windows.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 23:07:34 by marvin            #+#    #+#             */
-/*   Updated: 2024/02/26 23:07:34 by marvin           ###   ########.fr       */
+/*   Updated: 2024/02/28 06:01:45 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	solib_windows_init(t_solib *solib, char *name, int width, int height, int t
 {
 	t_solib_windows	*windows;
 
-	windows = solib_malloc(solib, sizeof(t_solib_windows));
+	windows = (t_solib_windows *)solib_malloc(solib, sizeof(t_solib_windows));
 	windows->name = name;
 	windows->target_frame = target_frame;
 	solib_windows_init_size(solib, width, height);
