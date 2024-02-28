@@ -5,3 +5,5 @@
  cc main.c libs/solib/*.c libs/solib/solib_hooks/*.c libs/solib/solib_init/*.c libs/solib/solib_memory/*.c libs/solib/solib_time/*.c libs/minilibx/libmlx.a -lX11 -lXext -Wall -Wextra -Werror
 
  cc main.c libs/solib/*.c libs/solib/solib_hooks/*.c libs/solib/solib_init/*.c libs/solib/solib_memory/*.c libs/solib/solib_time/*.c minilibx-linux/libmlx_Linux.a -lX11 -lXext -Wall -Wextra -Werror
+
+ [![42 Profile Card](https://1337-readme-xi.vercel.app/api/profile?cursus=42&dark=true&email=hide&leet_logo=hide&login=zoyern)](https://github.com/mohouyizme/1337-readme)
