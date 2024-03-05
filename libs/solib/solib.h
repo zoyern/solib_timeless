@@ -30,5 +30,5 @@ int				solib_render(t_solib *solib);
 
 //Memory
 void			*solib_malloc(t_solib *solib, int size);
-
+t_bool			solib_free(t_solib *solib, void *ptr);
 #endif

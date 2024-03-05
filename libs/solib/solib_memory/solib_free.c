@@ -12,13 +12,15 @@
 
 #include "../solib_init/solib_init.h"
 
-void	*solib_free(t_solib *solib, int size)
+t_bool	solib_free(t_solib *solib, void *ptr)
 {
-	void	*ptr;
+	t_solib_memory	*memory;
 
-	ptr = (void *)malloc(size);
-	if (!ptr)
-		solib_close(solib);
-	solib_memory_add(solib, ptr);
-	return (ptr);
+	if (ptr)
+	{
+		memory = solib_memory_free(solib, ptr);
+		if (memory)
+			return (free(memory->ptr), free(memory), FALSE);
+	}
+	return (TRUE);
 }

@@ -65,7 +65,11 @@ t_bool	solib_init(char *name, int width, int height, int target_frame)
 	solib_time_init(solib, SIMUL_MHZ, 240, target_frame);
 	solib->close = solib_close;
 	solib_hooks(solib);
-	solib_start(solib);
+	if (solib_start(solib))
+		solib_close(solib);
+	solib_memory_show(solib);
+	solib_free(solib, solib->inputs);
+	solib_memory_show(solib);
 	mlx_loop_hook(solib->minilibx, solib_loop, solib);
 	mlx_loop(solib->minilibx);
 	solib_close(solib);

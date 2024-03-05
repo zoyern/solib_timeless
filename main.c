@@ -23,15 +23,17 @@ int	solib_start(t_solib *solib)
 {
 	(void)solib;
 	solib->events->key_press = key_test;
+
+	solib2d(1920, 1080);
 	return (0);
 }
 
 int	solib_update(t_solib *solib)
 {
 	(void)solib;
-	printf("fpsupdate : %d -- fpsrender : %d -- ms : %0.3f\n",
+	/*printf("fpsupdate : %d -- fpsrender : %d -- ms : %0.3f\n",
 		solib->time->update.fps, solib->time->render.fps,
-		solib->time->ticks.millis);
+		solib->time->ticks.millis);*/
 	return (0);
 }
 

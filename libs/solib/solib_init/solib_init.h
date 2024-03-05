@@ -32,6 +32,7 @@ void			solib_windows_init(t_solib *solib,
 //memory
 void			solib_memory_init(t_solib *solib);
 void			solib_memory_add(t_solib *solib, void *ptr);
+t_solib_memory	*solib_memory_free(t_solib *solib, void *ptr);
 void			solib_memory_show(t_solib *solib);
 void			solib_memory_clear(t_solib *solib);
 //events :
@@ -42,4 +43,4 @@ void			solib_inputs_init(t_solib *solib);
 void			solib_time_init(t_solib *solib,
 					int mhz, int targf_update, int targf_render);
 
-#endif
+#endif'
