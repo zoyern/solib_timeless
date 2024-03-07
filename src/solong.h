@@ -13,7 +13,7 @@
 #ifndef SOLONG_H
 # define SOLONG_H
 
-# include "libs/solib/solib.h"
-# include "libs/solib/solib_utils.h"
+# include "../libs/solib/solib.h"
+# include "../libs/solib/solib_utils.h"
 
 #endif

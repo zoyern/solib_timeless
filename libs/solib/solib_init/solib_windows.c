@@ -37,6 +37,7 @@ void	solib_windows_init(t_solib *solib, char *name, int width, int height)
 	solib_windows_init_size(solib, width, height);
 	windows->width = width;
 	windows->height = height;
+	windows->ratio = 0;
 	windows->window = mlx_new_window(solib->minilibx, width, height, name);
 	if (!windows->window)
 		solib->close(solib);

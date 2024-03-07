@@ -43,4 +43,4 @@ void			solib_inputs_init(t_solib *solib);
 void			solib_time_init(t_solib *solib,
 					int mhz, int targf_update, int targf_render);
 
-#endif'
+#endif

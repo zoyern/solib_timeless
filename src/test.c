@@ -9,14 +9,14 @@
 /*   Updated: 2024/02/28 23:26:58 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
+/*
 #include "solong.h"
 
 int	main(void)
 {
 	while (1)
 	{
-		/* code */
+		
 	}
 	
 }
@@ -43,7 +43,7 @@ typedef struct s_mini_canvas {
 
 typedef struct s_mini
 {
-	/* data */
+	
 }	t_mini;
 
 
@@ -80,17 +80,17 @@ t_bool	solib_init(char *name, int width, int height, int target_frame)
 	solib_close(solib);
 	return (FALSE);
 }
+*/
+//int main(int argc, char const *argv[])
+//{
+//	(void)argc;
+//	(void)argv;
+//	if (mini_init(WIDTH_T_SIZE/*width*/, 1/*width*/,  3 /*screen nbr*/, 1 /*terminal type*/))
+//		return (1);
+//	return (0);
+//}
 
-int main(int argc, char const *argv[])
-{
-	(void)argc;
-	(void)argv;
-	if (mini_init(WIDTH_T_SIZE/*width*/, 1/*width*/,  3 /*screen nbr*/, 1 /*terminal type*/))
-		return (1);
-	return (0);
-}
-
-
+/*
 int	main(int argc, char const *argv[])
 {
 	(void)argc;
@@ -109,8 +109,8 @@ int j;
 
 while (i < x)
 {
-	/* code */
+	
 }
 
 
-func ecrire screen 1
+func ecrire screen 1*/

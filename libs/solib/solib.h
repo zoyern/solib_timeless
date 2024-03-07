@@ -18,6 +18,7 @@
 
 # include <stdlib.h>
 # include <stdio.h>
+# include <unistd.h>
 
 # include "../minilibx/mlx.h"
 # include "./solib_types/solib_types.h"

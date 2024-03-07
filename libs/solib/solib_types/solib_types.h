@@ -47,6 +47,7 @@ typedef struct s_solib_windows {
 	void	*window;
 	int		width;
 	int		height;
+	float	ratio;
 }	t_solib_windows;
 
 typedef struct s_solib_time {
