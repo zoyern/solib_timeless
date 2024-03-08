@@ -221,33 +221,28 @@ void put_img_to_img(t_solib *solib, t_solib_image *dst, t_solib_image src, int p
 	int index;
 	float ratio_x;
 	float ratio_y;
-	float ratio_display;
-	float y;
-	float x;
+	float vec_x;
+	float vec_y;
+	//float ratio_display;
+	int y;
+	int x;
 
 	y = 0;
 	x = 0;
 
-	ratio_display = solib->display->ratio;
-	if (width < 1 && width < 1)
-		ratio_display = 1;
-	if (width < 1)
-		ratio_x = 1;
-	else
-		ratio_x = src.size->width / width;
-	if (width < 1)
-		ratio_y = 1;
-	else
-		ratio_y = src.size->height / height;
+	ratio_x = src.size->width / width;
+	ratio_y = src.size->height / height;
+	vec_x = ((float)solib->display->resolution->x / (float)solib->display->size->width);
+	vec_y = ((float)solib->display->resolution->y / (float)solib->display->size->height);
 
-	printf("ratiox : %0.3f -- ratioy : %0.3f\n", ratio_x, ratio_y);
+	printf("ratiox : %0.3f -- ratioy : %0.3f\n - width : %0.3f -- height : %0.3f\n - width : %0.3f -- height : %0.3f\n\n", ratio_x, ratio_y, width, height, width / vec_x, height / vec_y);
 
-	while (y < ((src.size->height / ratio_display) / ratio_y))
+	while (y < (int)(height / vec_y))
 	{
 		x = 0;
-		while (x < ((src.size->width / ratio_display) / ratio_x))
+		while (x < (int)(width / vec_x))
 		{
-			index = get_pixel_img(src, x * ratio_display * ratio_x, y * ratio_display * ratio_y);
+			index = get_pixel_img(src,(int)(x  * ratio_x *  vec_x), (int)(y * ratio_y * vec_y));
 			put_pixel_img(dst, pos_x + x, pos_y + y, index);
 			x++;
 		}
@@ -363,11 +358,11 @@ t_bool solib_init(char *name, int width, int height, int target_frame)
 	bg = new_file_img("test.xpm", solib);
 	if (!bg.data->img_ptr)
 		return (2);
-	put_img_to_img(solib, solib->display->background, bg, 0, 0, 0, 0);
+	put_img_to_img(solib, solib->display->background, bg, 0, 0, 1920, 1080);
 	ring = new_file_img("ring.xpm", solib);
 	if (!ring.data->img_ptr)
 		return (2);
-	put_img_to_img(solib, solib->display->background, ring, 50, 100, 0, 0);
+	put_img_to_img(solib, solib->display->background, ring, 0, 0, 500, 500);
 	mlx_put_image_to_window(solib->minilibx, solib->windows->window, solib->display->background->data->img_ptr, solib->display->background->pos->x, solib->display->background->pos->y);
 	mlx_loop_hook(solib->minilibx, solib_loop, solib);
 	mlx_loop(solib->minilibx);
