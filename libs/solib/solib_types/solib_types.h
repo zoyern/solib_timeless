@@ -78,6 +78,7 @@ typedef struct s_solib_canvas {
 
 typedef struct s_solib_image_data
 {
+	t_solib_size		*size;
 	void *img_ptr;
 	char *addr;
 	int bpp;
