@@ -46,13 +46,35 @@ t_solib_size	*solib_new_size(t_solib *solib, int width, int height)
 	return (size);
 }
 
+t_solib_image_data	*solib_new_image_data(t_solib *solib, t_solib_image *image, char *background)
+{
+	t_solib_image_data	*data;
+	(void)background;
+
+	data = (t_solib_image_data *)solib_malloc(solib, sizeof(t_solib_image_data));
+	data->img_ptr = mlx_new_image(solib->minilibx, image->size->width, image->size->height);
+	data->addr = mlx_get_data_addr(data->img_ptr, &(data->bpp),
+								   &(data->line_len), &(data->endian));
+	return (data);
+}
+
+t_solib_image	*solib_new_image(t_solib *solib, t_solib_vector2 *pos, t_solib_size *size, char *background)
+{
+	t_solib_image	*image;
+	(void)background;
+
+	image = (t_solib_image *)solib_malloc(solib, sizeof(t_solib_image));
+	image->size = size;
+	image->pos = pos;
+	image->data = solib_new_image_data(solib, image, background);
+	return (image);
+}
+
 void	new_img(t_solib *solib, float resolution_x, float resolution_y)
 {
 	t_solib_display		*display;
-	t_solib_image		*background;
 
 	display = (t_solib_display *)solib_malloc(solib, sizeof(t_solib_display));
-	background = (t_solib_image *)solib_malloc(solib, sizeof(t_solib_image));
 	display->resolution = solib_new_resolution(solib, resolution_x, resolution_y);
 
 	solib->windows->ratio = (float)(solib->windows->width / solib->windows->height);
@@ -67,15 +89,7 @@ void	new_img(t_solib *solib, float resolution_x, float resolution_y)
 	// Calcul des coordonnées de début pour centrer l'image
 	display->pos = solib_new_vector2(solib, (solib->windows->width - display->size->width) / 2, (solib->windows->height - display->size->height) / 2);
 
-	// Création de la nouvelle image avec la taille ajustée et centrée
-	background->img_ptr = mlx_new_image(solib->minilibx, display->size->width, display->size->height);
-	background->addr = mlx_get_data_addr(background->img_ptr, &(background->bpp),
-								   &(background->line_len), &(background->endian));
-	background->size = display->size;
-
-	// Mise à jour des coordonnées de début de l'image
-	background->pos = display->pos;
-	display->background = background;
+	display->background = solib_new_image(solib, display->pos, display->size, NULL);
 	solib->display = display;
 }
 
@@ -84,19 +98,20 @@ t_solib_image new_file_img(char *path, t_solib *solib)
 	t_solib_image image;
 
 	image.size = solib_new_size(solib, 0, 0);
-	image.img_ptr = mlx_xpm_file_to_image(solib->minilibx, path, &image.size->width, &image.size->height);
-	if (!image.img_ptr)
+	image.data = (t_solib_image_data *)solib_malloc(solib, sizeof(t_solib_image_data));
+	image.data->img_ptr = mlx_xpm_file_to_image(solib->minilibx, path, &image.size->width, &image.size->height);
+	if (!image.data->img_ptr)
 		write(2, "File could not be read\n", 23);
 	else
-		image.addr = mlx_get_data_addr(image.img_ptr, &(image.bpp),
-									   &(image.line_len), &(image.endian));
+		image.data->addr = mlx_get_data_addr(image.data->img_ptr, &(image.data->bpp),
+									   &(image.data->line_len), &(image.data->endian));
 	return (image);
 }
 
 void destroy_image(t_solib *solib, t_solib_image img)
 {
-	if (img.img_ptr && solib->minilibx)
-		mlx_destroy_image(solib->minilibx, img.img_ptr);
+	if (img.data->img_ptr && solib->minilibx)
+		mlx_destroy_image(solib->minilibx, img.data->img_ptr);
 }
 
 void put_pixel_img(t_solib_image *img, float x, float y, int color)
@@ -107,14 +122,14 @@ void put_pixel_img(t_solib_image *img, float x, float y, int color)
 		return;
 	if (x >= 0 && y >= 0 && x < img->size->width && y < img->size->height)
 	{
-		dst = img->addr + ((int)y * img->line_len + (int)x * (img->bpp / 8));
+		dst = img->data->addr + ((int)y * img->data->line_len + (int)x * (img->data->bpp / 8));
 		*(unsigned int *)dst = color;
 	}
 }
 
 unsigned int get_pixel_img(t_solib_image img, int x, int y)
 {
-	return (*(unsigned int *)((img.addr + (y * img.line_len) + (x * img.bpp / 8))));
+	return (*(unsigned int *)((img.data->addr + (y * img.data->line_len) + (x * img.data->bpp / 8))));
 }
 
 
@@ -261,15 +276,15 @@ t_bool solib_init(char *name, int width, int height, int target_frame)
 
 	new_img(solib, 1920 , 1080);
 	bg = new_file_img("test.xpm", solib);
-	if (!bg.img_ptr)
+	if (!bg.data->img_ptr)
 		return (2);
 	put_img_to_img(solib->display->background, bg, 0, 0, solib->display->background->size->width, solib->display->background->size->height);
 	ring = new_file_img("ring.xpm", solib);
-	if (!ring.img_ptr)
+	if (!ring.data->img_ptr)
 		return (2);
-	printf("ring %d - %d - %d\n", ring.bpp, ring.line_len, ring.endian);
+	printf("ring %d - %d - %d\n", ring.data->bpp, ring.data->line_len, ring.data->endian);
 	put_img_to_img(solib->display->background, ring, 50, 100, 100, 100);
-	mlx_put_image_to_window(solib->minilibx, solib->windows->window, solib->display->background->img_ptr, solib->display->background->pos->x, solib->display->background->pos->y);
+	mlx_put_image_to_window(solib->minilibx, solib->windows->window, solib->display->background->data->img_ptr, solib->display->background->pos->x, solib->display->background->pos->y);
 	mlx_loop_hook(solib->minilibx, solib_loop, solib);
 	mlx_loop(solib->minilibx);
 	solib_close(solib);

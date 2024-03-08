@@ -87,13 +87,9 @@ typedef struct s_solib_image_data
 
 typedef struct s_solib_image
 {
-	void *img_ptr;
-	char *addr;
-	t_solib_size	*size;
-	t_solib_vector2	*pos;
-	int bpp;
-	int endian;
-	int line_len;
+	t_solib_size		*size;
+	t_solib_vector2		*pos;
+	t_solib_image_data	*data;
 } t_solib_image;
 
 typedef struct s_solib_display {
