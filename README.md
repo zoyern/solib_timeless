@@ -21,3 +21,5 @@ itemMouse position NULL la souris null pars
  // mouse panel > multiple button xyzh > func on click 
 
  
+
+  cc -Wall -Wextra -Werror -gdwarf-4 src/main.c  libs/solib/*.c  libs/solib/solib_hooks/*.c libs/solib/solib_time/*.c libs/solib/solib_init/*.c libs/solib/solib_memory/*.c  libs/minilibx/libmlx.a -lX11 -lXext

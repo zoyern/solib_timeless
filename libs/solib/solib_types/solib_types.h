@@ -25,6 +25,16 @@ typedef struct s_solib_vector2 {
 	float	y;
 }	t_solib_vector2;
 
+typedef struct s_solib_size {
+	int	width;
+	int	height;
+}	t_solib_size;
+
+typedef struct s_solib_resolution {
+	int		x;
+	int		y;
+}	t_solib_resolution;
+
 typedef struct s_solib_events {
 	int	(*key_press)(t_solib *solib, int keycode);
 	int	(*key_release)(t_solib *solib, int keycode);
@@ -61,9 +71,47 @@ typedef struct s_solib_memory {
 	t_solib_memory	*next;
 }	t_solib_memory;
 
+typedef struct s_solib_canvas {
+	void			*ptr;
+	t_solib_memory	*next;
+}	t_solib_canvas;
+
+typedef struct s_solib_image_data
+{
+	void *img_ptr;
+	char *addr;
+	int bpp;
+	int endian;
+	int line_len;
+} t_solib_image_data;
+
+typedef struct s_solib_image
+{
+	void *img_ptr;
+	char *addr;
+	t_solib_size	*size;
+	t_solib_vector2	*pos;
+	int bpp;
+	int endian;
+	int line_len;
+} t_solib_image;
+
+typedef struct s_solib_display {
+	t_solib_image		*background;
+	t_solib_vector2		*pos;
+	float				ratio;
+	t_solib_size		*size;
+	t_solib_resolution	*resolution;
+	t_solib_canvas		*current;
+	t_solib_canvas		*canvas;
+	//add canvas
+	//get canvas
+}	t_solib_display;
+
 // Structure représentant solib
 typedef struct s_solib{
 	void			*minilibx;
+	t_solib_display	*display;
 	t_solib_windows	*windows;
 	t_solib_inputs	*inputs;
 	t_solib_events	*events;
