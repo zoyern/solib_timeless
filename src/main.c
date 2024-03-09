@@ -79,7 +79,7 @@ int	main(int argc, char const *argv[])
 	(void)argv;
 	//solib = solib_init("solong",1905, 1050, 60);
 	//if (solib_init("solong", 1905, 675, 60))
-	if (solib_init("solong", 1905, 675, 60))
+	if (solib_init("solong", 1905, 1050, 60))
 		return (1);
 	return (0);
 }
