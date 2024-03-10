@@ -168,6 +168,7 @@ void solib2d(t_solib *solib, float resolution_x, float resolution_y)
 	t_solib_display *display;
 
 	display = (t_solib_display *)solib_malloc(solib, sizeof(t_solib_display));
+	display->solib = solib;
 	display->resolution = solib_new_resolution(solib, resolution_x, resolution_y);
 
 	solib->windows->ratio = ((float)solib->windows->width / (float)solib->windows->height);
@@ -182,7 +183,7 @@ void solib2d(t_solib *solib, float resolution_x, float resolution_y)
 	// Calcul des coordonnées de début pour centrer l'image
 	display->pos = solib_new_vector2(solib, (solib->windows->width - display->size->width) / 2, (solib->windows->height - display->size->height) / 2);
 
-	display->background = solib_new_image(solib, display->pos, display->size, NULL);
+	display->area = solib_new_image(solib, display->pos, display->size, NULL);
 	solib->display = display;
 }
 
@@ -253,6 +254,40 @@ void put_img_to_img(t_solib *solib, t_solib_image *dst, t_solib_image src, int p
 		while (x < (float)(width / vec_x))
 		{
 			index = get_pixel_img(src,(int)(x  * ratio_x *  vec_x), (int)(y * ratio_y * vec_x));
+			put_pixel_img(dst, (int)((float)pos_x + x), (int)((float)pos_y + y), index);
+			x++;
+		}
+		y++;
+	}
+}
+
+void put_img_to_img_2(t_solib *solib, t_solib_image *dst, t_solib_image src, int pos_x, int pos_y, float width, float height)
+{
+	int index;
+	float ratio_x;
+	float ratio_y;
+	float vec_x;
+	float vec_y;
+	//float ratio_display;
+	float y;
+	float x;
+
+	y = 0;
+	x = 0;
+
+	ratio_x = (float)src.size->width / width;
+	ratio_y = (float)src.size->height / height;
+	vec_x = ((float)solib->display->resolution->x / (float)solib->display->size->width);
+	vec_y = ((float)solib->display->resolution->y / (float)solib->display->size->height);
+
+	printf("x %d - y %d -- ratiox : %0.3f -- ratioy : %0.3f\n - width : %0.3f -- height : %0.3f\n - width : %0.3f -- height : %0.3f\n\n", (int)((float)pos_x + x + solib->display->pos->x), (int)((float)pos_y + y + solib->display->pos->y), ratio_x, ratio_y, width, height, (float)(width / vec_x), (float)(height / vec_y));
+
+	while (y < (float)((height / solib->display->ratio)))
+	{
+		x = 0;
+		while (x < (float)(width / solib->display->ratio))
+		{
+			index = get_pixel_img(src,(int)(x  * ratio_x *  solib->display->ratio), (int)(y * ratio_y * solib->display->ratio));
 			put_pixel_img(dst, (int)((float)pos_x + x), (int)((float)pos_y + y), index);
 			x++;
 		}
@@ -364,16 +399,18 @@ t_bool solib_init(char *name, int width, int height, int target_frame)
 
     printf("Decimal: %ld\n", decimal);*/
 
-	solib2d(solib, 1920, 1080);
+	solib2d(solib, 4096, 2160);
 	bg = new_file_img("test.xpm", solib);
 	if (!bg.data->img_ptr)
 		return (2);
-	put_img_to_img(solib, solib->display->background, bg, 0, 0, solib->display->resolution->x, solib->display->resolution->y);
+	//scale avec la taille de la fenetre si la fenetre augmente la taille augmente aussi 
+	put_img_to_img(solib, solib->display->area, bg, 0, 0, solib->display->resolution->x, solib->display->resolution->y);
 	ring = new_file_img("ring.xpm", solib);
 	if (!ring.data->img_ptr)
 		return (2);
-	put_img_to_img(solib, solib->display->background, ring, 0, 0, 50, 50);
-	mlx_put_image_to_window(solib->minilibx, solib->windows->window, solib->display->background->data->img_ptr, solib->display->background->pos->x, solib->display->background->pos->y);
+	//scale avec la taille de la fenetre si la fenetre augmente la taille reste a la meme resolution sur la grille
+	put_img_to_img_2(solib, solib->display->area, ring, 0, 0, 50, 50);
+	mlx_put_image_to_window(solib->minilibx, solib->windows->window, solib->display->area->data->img_ptr, solib->display->area->pos->x, solib->display->area->pos->y);
 	mlx_loop_hook(solib->minilibx, solib_loop, solib);
 	mlx_loop(solib->minilibx);
 	solib_close(solib);
