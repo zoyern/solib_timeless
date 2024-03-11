@@ -6,7 +6,7 @@
 /*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:57:58 by marvin            #+#    #+#             */
-/*   Updated: 2024/02/28 09:43:34 by almounib         ###   ########.fr       */
+/*   Updated: 2024/03/11 11:39:57 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ typedef struct s_solib_canvas {
 	t_solib_button	*buttons;
 	int				(*canvas)(t_solib *solib);
 	int				(*close)(t_solib *solib);
-	int				(*close)(t_solib *solib);
 	t_solib_memory	*next;
 }	t_solib_canvas;
 
@@ -130,47 +129,27 @@ typedef struct s_solib_name {
 	char	*args;
 }	t_solib_name;
 
+
 typedef struct s_solib_new
 {
     t_solib_name	*(*name)(char *name, char *args);
     t_solib_vector2	*(*vector2)(float x, float y);
     t_solib_size	*(*size)(float x, float y);
-    t_solib_canvas	*(*canvas)(t_solib_display *display, t_solib *solib, t_solib_name *(*name)(char *name, char *link), t_solib_vector2 *(*vector2)(float x, float y), t_solib_size *(*size)(float width, float height));
+    t_solib_canvas	*(*canvas)(t_solib_display *display, t_solib_name *(*name)(char *name, char *link), t_solib_vector2 *(*vector2)(float x, float y), t_solib_size *(*size)(float width, float height));
     t_solib_image	*(*image)(t_solib_canvas *canvas, t_solib_name *(*name)(char *name, char *link), t_solib_vector2 *(*vector2)(float x, float y), t_solib_size *(*size)(float width, float height));
 } t_solib_new;
 
 
 typedef struct s_solib_get
 {
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
-} t_solib_new;
+} t_solib_get;
 
 typedef struct s_solib_set
 {
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
 } t_solib_set;
 
 typedef struct s_solib_remove
 {
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
-	t_solib_canvas		*(*get_canvas)(t_solib *solib, char *name);
 } t_solib_remove;
 
 // Structure représentant solib

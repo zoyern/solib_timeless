@@ -6,7 +6,7 @@
 /*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:43:15 by marvin            #+#    #+#             */
-/*   Updated: 2024/02/28 09:28:53 by almounib         ###   ########.fr       */
+/*   Updated: 2024/03/11 13:18:22 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,6 @@ int	ft_absolute(float value)
 }
 
 
-
 void solib2d(t_solib *solib, float resolution_x, float resolution_y)
 {
 	t_solib_display *display;
@@ -179,7 +178,7 @@ void solib2d(t_solib *solib, float resolution_x, float resolution_y)
 	else
 		display->size = solib_new_size(solib, solib->windows->width, (int)((float)solib->windows->width / display->ratio));
 
-	printf("----\nhori :\nresolution_x : %0.2f\n win_x : %d\nratio : %0.6f\nnew width : %d\n--\nhori :\nresolution_x : %0.2f\n win_x : %d\nratio : %0.6f\nnew height : %d\n--------\n", resolution_x, solib->windows->width, solib->windows->ratio, display->size->width, resolution_y, solib->windows->height, display->ratio, display->size->height);
+	printf("----\nhori :\nresolution_x : %0.2f\n win_x : %d\nratio : %0.6f\nnew width : %0.2f\n--\nhori :\nresolution_x : %0.2f\n win_x : %d\nratio : %0.6f\nnew height : %0.2f\n--------\n", resolution_x, solib->windows->width, solib->windows->ratio, display->size->width, resolution_y, solib->windows->height, display->ratio, display->size->height);
 	// Calcul des coordonnées de début pour centrer l'image
 	display->pos = solib_new_vector2(solib, (solib->windows->width - display->size->width) / 2, (solib->windows->height - display->size->height) / 2);
 
@@ -191,10 +190,12 @@ void solib2d(t_solib *solib, float resolution_x, float resolution_y)
 t_solib_image new_file_img(char *path, t_solib *solib)
 {
 	t_solib_image image;
+	int				width;
+	int				height;
 
-	image.size = solib_new_size(solib, 0, 0);
 	image.data = (t_solib_image_data *)solib_malloc(solib, sizeof(t_solib_image_data));
-	image.data->img_ptr = mlx_xpm_file_to_image(solib->minilibx, path, &image.size->width, &image.size->height);
+	image.data->img_ptr = mlx_xpm_file_to_image(solib->minilibx, path, &width, &height);
+	image.size = solib_new_size(solib, width, height);
 	if (!image.data->img_ptr)
 		write(2, "File could not be read\n", 23);
 	else
@@ -241,7 +242,7 @@ void put_img_to_img(t_solib *solib, t_solib_image *dst, t_solib_image src, int p
 	y = 0;
 	x = 0;
 
-	ratio_x = (float)src.size->width / width;
+	ratio_x = src.size->width / width;
 	ratio_y = (float)src.size->height / height;
 	vec_x = ((float)solib->display->resolution->x / (float)solib->display->size->width);
 	vec_y = ((float)solib->display->resolution->y / (float)solib->display->size->height);
@@ -375,8 +376,6 @@ t_bool solib_init(char *name, int width, int height, int target_frame)
 	/*solib_memory_show(solib);
 	solib_free(solib, solib->inputs);
 	solib_memory_show(solib);*/
-	t_solib_image bg;
-	t_solib_image ring;
 
 	/*const char *hex = "33A4FB";
 
@@ -398,8 +397,9 @@ t_bool solib_init(char *name, int width, int height, int target_frame)
 
 
     printf("Decimal: %ld\n", decimal);*/
-
-	solib2d(solib, 4096, 2160);
+	t_solib_image bg;
+	t_solib_image ring;
+	solib2d(solib, 4000, 4000);
 	bg = new_file_img("test.xpm", solib);
 	if (!bg.data->img_ptr)
 		return (2);
@@ -409,7 +409,7 @@ t_bool solib_init(char *name, int width, int height, int target_frame)
 	if (!ring.data->img_ptr)
 		return (2);
 	//scale avec la taille de la fenetre si la fenetre augmente la taille reste a la meme resolution sur la grille
-	put_img_to_img_2(solib, solib->display->area, ring, 0, 0, 50, 50);
+	put_img_to_img(solib, solib->display->area, ring, 0 , 0, 500, 500);
 	mlx_put_image_to_window(solib->minilibx, solib->windows->window, solib->display->area->data->img_ptr, solib->display->area->pos->x, solib->display->area->pos->y);
 	mlx_loop_hook(solib->minilibx, solib_loop, solib);
 	mlx_loop(solib->minilibx);

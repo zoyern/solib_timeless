@@ -6,7 +6,7 @@
 /*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 18:00:14 by marvin            #+#    #+#             */
-/*   Updated: 2024/02/28 09:01:16 by almounib         ###   ########.fr       */
+/*   Updated: 2024/03/11 11:50:32 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	main(int argc, char const *argv[])
 	(void)argv;
 	//solib = solib_init("solong",1905, 1050, 60);
 	//if (solib_init("solong", 1905, 675, 60))
-	if (solib_init("solong", 1905, 675, 60))
+	if (solib_init("solong", 1905, 900, 60))
 		return (1);
 	return (0);
 }
