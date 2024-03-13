@@ -64,96 +64,6 @@ t_solib_construct *solib_new_construct(t_solib *solib, char *name, char *args)
 	return (construct);
 }
 
-t_solib_image_data *solib_new_image_data(t_solib *solib, t_solib_image *image, char *background)
-{
-	t_solib_image_data	*data;
-	/*int					width;
-	int					height;
-
-	width = 0;
-	height = 0;*/
-
-	data = (t_solib_image_data *)solib_malloc(solib, sizeof(t_solib_image_data));
-	if (!background)
-		data->img_ptr = mlx_new_image(solib->minilibx, image->size->width, image->size->height);
-	/*else
-	{
-		data->img_ptr = mlx_xpm_file_to_image(solib->minilibx, background, &width, &height);
-		if (!data->img_ptr)
-		{
-			data->img_ptr = mlx_new_image(solib->minilibx, image->size->width, image->size->height);
-			write(2, "File could not be read\n", 23);
-		}
-	}*/
-	data->addr = mlx_get_data_addr(data->img_ptr, &(data->bpp),
-								   &(data->line_len), &(data->endian));
-	return (data);
-}
-
-t_solib_image *solib_new_image(t_solib *solib, t_solib_vector2 *pos, t_solib_size *size, char *background)
-{
-	t_solib_image *image;
-
-	image = (t_solib_image *)solib_malloc(solib, sizeof(t_solib_image));
-	image->size = size;
-	image->pos = pos;
-	image->data = solib_new_image_data(solib, image, background);
-	return (image);
-}
-
-
-void destroy_image(t_solib *solib, t_solib_image img)
-{
-	if (img.data->img_ptr && solib->minilibx)
-		mlx_destroy_image(solib->minilibx, img.data->img_ptr);
-}
-
-t_solib_display	*solib2d(t_solib *solib, float resolution_x, float resolution_y)
-{
-	t_solib_display *display;
-
-	display = (t_solib_display *)solib_malloc(solib, sizeof(t_solib_display));
-	display->solib = solib;
-	display->resolution = solib_new_vector2(solib, resolution_x, resolution_y);
-
-	solib->windows->ratio = ((float)solib->windows->width / (float)solib->windows->height);
-	display->ratio = (resolution_x / resolution_y);
-
-	if (solib->windows->ratio > display->ratio)
-		display->size = solib_new_size(solib, (int)((float)solib->windows->height * display->ratio), solib->windows->height);
-	else
-		display->size = solib_new_size(solib, solib->windows->width, (int)((float)solib->windows->width / display->ratio));
-
-	printf("----\nhori :\nresolution_x : %0.2f\n win_x : %d\nratio : %0.6f\nnew width : %0.2f\n--\nhori :\nresolution_x : %0.2f\n win_x : %d\nratio : %0.6f\nnew height : %0.2f\n--------\n", resolution_x, solib->windows->width, solib->windows->ratio, display->size->width, resolution_y, solib->windows->height, display->ratio, display->size->height);
-	// Calcul des coordonnées de début pour centrer l'image
-	display->pos = solib_new_vector2(solib, (solib->windows->width - display->size->width) / 2, (solib->windows->height - display->size->height) / 2);
-
-	display->area = solib_new_image(solib, display->pos, display->size, NULL);
-	solib->display = display;
-	return (display);
-}
-
-t_solib_image *new_file_img(char *path, t_solib *solib)
-{
-	t_solib_image *image;
-	int				width;
-	int				height;
-	image = (t_solib_image *)solib_malloc(solib, sizeof(t_solib_image));
-	image->data = (t_solib_image_data *)solib_malloc(solib, sizeof(t_solib_image_data));
-	image->data->img_ptr = mlx_xpm_file_to_image(solib->minilibx, path, &width, &height);
-	image->size = solib_new_size(solib, width, height);
-	image->solib = solib;
-	image->display = solib->display;
-	if (!image->data->img_ptr)
-		write(2, "File could not be read\n", 23);
-	else
-		image->data->addr = mlx_get_data_addr(image->data->img_ptr, &(image->data->bpp),
-											 &(image->data->line_len), &(image->data->endian));
-	return (image);
-}
-
-
-
 void solib_put_pixel_img(t_solib_image *img, float x, float y, int color)
 {
 	char *dst;
@@ -186,8 +96,8 @@ void solib_put_image(t_solib_image *parent, t_solib_image *child, t_solib_transf
 	y = 0;
 	x = 0;
 
-	ratio_x = child->size->width / transform->size->width;
-	ratio_y = (float)child->size->height / transform->size->height;
+	ratio_x = child->data->size->width / transform->size->width;
+	ratio_y = (float)child->data->size->height / transform->size->height;
 	vec_x = ((float)child->solib->display->resolution->x / (float)child->solib->display->size->width);
 	vec_y = ((float)child->solib->display->resolution->y / (float)child->solib->display->size->height);
 
@@ -211,8 +121,6 @@ void put_img_to_img_2(t_solib *solib, t_solib_image *dst, t_solib_image *src, in
 	int index;
 	float ratio_x;
 	float ratio_y;
-	float vec_x;
-	float vec_y;
 	//float ratio_display;
 	float y;
 	float x;
@@ -222,10 +130,8 @@ void put_img_to_img_2(t_solib *solib, t_solib_image *dst, t_solib_image *src, in
 
 	ratio_x = (float)src->size->width / width;
 	ratio_y = (float)src->size->height / height;
-	vec_x = ((float)solib->display->resolution->x / (float)solib->display->size->width);
-	vec_y = ((float)solib->display->resolution->y / (float)solib->display->size->height);
 
-	printf("x %d - y %d -- ratiox : %0.3f -- ratioy : %0.3f\n - width : %0.3f -- height : %0.3f\n - width : %0.3f -- height : %0.3f\n\n", (int)((float)pos_x + x + solib->display->pos->x), (int)((float)pos_y + y + solib->display->pos->y), ratio_x, ratio_y, width, height, (float)(width / vec_x), (float)(height / vec_y));
+	//printf("x %d - y %d -- ratiox : %0.3f -- ratioy : %0.3f\n - width : %0.3f -- height : %0.3f\n - width : %0.3f -- height : %0.3f\n\n", (int)((float)pos_x + x + solib->display->pos->x), (int)((float)pos_y + y + solib->display->pos->y), ratio_x, ratio_y, width, height, (float)(width / vec_x), (float)(height / vec_y));
 
 	while (y < (float)((height / solib->display->ratio)))
 	{
@@ -240,9 +146,130 @@ void put_img_to_img_2(t_solib *solib, t_solib_image *dst, t_solib_image *src, in
 	}
 }
 
+t_solib_image_data *solib_new_image_data(t_solib *solib, t_solib_image *image, char *background)
+{
+	t_solib_image_data	*data;
+	int					width;
+	int					height;
+
+	width = 0;
+	height = 0;
+
+	data = (t_solib_image_data *)solib_malloc(solib, sizeof(t_solib_image_data));
+	if (!background)
+	{
+		data->img_ptr = mlx_new_image(solib->minilibx, image->size->width, image->size->height);
+		width = image->size->width;
+		height = image->size->height;
+	}
+	else
+	{
+		data->img_ptr = mlx_xpm_file_to_image(solib->minilibx, background, &width, &height);
+		if (!data->img_ptr)
+		{
+			data->img_ptr = mlx_new_image(solib->minilibx, image->size->width, image->size->height);
+			width = image->size->width;
+			height = image->size->height;
+			write(2, "File could not be read\n", 23);
+		}
+	}
+	data->size = solib->new->size(solib, width, height);
+	data->addr = mlx_get_data_addr(data->img_ptr, &(data->bpp),
+								   &(data->line_len), &(data->endian));
+	return (data);
+}
+
+
+t_solib_image *solib_new_image_tmp(t_solib_image *parent, t_solib_construct *construct, t_solib_transform *transform)
+{
+	t_solib_image *image;
+
+	image = (t_solib_image *)solib_malloc(parent->solib, sizeof(t_solib_image));
+	image->solib = parent->solib;
+	image->display = parent->display;
+	image->canva = parent->canva;
+	image->name = construct->name;
+	image->link = construct->args;
+	image->pos = transform->pos;
+	image->size = transform->size;
+	image->quate = transform->quate;
+	image->buttons = NULL;
+	image->data = solib_new_image_data(parent->solib, image, construct->args);
+	
+	
+	//scale avec la taille de la fenetre si la fenetre augmente la taille reste a la meme resolution sur la grille
+	solib_put_image(parent, image,
+		parent->solib->new->transform(
+			parent->solib,
+			transform->pos,
+			transform->size,
+			transform->quate
+	));
+	return (image);
+}
+
+t_solib_image *solib_new_image(t_solib *solib, t_solib_construct *construct, t_solib_transform *transform)
+{
+	t_solib_image *image;
+
+	image = (t_solib_image *)solib_malloc(solib, sizeof(t_solib_image));
+	image->solib = solib;
+	image->display = solib->display;
+	image->canva = NULL;
+	image->name = construct->name;
+	image->link = construct->args;
+	image->pos = transform->pos;
+	image->size = transform->size;
+	image->quate = transform->quate;
+	image->buttons = NULL;
+	image->data = solib_new_image_data(solib, image, construct->args);
+	return (image);
+}
+
+
+void destroy_image(t_solib *solib, t_solib_image img)
+{
+	if (img.data->img_ptr && solib->minilibx)
+		mlx_destroy_image(solib->minilibx, img.data->img_ptr);
+}
+
+t_solib_display	*solib2d(t_solib *solib, float resolution_x, float resolution_y)
+{
+	t_solib_display *display;
+
+	display = (t_solib_display *)solib_malloc(solib, sizeof(t_solib_display));
+	display->solib = solib;
+	display->resolution = solib_new_vector2(solib, resolution_x, resolution_y);
+
+	solib->windows->ratio = ((float)solib->windows->width / (float)solib->windows->height);
+	display->ratio = (resolution_x / resolution_y);
+
+	if (solib->windows->ratio > display->ratio)
+		display->size = solib_new_size(solib, (int)((float)solib->windows->height * display->ratio), solib->windows->height);
+	else
+		display->size = solib_new_size(solib, solib->windows->width, (int)((float)solib->windows->width / display->ratio));
+
+	//printf("----\nhori :\nresolution_x : %0.2f\n win_x : %d\nratio : %0.6f\nnew width : %0.2f\n--\nhori :\nresolution_x : %0.2f\n win_x : %d\nratio : %0.6f\nnew height : %0.2f\n--------\n", resolution_x, solib->windows->width, solib->windows->ratio, display->size->width, resolution_y, solib->windows->height, display->ratio, display->size->height);
+	// Calcul des coordonnées de début pour centrer l'image
+	display->pos = solib_new_vector2(solib, (solib->windows->width - display->size->width) / 2, (solib->windows->height - display->size->height) / 2);
+	solib->display = display;
+	display->area = solib_new_image(
+		solib,
+		solib->new->construct(solib, "display", NULL),
+		solib->new->transform(
+			solib,
+			display->pos,
+			display->size,
+			solib->new->quate(solib, 0, 0, 0)
+		));
+	return (display);
+}
+
 
 t_solib_canvas *solib_new_canvas(t_solib_display *display, t_solib_construct *construct, t_solib_transform *transform)
 {
+	if (!display)
+		return (NULL);
 	t_solib_canvas *canva;
 
 	canva = (t_solib_canvas *)solib_malloc(display->solib, sizeof(t_solib_canvas));
@@ -256,28 +283,8 @@ t_solib_canvas *solib_new_canvas(t_solib_display *display, t_solib_construct *co
 	canva->background = NULL;
 	canva->images = NULL;
 	canva->buttons = NULL;
-	if (!display->current)
-		display->current = canva;
+	canva->background = solib_new_image_tmp(display->area, construct, transform);
 	return (canva);
-}
-
-t_solib_image *solib_new_image_tmp(t_solib_canvas *canvas, t_solib_construct *construct, t_solib_transform *transform)
-{
-	t_solib_image *image;
-
-	image = (t_solib_image *)solib_malloc(canvas->solib, sizeof(t_solib_image));
-	image->solib = canvas->solib;
-	image->display = canvas->display;
-	image->canva = canvas;
-	image->name = construct->name;
-	image->link = construct->args;
-	image->pos = transform->pos;
-	image->size = transform->size;
-	image->quate = transform->quate;
-	image->set = NULL;
-	image->get = NULL;
-	image->buttons = NULL;
-	return (image);
 }
 
 /*for (float y = 0; y < ring.h; y += 2)

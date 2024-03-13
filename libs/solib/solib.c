@@ -44,7 +44,15 @@ int	solib_update_callback(t_solib *solib)
 
 int	solib_render_callback(t_solib *solib)
 {
+	mlx_clear_window(solib->minilibx, solib->windows->window);
 	solib_render(solib);
+	solib_put_image(solib->display->area, solib->display->current->background,
+		solib->new->transform(
+			solib,
+			solib->display->current->background->pos,
+			solib->display->current->background->size,
+			solib->display->current->background->quate
+	));
 	mlx_put_image_to_window(
 		solib->minilibx, solib->windows->window,
 		solib->display->area->data->img_ptr,

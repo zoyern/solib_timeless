@@ -48,13 +48,12 @@ void				solib_new_init(t_solib *solib);
 //ui
 t_solib_canvas		*solib_new_canvas(t_solib_display *display,
 						t_solib_construct *construct, t_solib_transform *transform);
-t_solib_image		*solib_new_image_tmp(t_solib_canvas *canvas,
+t_solib_image		*solib_new_image_tmp(t_solib_image *parent,
 						t_solib_construct *construct, t_solib_transform *transform);
 t_solib_image_data	*solib_new_image_data(t_solib *solib, t_solib_image *image, char *background);
-t_solib_image		*solib_new_image(t_solib *solib, t_solib_vector2 *pos, t_solib_size *size, char *background);
+t_solib_image		*solib_new_image(t_solib *solib, t_solib_construct *construct, t_solib_transform *transform);
 void				destroy_image(t_solib *solib, t_solib_image img);
 t_solib_display		*solib2d(t_solib *solib, float resolution_x, float resolution_y);
-t_solib_image		*new_file_img(char *path, t_solib *solib);
 void				solib_put_pixel_img(t_solib_image *img, float x, float y, int color);
 unsigned int		solib_get_pixel_img(t_solib_image *img, int x, int y);
 void				solib_put_image(t_solib_image *parent, t_solib_image *child, t_solib_transform *transform);

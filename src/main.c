@@ -25,66 +25,30 @@ int solib_start(t_solib *solib)
 	(void)solib;
 	solib->events->key_press = key_test;
 
-	t_solib_image	*bg;
-	t_solib_image *ring;
 	t_solib_display *display = solib2d(solib, 1920, 1080);
 	
 	(void)display;
-	/*t_solib_canvas	*canva = solib->new->canvas(
+	t_solib_canvas	*canva = solib->new->canvas(
 		solib->display,
 		solib->new->construct(solib, "menu", "test.xpm"),
 		solib->new->transform(
 			solib,
 			solib->new->vector2(solib, 0,0),
-			solib->new->size(solib, display->size->width, display->size->height),
+			solib->new->size(solib, display->resolution->x, display->resolution->y),
 			solib->new->quate(solib, 0, 0, 0)));
 
+	display->current = canva;
 	t_solib_image *image1 = solib->new->image(
-    canva,
+    canva->background,
     solib->new->construct(solib, "image1", "ring.xpm"),
     solib->new->transform(
 		solib,
-        solib->new->vector2(solib, 0, 0),
+        solib->new->vector2(solib, 200, 200),
         solib->new->size(solib, 50, 50),
-        solib->new->quate(solib, 0, 0, 0)));*/
+        solib->new->quate(solib, 0, 0, 0)));
 
-	/*image1->set->transform(
-		image1,
-		solib->new.transform(
-			solib,
-			solib->new.vector2(solib, 0,0),
-			solib->new.size(solib, display->size.width, display->size.height),
-			solib->new.quate(solib, 0, 0, 0)));*/
-			
-	//canva->images->set(canva, image1);
 
-	//(void)image1;
-
-	bg = new_file_img("test.xpm", solib);
-	if (!bg->data->img_ptr)
-		return (2);
-	//scale avec la taille de la fenetre si la fenetre augmente la taille augmente aussi 
-	solib_put_image(solib->display->area, bg,
-		solib->new->transform(
-			solib,
-			solib->new->vector2(solib, 0, 0),
-			solib->new->size(solib, solib->display->resolution->x, solib->display->resolution->y),
-			solib->new->quate(solib, 0, 0, 0)
-	));
-	ring = new_file_img("ring.xpm", solib);
-	if (!ring->data->img_ptr)
-		return (2);
-	//scale avec la taille de la fenetre si la fenetre augmente la taille reste a la meme resolution sur la grille
-	solib_put_image(solib->display->area, ring,
-		solib->new->transform(
-			solib,
-			solib->new->vector2(solib, 0, 0),
-			solib->new->size(solib, 50, 50),
-			solib->new->quate(solib, 0, 0, 0)
-	));
-
-	// solib2d(1920, 1080);
-
+	(void)image1;
 	return (0);
 }
 
@@ -99,7 +63,8 @@ int solib_update(t_solib *solib)
 
 int solib_render(t_solib *solib)
 {
-	int i;
+	(void)solib;
+	/*int i;
 	int j;
 	int t;
 	char **strs;
@@ -128,7 +93,7 @@ int solib_render(t_solib *solib)
 		free(strs[i]);
 		i++;
 	}
-	free(strs);
+	free(strs);*/
 	return (0);
 }
 

@@ -14,7 +14,7 @@
 # define SOLIB_H
 
 # define SIMUL_CYCLES 15000
-# define SIMUL_MHZ 2700
+# define SIMUL_MHZ 3700
 
 # include <stdlib.h>
 # include <stdio.h>

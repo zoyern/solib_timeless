@@ -115,8 +115,6 @@ typedef struct s_solib_image
 	t_solib_size		*size;
 	t_solib_quate		*quate;
 	t_solib_image_data	*data;
-	t_solib_image_set	*set;
-	t_solib_image_get	*get;
 	t_solib_button	*buttons;
 } t_solib_image;
 
@@ -166,7 +164,7 @@ typedef struct s_solib_new
     t_solib_vector2	*(*vector2)(t_solib *solib, float x, float y);
     t_solib_size	*(*size)(t_solib *solib, float width, float height);
     t_solib_canvas	*(*canvas)(t_solib_display *display, t_solib_construct *construct, t_solib_transform	*transform);
-    t_solib_image	*(*image)(t_solib_canvas *canvas, t_solib_construct *construct, t_solib_transform *transform);
+    t_solib_image	*(*image)(t_solib_image *parent, t_solib_construct *construct, t_solib_transform *transform);
 } t_solib_new;
 
 
