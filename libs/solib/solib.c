@@ -45,8 +45,10 @@ int	solib_update_callback(t_solib *solib)
 int	solib_render_callback(t_solib *solib)
 {
 	solib_render(solib);
-	mlx_put_image_to_window(solib->minilibx, solib->windows->window,
-		solib->display->area->data->img_ptr, solib->display->area->pos->x,
+	mlx_put_image_to_window(
+		solib->minilibx, solib->windows->window,
+		solib->display->area->data->img_ptr,
+		solib->display->area->pos->x,
 		solib->display->area->pos->y);
 	return (0);
 }
@@ -73,10 +75,10 @@ t_bool solib_init(char *name, int width, int height, int target_frame)
 	if (!solib->minilibx)
 		return (solib_close(solib));
 	solib->target_frame = target_frame;
+	solib_new_init(solib);
 	solib_windows_init(solib, name, width, height);
 	solib_inputs_init(solib);
 	solib_events_init(solib);
-	solib_new_init(solib);
 	solib_time_init(solib, SIMUL_MHZ, 240, target_frame);
 	solib->close = solib_close;
 	solib_hooks(solib);

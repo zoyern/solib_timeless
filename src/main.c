@@ -30,7 +30,7 @@ int solib_start(t_solib *solib)
 	t_solib_display *display = solib2d(solib, 1920, 1080);
 	
 	(void)display;
-	t_solib_canvas	*canva = solib->new->canvas(
+	/*t_solib_canvas	*canva = solib->new->canvas(
 		solib->display,
 		solib->new->construct(solib, "menu", "test.xpm"),
 		solib->new->transform(
@@ -46,7 +46,7 @@ int solib_start(t_solib *solib)
 		solib,
         solib->new->vector2(solib, 0, 0),
         solib->new->size(solib, 50, 50),
-        solib->new->quate(solib, 0, 0, 0)));
+        solib->new->quate(solib, 0, 0, 0)));*/
 
 	/*image1->set->transform(
 		image1,
@@ -58,18 +58,30 @@ int solib_start(t_solib *solib)
 			
 	//canva->images->set(canva, image1);
 
-	(void)image1;
+	//(void)image1;
 
 	bg = new_file_img("test.xpm", solib);
 	if (!bg->data->img_ptr)
 		return (2);
 	//scale avec la taille de la fenetre si la fenetre augmente la taille augmente aussi 
-	put_img_to_img(solib, solib->display->area, bg, 0, 0, solib->display->resolution->x, solib->display->resolution->y);
+	solib_put_image(solib->display->area, bg,
+		solib->new->transform(
+			solib,
+			solib->new->vector2(solib, 0, 0),
+			solib->new->size(solib, solib->display->resolution->x, solib->display->resolution->y),
+			solib->new->quate(solib, 0, 0, 0)
+	));
 	ring = new_file_img("ring.xpm", solib);
 	if (!ring->data->img_ptr)
 		return (2);
 	//scale avec la taille de la fenetre si la fenetre augmente la taille reste a la meme resolution sur la grille
-	put_img_to_img(solib, solib->display->area, ring, 0 , 0, 50, 50);
+	solib_put_image(solib->display->area, ring,
+		solib->new->transform(
+			solib,
+			solib->new->vector2(solib, 0, 0),
+			solib->new->size(solib, 50, 50),
+			solib->new->quate(solib, 0, 0, 0)
+	));
 
 	// solib2d(1920, 1080);
 

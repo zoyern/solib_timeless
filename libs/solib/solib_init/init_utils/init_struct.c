@@ -48,7 +48,7 @@ t_solib_transform *solib_new_transform(t_solib *solib, t_solib_vector2 *vector2,
 	t_solib_transform *transform;
 
 	transform = (t_solib_transform *)solib_malloc(solib, sizeof(t_solib_transform));
-	transform->vector2 = vector2;
+	transform->pos = vector2;
 	transform->size = size;
 	transform->quate = quate;
 	return (transform);
@@ -142,6 +142,8 @@ t_solib_image *new_file_img(char *path, t_solib *solib)
 	image->data = (t_solib_image_data *)solib_malloc(solib, sizeof(t_solib_image_data));
 	image->data->img_ptr = mlx_xpm_file_to_image(solib->minilibx, path, &width, &height);
 	image->size = solib_new_size(solib, width, height);
+	image->solib = solib;
+	image->display = solib->display;
 	if (!image->data->img_ptr)
 		write(2, "File could not be read\n", 23);
 	else
@@ -152,7 +154,7 @@ t_solib_image *new_file_img(char *path, t_solib *solib)
 
 
 
-void put_pixel_img(t_solib_image *img, float x, float y, int color)
+void solib_put_pixel_img(t_solib_image *img, float x, float y, int color)
 {
 	char *dst;
 
@@ -165,12 +167,12 @@ void put_pixel_img(t_solib_image *img, float x, float y, int color)
 	}
 }
 
-unsigned int get_pixel_img(t_solib_image *img, int x, int y)
+unsigned int solib_get_pixel_img(t_solib_image *img, int x, int y)
 {
 	return (*(unsigned int *)((img->data->addr + (y * img->data->line_len) + (x * img->data->bpp / 8))));
 }
 
-void put_img_to_img(t_solib *solib, t_solib_image *dst, t_solib_image *src, int pos_x, int pos_y, float width, float height)
+void solib_put_image(t_solib_image *parent, t_solib_image *child, t_solib_transform *transform)
 {
 	int index;
 	float ratio_x;
@@ -184,20 +186,20 @@ void put_img_to_img(t_solib *solib, t_solib_image *dst, t_solib_image *src, int 
 	y = 0;
 	x = 0;
 
-	ratio_x = src->size->width / width;
-	ratio_y = (float)src->size->height / height;
-	vec_x = ((float)solib->display->resolution->x / (float)solib->display->size->width);
-	vec_y = ((float)solib->display->resolution->y / (float)solib->display->size->height);
+	ratio_x = child->size->width / transform->size->width;
+	ratio_y = (float)child->size->height / transform->size->height;
+	vec_x = ((float)child->solib->display->resolution->x / (float)child->solib->display->size->width);
+	vec_y = ((float)child->solib->display->resolution->y / (float)child->solib->display->size->height);
 
-	printf("x %d - y %d -- ratiox : %0.3f -- ratioy : %0.3f\n - width : %0.3f -- height : %0.3f\n - width : %0.3f -- height : %0.3f\n\n", (int)((float)pos_x + x + solib->display->pos->x), (int)((float)pos_y + y + solib->display->pos->y), ratio_x, ratio_y, width, height, (float)(width / vec_x), (float)(height / vec_y));
+	printf("x %d - y %d -- ratiox : %0.3f -- ratioy : %0.3f\n - width : %0.3f -- height : %0.3f\n - width : %0.3f -- height : %0.3f\n\n", (int)((float)transform->pos->x + x + child->solib->display->pos->x), (int)((float)transform->pos->y + y + child->solib->display->pos->y), ratio_x, ratio_y, transform->size->width, transform->size->height, (float)(transform->size->width / vec_x), (float)(transform->size->height / vec_y));
 
-	while (y < (float)((height / vec_y)))
+	while (y < (float)((transform->size->height / vec_y)))
 	{
 		x = 0;
-		while (x < (float)(width / vec_x))
+		while (x < (float)(transform->size->width / vec_x))
 		{
-			index = get_pixel_img(src,(int)(x  * ratio_x *  vec_x), (int)(y * ratio_y * vec_x));
-			put_pixel_img(dst, (int)((float)pos_x + x), (int)((float)pos_y + y), index);
+			index = solib_get_pixel_img(child,(int)(x  * ratio_x *  vec_x), (int)(y * ratio_y * vec_x));
+			solib_put_pixel_img(parent, (int)((float)transform->pos->x + x), (int)((float)transform->pos->y + y), index);
 			x++;
 		}
 		y++;
@@ -230,8 +232,8 @@ void put_img_to_img_2(t_solib *solib, t_solib_image *dst, t_solib_image *src, in
 		x = 0;
 		while (x < (float)(width / solib->display->ratio))
 		{
-			index = get_pixel_img(src,(int)(x  * ratio_x *  solib->display->ratio), (int)(y * ratio_y * solib->display->ratio));
-			put_pixel_img(dst, (int)((float)pos_x + x), (int)((float)pos_y + y), index);
+			index = solib_get_pixel_img(src,(int)(x  * ratio_x *  solib->display->ratio), (int)(y * ratio_y * solib->display->ratio));
+			solib_put_pixel_img(dst, (int)((float)pos_x + x), (int)((float)pos_y + y), index);
 			x++;
 		}
 		y++;
@@ -248,12 +250,14 @@ t_solib_canvas *solib_new_canvas(t_solib_display *display, t_solib_construct *co
 	canva->display = display;
 	canva->name = construct->name;
 	canva->link = construct->args;
-	canva->pos = transform->vector2;
+	canva->pos = transform->pos;
 	canva->size = transform->size;
 	canva->quate = transform->quate;
 	canva->background = NULL;
 	canva->images = NULL;
 	canva->buttons = NULL;
+	if (!display->current)
+		display->current = canva;
 	return (canva);
 }
 
@@ -267,7 +271,7 @@ t_solib_image *solib_new_image_tmp(t_solib_canvas *canvas, t_solib_construct *co
 	image->canva = canvas;
 	image->name = construct->name;
 	image->link = construct->args;
-	image->pos = transform->vector2;
+	image->pos = transform->pos;
 	image->size = transform->size;
 	image->quate = transform->quate;
 	image->set = NULL;

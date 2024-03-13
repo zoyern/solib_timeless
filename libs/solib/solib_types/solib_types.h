@@ -153,7 +153,7 @@ typedef struct s_solib_construct {
 }	t_solib_construct;
 
 typedef struct s_solib_transform {
-	t_solib_vector2 *vector2;
+	t_solib_vector2 *pos;
 	t_solib_size *size;
 	t_solib_quate *quate;
 }	t_solib_transform;

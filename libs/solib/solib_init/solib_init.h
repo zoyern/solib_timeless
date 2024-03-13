@@ -50,15 +50,15 @@ t_solib_canvas		*solib_new_canvas(t_solib_display *display,
 						t_solib_construct *construct, t_solib_transform *transform);
 t_solib_image		*solib_new_image_tmp(t_solib_canvas *canvas,
 						t_solib_construct *construct, t_solib_transform *transform);
-t_solib_image_data *solib_new_image_data(t_solib *solib, t_solib_image *image, char *background);
-t_solib_image *solib_new_image(t_solib *solib, t_solib_vector2 *pos, t_solib_size *size, char *background);
-void destroy_image(t_solib *solib, t_solib_image img);
-t_solib_display	*solib2d(t_solib *solib, float resolution_x, float resolution_y);
-t_solib_image *new_file_img(char *path, t_solib *solib);
-void put_pixel_img(t_solib_image *img, float x, float y, int color);
-unsigned int get_pixel_img(t_solib_image *img, int x, int y);
-void put_img_to_img(t_solib *solib, t_solib_image *dst, t_solib_image *src, int pos_x, int pos_y, float width, float height);
-void put_img_to_img_2(t_solib *solib, t_solib_image *dst, t_solib_image *src, int pos_x, int pos_y, float width, float height);
+t_solib_image_data	*solib_new_image_data(t_solib *solib, t_solib_image *image, char *background);
+t_solib_image		*solib_new_image(t_solib *solib, t_solib_vector2 *pos, t_solib_size *size, char *background);
+void				destroy_image(t_solib *solib, t_solib_image img);
+t_solib_display		*solib2d(t_solib *solib, float resolution_x, float resolution_y);
+t_solib_image		*new_file_img(char *path, t_solib *solib);
+void				solib_put_pixel_img(t_solib_image *img, float x, float y, int color);
+unsigned int		solib_get_pixel_img(t_solib_image *img, int x, int y);
+void				solib_put_image(t_solib_image *parent, t_solib_image *child, t_solib_transform *transform);
+void				put_img_to_img_2(t_solib *solib, t_solib_image *dst, t_solib_image *src, int pos_x, int pos_y, float width, float height);
 
 //utils :
 t_solib_vector2		*solib_new_vector2(t_solib *solib, float x, float y);
