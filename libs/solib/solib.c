@@ -14,108 +14,6 @@
 #include "solib_utils.h"
 #include "solib_hooks/solib_hooks.h"
 #include "solib_init/solib_init.h"
-char	*ft_get_base(int base, int lower)
-{
-	char	*all_digits;
-	char	*res;
-	int		i;
-
-	if (base < 2 || base > 16)
-		return (NULL);
-	res = (char *)malloc(sizeof(char) * (base + 1));
-	if (!res)
-		return (NULL);
-	if (lower)
-		all_digits = "0123456789abcdef";
-	else
-		all_digits = "0123456789ABCDEF";
-	i = -1;
-	while (++i < base)
-		res[i] = all_digits[i];
-	res[base] = '\0';
-	return (res);
-}
-
-
-unsigned long	ft_unbrlen_base(size_t n, int base)
-{
-	size_t	i;
-
-	i = 0;
-	if (n == 0)
-		return (1);
-	while (n > 0)
-	{
-		i++;
-		n /= base;
-	}
-	return (i);
-}
-
-char	*ft_uitoa_base(size_t n, size_t base, char *ref_base)
-{
-	size_t	size;
-	char	*result;
-
-	if (base < 2 || base > 16)
-		return (NULL);
-	size = ft_unbrlen_base(n, base);
-	result = (char *)malloc(sizeof(char) * (size + 1));
-	if (!result)
-		return (NULL);
-	result[size--] = 0;
-	if (!n)
-		result[0] = '0';
-	while (n > 0)
-	{
-		result[size--] = ref_base[n % base];
-		n /= base;
-	}
-	return (result);
-}
-
-char	*ft_uputnnbr_base(unsigned int nb, int base, int lower)
-{
-	char			*num;
-	char			*ref_base;
-
-	ref_base = ft_get_base(base, lower);
-	num = ft_uitoa_base(nb, base, ref_base);
-	if (!num)
-		return (NULL);
-	free(ref_base);
-	return (num);
-}
-
-t_solib_vector2 *solib_new_vector2(t_solib *solib, float x, float y)
-{
-	t_solib_vector2 *vector2;
-
-	vector2 = (t_solib_vector2 *)solib_malloc(solib, sizeof(t_solib_vector2));
-	vector2->x = x;
-	vector2->y = y;
-	return (vector2);
-}
-
-t_solib_resolution *solib_new_resolution(t_solib *solib, float x, float y)
-{
-	t_solib_resolution *resolution;
-
-	resolution = (t_solib_resolution *)solib_malloc(solib, sizeof(t_solib_resolution));
-	resolution->x = x;
-	resolution->y = y;
-	return (resolution);
-}
-
-t_solib_size *solib_new_size(t_solib *solib, int width, int height)
-{
-	t_solib_size *size;
-
-	size = (t_solib_size *)solib_malloc(solib, sizeof(t_solib_size));
-	size->width = width;
-	size->height = height;
-	return (size);
-}
 
 t_solib_image_data *solib_new_image_data(t_solib *solib, t_solib_image *image, char *background)
 {
@@ -162,13 +60,13 @@ int	ft_absolute(float value)
 }
 
 
-void solib2d(t_solib *solib, float resolution_x, float resolution_y)
+t_solib_display	*solib2d(t_solib *solib, float resolution_x, float resolution_y)
 {
 	t_solib_display *display;
 
 	display = (t_solib_display *)solib_malloc(solib, sizeof(t_solib_display));
 	display->solib = solib;
-	display->resolution = solib_new_resolution(solib, resolution_x, resolution_y);
+	display->resolution = solib_new_vector2(solib, resolution_x, resolution_y);
 
 	solib->windows->ratio = ((float)solib->windows->width / (float)solib->windows->height);
 	display->ratio = (resolution_x / resolution_y);
@@ -184,6 +82,7 @@ void solib2d(t_solib *solib, float resolution_x, float resolution_y)
 
 	display->area = solib_new_image(solib, display->pos, display->size, NULL);
 	solib->display = display;
+	return (display);
 }
 
 
@@ -368,38 +267,50 @@ t_bool solib_init(char *name, int width, int height, int target_frame)
 	solib_windows_init(solib, name, width, height);
 	solib_inputs_init(solib);
 	solib_events_init(solib);
+	solib_new_init(solib);
 	solib_time_init(solib, SIMUL_MHZ, 240, target_frame);
 	solib->close = solib_close;
 	solib_hooks(solib);
 	if (solib_start(solib))
 		solib_close(solib);
-	/*solib_memory_show(solib);
-	solib_free(solib, solib->inputs);
-	solib_memory_show(solib);*/
+	solib_memory_show(solib);
+	//solib_free(solib, solib->inputs);
+	//solib_memory_show(solib);
 
-	/*const char *hex = "33A4FB";
-
-    long decimal;
-
-    char *endptr;
-
-
-    decimal = strtol(hex, &endptr, 16);
-
-
-    if (*endptr != '\0') {
-
-        printf("Error: Invalid hexadecimal number.\n");
-
-        return 1;
-
-    }
-
-
-    printf("Decimal: %ld\n", decimal);*/
-	t_solib_image bg;
+	t_solib_image	bg;
 	t_solib_image ring;
-	solib2d(solib, 4000, 4000);
+	t_solib_display *display = solib2d(solib, 1920, 1080);
+	
+	t_solib_canvas	*canva = solib->new->canvas(
+		solib->display,
+		solib->new->construct(solib, "menu", "test.xpm"),
+		solib->new->transform(
+			solib,
+			solib->new->vector2(solib, 0,0),
+			solib->new->size(solib, display->size->width, display->size->height),
+			solib->new->quate(solib, 0, 0, 0)));
+
+	t_solib_image *image1 = solib->new->image(
+    canva,
+    solib->new->construct(solib, "image1", "ring.xpm"),
+    solib->new->transform(
+		solib,
+        solib->new->vector2(solib, 0, 0),
+        solib->new->size(solib, 50, 50),
+        solib->new->quate(solib, 0, 0, 0)));
+
+	/*image1->set->transform(
+		image1,
+		solib->new.transform(
+			solib,
+			solib->new.vector2(solib, 0,0),
+			solib->new.size(solib, display->size.width, display->size.height),
+			solib->new.quate(solib, 0, 0, 0)));*/
+			
+	//canva->images->set(canva, image1);
+
+	(void)image1;
+
 	bg = new_file_img("test.xpm", solib);
 	if (!bg.data->img_ptr)
 		return (2);
@@ -409,7 +320,7 @@ t_bool solib_init(char *name, int width, int height, int target_frame)
 	if (!ring.data->img_ptr)
 		return (2);
 	//scale avec la taille de la fenetre si la fenetre augmente la taille reste a la meme resolution sur la grille
-	put_img_to_img(solib, solib->display->area, ring, 0 , 0, 500, 500);
+	put_img_to_img(solib, solib->display->area, ring, 0 , 0, 50, 50);
 	mlx_put_image_to_window(solib->minilibx, solib->windows->window, solib->display->area->data->img_ptr, solib->display->area->pos->x, solib->display->area->pos->y);
 	mlx_loop_hook(solib->minilibx, solib_loop, solib);
 	mlx_loop(solib->minilibx);

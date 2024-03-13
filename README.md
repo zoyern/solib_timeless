@@ -22,4 +22,4 @@ itemMouse position NULL la souris null pars
 
  
 
-  cc -Wall -Wextra -Werror -gdwarf-4 src/main.c  libs/solib/*.c  libs/solib/solib_hooks/*.c libs/solib/solib_time/*.c libs/solib/solib_init/*.c libs/solib/solib_memory/*.c  libs/minilibx/libmlx.a -lX11 -lXext
+   cc -Wall -Wextra -Werror -gdwarf-4 src/main.c  libs/solib/*.c  libs/solib/solib_hooks/*.c libs/solib/solib_time/*.c libs/solib/solib_init/*.c libs/solib/solib_memory/*.c libs/solib/solib_init/init_utils/init_struct.c  libs/minilibx/libmlx.a -lX11 -lXext
