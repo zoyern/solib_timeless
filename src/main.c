@@ -28,6 +28,8 @@ int solib_start(t_solib *solib)
 	t_solib_display *display = solib2d(solib, 1920, 1080);
 	
 	(void)display;
+	printf("main------%0.2f -- %0.2f\n\n", solib->display->area->size->width, solib->display->area->size->height);
+
 	t_solib_canvas	*canva = solib->new->canvas(
 		solib->display,
 		solib->new->construct(solib, "menu", "test.xpm"),
@@ -38,13 +40,15 @@ int solib_start(t_solib *solib)
 			solib->new->quate(solib, 0, 0, 0)));
 
 	display->current = canva;
+	printf("main------%0.2f -- %0.2f\n\n", canva->background->size->width, canva->background->size->height);
+
 	t_solib_image *image1 = solib->new->image(
     canva->background,
     solib->new->construct(solib, "image1", "ring.xpm"),
     solib->new->transform(
 		solib,
-        solib->new->vector2(solib, 200, 200),
-        solib->new->size(solib, 50, 50),
+        solib->new->vector2(solib, 0, 0),
+        solib->new->size(solib, 1920, 1080),
         solib->new->quate(solib, 0, 0, 0)));
 
 
