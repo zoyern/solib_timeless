@@ -138,7 +138,6 @@ typedef struct s_solib_display {
 	t_solib_vector2		*pos;
 	float				ratio;
 	t_solib_size		*size;
-	t_solib_vector2		*resolution;
 	t_solib_canvas		*current;
 	t_solib_canvas		*canvas;
 	//add canvas

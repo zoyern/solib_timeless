@@ -87,10 +87,12 @@ void solib_put_image(t_solib_image *parent, t_solib_image *child, t_solib_transf
 	int index;
 	float ratio_x;
 	float ratio_y;
+	float ratio_x2;
+	float ratio_y2;
 	float test_x;
 	float test_y;
-	float vec_x;
-	float vec_y;
+	//float vec_x;
+	//float vec_y;
 	//float ratio_display;
 	float y;
 	float x;
@@ -98,33 +100,41 @@ void solib_put_image(t_solib_image *parent, t_solib_image *child, t_solib_transf
 	y = 0;
 	x = 0;
 
-	ratio_x = child->data->size->width / transform->size->width;
-	ratio_y = child->data->size->height / transform->size->height;
+	ratio_x = child->size->width / transform->size->width;
+	ratio_y = child->size->height / transform->size->height;
 	test_x = transform->size->width / parent->size->width;
 	test_y = transform->size->height / parent->size->height;
 	(void)test_x;
 	(void)test_y;
 
-	float size_w =  (child->size->width / (parent->display->resolution->x / parent->display->size->width));
-	float size_h =  (child->size->height / (parent->display->resolution->y / parent->display->size->height));
-	vec_x = ((float)child->solib->display->resolution->x / (float)child->solib->display->size->width);
-	vec_y = ((float)child->solib->display->resolution->y / (float)child->solib->display->size->height);
+	float size_w =  child->size->width /*/ (parent->display->resolution->x / parent->display->size->width)*/;
+	float size_h =  child->size->height /*/ (parent->display->resolution->y / parent->display->size->height)*/;
+	
+	ratio_x2 = child->data->size->width / size_w;
+	ratio_y2 = child->data->size->height / size_h;
+	//vec_x = ((float)child->solib->display->resolution->x / (float)child->solib->display->size->width);
+	//vec_y = ((float)child->solib->display->resolution->y / (float)child->solib->display->size->height);
 	//printf("display : %0.2f -- %0.2f ------ %0.2f -- %0.2f\n", (child->data->size->width * test_x) / (parent->display->resolution->x / parent->display->size->width), (child->data->size->height * test_y) / (parent->display->resolution->y / parent->display->size->height),  child->size->width, parent->display->size->height);
-	printf("display : %0.2f -- %0.2f ------ %0.3f -- %0.3f\n", parent->display->resolution->x / parent->display->size->width , parent->display->resolution->y / parent->display->size->height ,  size_w, size_h);
-	printf("x %d - y %d -- ratiox : %0.3f -- ratioy : %0.3f -- ratiox : %0.3f -- ratioy : %0.3f\n - width : %0.3f -- height : %0.3f\n - width : %0.3f -- height : %0.3f\n\n", (int)((float)transform->pos->x + x + parent->pos->x), (int)((float)transform->pos->y + y + parent->pos->y), ratio_x, ratio_y,vec_x, vec_y, transform->size->width, transform->size->height, size_w, size_h);
+	printf("display : %0.2f -- %0.2f ------ %0.3f -- %0.3f\n", parent->data->size->width , parent->data->size->height , parent->size->width, parent->size->height);
+	printf("x %d - y %d -- ratiox : %0.3f -- ratioy : %0.3f -- ratiox : %0.3f -- ratioy : %0.3f\n - width : %0.3f -- height : %0.3f\n - width : %0.3f -- height : %0.3f\n\n", (int)((float)transform->pos->x + x + parent->pos->x), (int)((float)transform->pos->y + y + parent->pos->y), ratio_x, ratio_y,ratio_x2, ratio_y2, transform->size->width, transform->size->height, size_w, size_h);
 
-	while (y < size_h)
+	while (y < size_h )
 	{
 		x = 0;
 		while (x < size_w)
 		{
 			//printf("%0.3f --- %0.3f --- %0.3f --- %3d --- %3d\n", x, (float)(transform->size->width * ratio_x / vec_x), (float)(transform->size->height * ratio_y / vec_y), (int)(x * vec_x), (int)(y * vec_y));
-			index = solib_get_pixel_img(child,(int)( x * (ratio_x * (parent->display->resolution->x / parent->display->size->width))), (int)( y * (ratio_y * (parent->display->resolution->y / parent->display->size->height))));
-			solib_put_pixel_img(parent, (int)((float)transform->pos->x + x + parent->pos->x), (int)((float)transform->pos->y + y + parent->pos->y), index);
+			index = solib_get_pixel_img(child,(int)( x * ratio_x2 / 1.2f), (int)( y * ratio_y2 / 1.2f));
+			//printf("%d:%d,", (int)( x * ratio_x2),  (int)( y * ratio_y2));
+			(void)index;
+			solib_put_pixel_img(parent, (int)(transform->pos->x + x), (int)(y + transform->pos->y), index);
 			x++;
 		}
+		//printf(" t - %d -- %d\n", (int)( x * ratio_x), (int)( y * ratio_y));
+		//printf("\n");
 		y++; 
 	}
+	printf("\n\n\n\n");
 }
 
 void put_img_to_img_2(t_solib *solib, t_solib_image *dst, t_solib_image *src, int pos_x, int pos_y, float width, float height)
@@ -202,12 +212,14 @@ t_solib_image *solib_new_image_tmp(t_solib_image *parent, t_solib_construct *con
 	image->name = construct->name;
 	image->link = construct->args;
 	image->pos = transform->pos;
-	image->size = transform->size;
 	image->quate = transform->quate;
 	image->buttons = NULL;
 	image->data = solib_new_image_data(parent->solib, image, construct->args);
-	
-	printf("image created size : %0.2f -- %0.2f ------ %0.2f -- %0.2f\n\n",image->size->width , image->size->height, image->data->size->width, image->data->size->height);
+	//
+	// j'ai une image avec un data sa size original je veux sa size afficher
+	//
+	image->size = transform->size;
+	printf("image created size : %0.2f -- %0.2f ------ %0.2f -- %0.2f ------ %0.2f -- %0.2f\n\n",image->size->width , image->size->height , image->data->size->width, image->data->size->height, transform->size->width, transform->size->height);
 	//scale avec la taille de la fenetre si la fenetre augmente la taille reste a la meme resolution sur la grille
 	solib_put_image(parent, image,
 		parent->solib->new->transform(
@@ -247,22 +259,23 @@ void destroy_image(t_solib *solib, t_solib_image img)
 t_solib_display	*solib2d(t_solib *solib, float resolution_x, float resolution_y)
 {
 	t_solib_display *display;
+	t_solib_size	*display_size;
 
 	display = (t_solib_display *)solib_malloc(solib, sizeof(t_solib_display));
 	display->solib = solib;
-	display->resolution = solib_new_vector2(solib, resolution_x, resolution_y);
+	display->size = solib_new_size(solib, resolution_x, resolution_y);
 
 	solib->windows->ratio = ((float)solib->windows->width / (float)solib->windows->height);
 	display->ratio = (resolution_x / resolution_y);
 
 	if (solib->windows->ratio > display->ratio)
-		display->size = solib_new_size(solib, (int)((float)solib->windows->height * display->ratio), solib->windows->height);
+		display_size = solib_new_size(solib, (int)((float)solib->windows->height * display->ratio), solib->windows->height);
 	else
-		display->size = solib_new_size(solib, solib->windows->width, (int)((float)solib->windows->width / display->ratio));
+		display_size = solib_new_size(solib, solib->windows->width, (int)((float)solib->windows->width / display->ratio));
 
 	printf("----\nhori :\nresolution_x : %0.2f\n win_x : %d\nratio : %0.6f\nnew width : %0.2f\n--\nhori :\nresolution_x : %0.2f\n win_x : %d\nratio : %0.6f\nnew height : %0.2f\n--------\n", resolution_x, solib->windows->width, solib->windows->ratio, display->size->width, resolution_y, solib->windows->height, display->ratio, display->size->height);
 	// Calcul des coordonnées de début pour centrer l'image
-	display->pos = solib_new_vector2(solib, (solib->windows->width - display->size->width) / 2, (solib->windows->height - display->size->height) / 2);
+	display->pos = solib_new_vector2(solib, (solib->windows->width - display_size->width) / 2, (solib->windows->height - display_size->height) / 2);
 	solib->display = display;
 	display->area = solib_new_image(
 		solib,
@@ -270,11 +283,13 @@ t_solib_display	*solib2d(t_solib *solib, float resolution_x, float resolution_y)
 		solib->new->transform(
 			solib,
 			display->pos,
-			display->size,
+			display_size,
 			solib->new->quate(solib, 0, 0, 0)
 		));
 	return (display);
 }
+
+// je creer 
 
 
 t_solib_canvas *solib_new_canvas(t_solib_display *display, t_solib_construct *construct, t_solib_transform *transform)
@@ -302,6 +317,9 @@ t_solib_canvas *solib_new_canvas(t_solib_display *display, t_solib_construct *co
 								transform->quate));
 	return (canva);
 }
+
+
+
 
 /*for (float y = 0; y < ring.h; y += 2)
 	{

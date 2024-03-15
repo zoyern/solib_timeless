@@ -46,6 +46,7 @@ int	solib_render_callback(t_solib *solib)
 {
 	mlx_clear_window(solib->minilibx, solib->windows->window);
 	solib_render(solib);
+	printf("\n\n\n\n----------------------------------------------\n\n\n\n");
 	solib_put_image(solib->display->area, solib->display->current->background,
 		solib->new->transform(
 			solib,

@@ -36,14 +36,14 @@ int solib_start(t_solib *solib)
 		solib->new->transform(
 			solib,
 			solib->new->vector2(solib, 0,0),
-			solib->new->size(solib, display->resolution->x, display->resolution->y),
+			solib->new->size(solib, display->size->width, display->size->height),
 			solib->new->quate(solib, 0, 0, 0)));
 
 	display->current = canva;
 	printf("main------%0.2f -- %0.2f\n\n", canva->background->size->width, canva->background->size->height);
 
 	t_solib_image *image1 = solib->new->image(
-    canva->background,
+    solib->display->area,
     solib->new->construct(solib, "image1", "ring.xpm"),
     solib->new->transform(
 		solib,
