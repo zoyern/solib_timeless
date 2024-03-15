@@ -6,7 +6,7 @@
 /*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:57:58 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/11 11:39:57 by almounib         ###   ########.fr       */
+/*   Updated: 2024/03/15 20:01:31 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ typedef struct s_solib_size {
 	float	width;
 	float	height;
 }	t_solib_size;
+
+typedef struct s_solib_transform {
+	t_solib_vector2	*pos;
+	t_solib_size	*size;
+	t_solib_quate	*quate;
+}	t_solib_transform;
 
 typedef struct s_solib_events {
 	int	(*key_press)(t_solib *solib, int keycode);
@@ -106,14 +112,11 @@ typedef struct s_solib_image_func
 typedef struct s_solib_image
 {
 	t_solib			*solib;
-	t_solib_display	*display;
 	t_solib_canvas 	*canva;
 	unsigned long		id;
 	char				*name;
 	char				*link;
-	t_solib_vector2		*pos;
-	t_solib_size		*size;
-	t_solib_quate		*quate;
+	t_solib_transform	*tranform;
 	t_solib_image_data	*data;
 	t_solib_button	*buttons;
 } t_solib_image;
@@ -140,20 +143,12 @@ typedef struct s_solib_display {
 	t_solib_size		*size;
 	t_solib_canvas		*current;
 	t_solib_canvas		*canvas;
-	//add canvas
-	//get canvas
 }	t_solib_display;
 
 typedef struct s_solib_construct {
 	char	*name;
 	char	*args;
 }	t_solib_construct;
-
-typedef struct s_solib_transform {
-	t_solib_vector2 *pos;
-	t_solib_size *size;
-	t_solib_quate *quate;
-}	t_solib_transform;
 
 typedef struct s_solib_new
 {

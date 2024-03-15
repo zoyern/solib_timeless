@@ -6,7 +6,7 @@
 /*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 18:00:14 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/11 11:50:32 by almounib         ###   ########.fr       */
+/*   Updated: 2024/03/15 20:19:26 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,11 @@ int solib_start(t_solib *solib)
 	(void)solib;
 	solib->events->key_press = key_test;
 
-	t_solib_display *display = solib2d(solib, 1920, 1080);
+	t_solib_display *display = solib_display_init(solib);
 	
-	(void)display;
-	printf("main------%0.2f -- %0.2f\n\n", solib->display->area->size->width, solib->display->area->size->height);
+	//printf("main------%0.2f -- %0.2f\n\n", solib->display->area->tranform->size->width, solib->display->area->tranform->size->height);
 
-	t_solib_canvas	*canva = solib->new->canvas(
+	/*t_solib_canvas	*canva = solib->new->canvas(
 		solib->display,
 		solib->new->construct(solib, "menu", "test.xpm"),
 		solib->new->transform(
@@ -40,7 +39,7 @@ int solib_start(t_solib *solib)
 			solib->new->quate(solib, 0, 0, 0)));
 
 	display->current = canva;
-	printf("main------%0.2f -- %0.2f\n\n", canva->background->size->width, canva->background->size->height);
+	printf("main------%0.2f -- %0.2f\n\n", canva->background->tranform->size->width, canva->background->tranform->size->height);
 
 	t_solib_image *image1 = solib->new->image(
     solib->display->area,
@@ -52,7 +51,7 @@ int solib_start(t_solib *solib)
         solib->new->quate(solib, 0, 0, 0)));
 
 
-	(void)image1;
+	(void)image1;*/
 	return (0);
 }
 

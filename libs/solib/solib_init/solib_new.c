@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   solib_new.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 21:03:59 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/12 21:03:59 by marvin           ###   ########.fr       */
+/*   Updated: 2024/03/15 20:10:29 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	solib_new_init(t_solib *solib)
 	event_new->vector2 = solib_new_vector2;
 	event_new->size = solib_new_size;
 	event_new->canvas = solib_new_canvas;
-	event_new->image = solib_new_image_tmp;
+	//event_new->image = solib_new_image_tmp;
 	
 
 	solib->new = event_new;

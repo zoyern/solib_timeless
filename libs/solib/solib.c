@@ -6,7 +6,7 @@
 /*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 17:43:15 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/11 13:18:22 by almounib         ###   ########.fr       */
+/*   Updated: 2024/03/15 20:18:17 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,21 +44,16 @@ int	solib_update_callback(t_solib *solib)
 
 int	solib_render_callback(t_solib *solib)
 {
-	mlx_clear_window(solib->minilibx, solib->windows->window);
 	solib_render(solib);
-	printf("\n\n\n\n----------------------------------------------\n\n\n\n");
-	solib_put_image(solib->display->area, solib->display->current->background,
-		solib->new->transform(
-			solib,
-			solib->display->current->background->pos,
-			solib->display->current->background->size,
-			solib->display->current->background->quate
-	));
-	mlx_put_image_to_window(
+	//printf("\n\n\n\n----------------------------------------------\n\n\n\n");
+	/*solib_put_image(solib->display->area, solib->display->current->background,
+			solib->display->current->background->tranform,
+	));*/
+	/*mlx_put_image_to_window(
 		solib->minilibx, solib->windows->window,
 		solib->display->area->data->img_ptr,
-		solib->display->area->pos->x,
-		solib->display->area->pos->y);
+		solib->display->area->tranform->pos->x,
+		solib->display->area->tranform->pos->y);*/
 	return (0);
 }
 
@@ -96,6 +91,13 @@ t_bool solib_init(char *name, int width, int height, int target_frame)
 	//solib_free(solib, solib->inputs);
 	//solib_memory_show(solib);
 
+	printf("hey\n");
+	printf("hey\n");
+	printf("hey\n");
+	printf("hey\n");
+	printf("hey\n");
+	printf("hey\n");
+	printf("hey\n");
 	//solib_memory_show(solib);
 	mlx_loop_hook(solib->minilibx, solib_loop, solib);
 	mlx_loop(solib->minilibx);
