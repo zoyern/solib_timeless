@@ -22,6 +22,7 @@
 		"solib_time.h": "c",
 		"solib_types_time.h": "c",
 		"solib_err.h": "c",
-		"solib_def.h": "c"
+		"solib_def.h": "c",
+		"string.h": "c"
 	}
 }

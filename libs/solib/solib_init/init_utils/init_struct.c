@@ -376,7 +376,29 @@ void	draw_rectangle(t_data *data, char *color) {
 	}
 }
 
+
+
 void	put_image_to_data(t_data *data, int x, int y, int width, int height, char *color) {
+	int	i;
+	int	j;
+	int	decalage = 100;
+	i = decalage;
+	while (i < height)
+	{
+		j = decalage;
+		while (j < width)
+		{//                  l'addr du parent x pos j counter  taille du parent surface ecrivable
+			*(unsigned int *)(data->addr + ((x + j + (y + i) * (data->solib->windows->width)) * (data->bits_per_pixel / 8))) = hexToDec(color);
+			j++; // on diminue ou agrandi en fonction d'un ratio 
+		}
+		i++;
+	}
+}
+
+// data :
+// la copy de mon addr d'origine la pos x et y la size
+
+void	put_image_to_data_test(t_data *data, int x, int y, int width, int height, char *addr) {
 	int	i;
 	int	j;
 	i = 0;
@@ -384,30 +406,117 @@ void	put_image_to_data(t_data *data, int x, int y, int width, int height, char *
 	{
 		j = 0;
 		while (j < width)
-		{
-			*(unsigned int *)(data->addr + ((x + j + (y + i) * data->solib->windows->width) * (data->bits_per_pixel / 8))) = hexToDec(color);
+		{//                  l'addr du parent x pos j counter  taille du parent surface ecrivable
+			*(unsigned int *)(data->addr + ((x + j + (y + i) * (data->solib->windows->width)) * (data->bits_per_pixel / 8))) = *(unsigned int *)(addr + ((x + j + (y + i) * (data->solib->windows->width)) * (data->bits_per_pixel / 8)));
 			j++;
 		}
 		i++;
 	}
 }
 
+#include <string.h>
+
+/*t_solib_image_data {
+	char *image; //addr
+	char *origin;
+}
+
+t_solib_image {
+	t_solib_image_data = data
+}*/
+
+// j'ai besoin d'un addr d'une pos et d'une size
+// si je veux afficher malloc + memcpy = copy de ce qu'il y a dans un 
+
+typedef struct {
+    int width;
+    int height;
+} Size;
+
+typedef struct {
+    float x;
+    float y;
+} ScaleRatio;
+
+typedef struct {
+    int x;
+    int y;
+} Position;
+
+Size calculate_final_size(Size content_size, Size target_size) {
+    // Calculer le ratio de mise à l'échelle pour la largeur et la hauteur
+    float ratio_content = ((float)content_size.width / (float)content_size.height);
+	float ratio_target = ((float)target_size.width / (float)target_size.height);
+	Size display_size;
+
+	if (ratio_content > ratio_target)
+	{
+		display_size.width = (int)((float)content_size.height * ratio_target);
+		display_size.height = content_size.height;
+	}
+	else
+	{
+		display_size.width = content_size.width;
+		display_size.height = (int)((float)content_size.width / ratio_target);
+	}
+	return (display_size);
+}
+
 t_solib_display *solib_display_init(t_solib *solib)
 {
 	t_solib_display *display;
 	t_data	data;
+	//t_data	data2;
 
 	display = (t_solib_display *)solib_malloc(solib, sizeof(t_solib_display));
 	display->solib = solib;
 	display->size = solib_new_size(solib, solib->windows->width, solib->windows->height);
 
 	data.img_ptr = mlx_new_image(solib->minilibx, solib->windows->width, solib->windows->height);
+	//data2.img_ptr = mlx_new_image(solib->minilibx, solib->windows->width, solib->windows->height);
 	data.addr = mlx_get_data_addr(data.img_ptr, &data.bits_per_pixel, &data.line_length, &data.endian);
+	//data2.addr = mlx_get_data_addr(data2.img_ptr, &data2.bits_per_pixel, &data2.line_length, &data2.endian);
 	data.solib = solib;
+	//data2.solib = solib;
+
+	printf("hey -- len : %ld addr :%s\n", strlen(data.addr), data.addr);
+	//printf("hey2 -- len : %ld addr :%s\n", strlen(data2.addr), data2.addr);
+
+	Size content_size = {1905, 900};
+
+    // Taille cible
+    Size target_size = {1920, 1080};
+
+	
+
+	Size final_size = calculate_final_size(content_size, target_size);
+
+	 printf("Ratio de mise a l'echelle : %d - %d\n", final_size.width, final_size.height);
 
 	//draw_rectangle(&data, "d07323");
-	put_image_to_data(&data, 0, 0, 1905, 900, "d07323");
-	put_image_to_data(&data, 0, 0, 500, 500, "1DAB6F");
+	put_image_to_data(&data, 0, 0, 1905, 900, "171717");
+	//put_image_to_data(&data2, 0, 0, 400, 500, "4886E4");
+	float	posx = ((float)solib->windows->width - final_size.width) / 2;
+	float	posy = ((float)solib->windows->height - final_size.height) / 2;
+
+	//float resolutionx = 1920; // dois faire ma fenetre final dans ma fenetre principal
+	//float resolutiony = 1080;
+
+	//float	windoww	= 1905; // fenetre principal
+
+	//float	windowh = 900;
+
+
+	//float ratiox = (float)windoww / (float)resolutionx;
+	//float ratioy = (float)windowh / (float)resolutiony;
+
+	printf("- %d - %d --- %0.2f - %0.2f\n", (int)(final_size.width), (int)(final_size.height), posx, posy);
+	(void)posx;
+	(void)posy;
+	put_image_to_data(&data, (int)posx - 1, (int)posy, (int)(final_size.width), (int)(final_size.height), "212121");
+	//put_image_to_data(&data, 600, 200, 250, 250, "35140D");
+
+	//put_image_to_data_test(&data, 0, 0, 400, 600, data2.addr);
 
 	mlx_put_image_to_window(solib->minilibx, solib->windows->window, data.img_ptr, 0, 0);
 
@@ -434,7 +543,6 @@ t_solib_display *solib_display_init(t_solib *solib)
 
 	printf("----\nhori :\nresolution_x : %0.2f\n win_x : %d\nratio : %0.6f\nnew width : %0.2f\n--\nhori :\nresolution_x : %0.2f\n win_x : %d\nratio : %0.6f\nnew height : %0.2f\n--------\n", resolution_x, solib->windows->width, solib->windows->ratio, display->size->width, resolution_y, solib->windows->height, display->ratio, display->size->height);
 	// Calcul des coordonnées de début pour centrer l'image
-	display->pos = solib_new_vector2(solib, (solib->windows->width - display_size->width) / 2, (solib->windows->height - display_size->height) / 2);
 	solib->display = display;
 	display->area = solib_new_image(
 		solib,
