@@ -26,7 +26,7 @@ int solib_start(t_solib *solib)
 	solib->events->key_press = key_test;
 
 	t_solib_display *display = solib_display_init(solib);
-	
+	(void)display;
 	//printf("main------%0.2f -- %0.2f\n\n", solib->display->area->tranform->size->width, solib->display->area->tranform->size->height);
 
 	/*t_solib_canvas	*canva = solib->new->canvas(

@@ -12,6 +12,17 @@
 
 #include "../solib_init.h"
 
+typedef struct	s_data {
+	void	*mlx_ptr;
+	void	*win_ptr;
+	void	*img_ptr;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+	t_solib *solib;
+}				t_data;
+
 char *ft_convert_base(char *nbr, char *base_from, char *base_to);
 
 t_solib_vector2 *solib_new_vector2(t_solib *solib, float x, float y)
@@ -251,23 +262,56 @@ void destroy_image(t_solib *solib, t_solib_image img)
 		mlx_destroy_image(solib->minilibx, img.data->img_ptr);
 }
 
+int hexToDec(char *hex) {
+    int decimal = 0;
+    int i = 0;
+
+    // Parcours chaque caractère de l'hexadécimal
+    while (hex[i] != '\0') {
+        char currentChar = hex[i];
+        int currentValue;
+
+        // Convertit le caractère hexadécimal en décimal
+        if (currentChar >= '0' && currentChar <= '9') {
+            currentValue = currentChar - '0';
+        } else if (currentChar >= 'a' && currentChar <= 'f') {
+            currentValue = 10 + currentChar - 'a';
+        } else if (currentChar >= 'A' && currentChar <= 'F') {
+            currentValue = 10 + currentChar - 'A';
+        } else {
+            printf("Caractère hexadécimal invalide: %c\n", currentChar);
+            return -1;
+        }
+
+        // Met à jour la valeur décimale
+        decimal = decimal * 16 + currentValue;
+        i++;
+    }
+
+    return decimal;
+}
+
+
+
 void draw_image(t_solib_image *image, t_solib_transform *transform, char *color)
 {
 	int x;
 	int y;
-	char *color_str;
+	//char *color_str;
 	int new_color;
 
 	(void)transform;
 	y = 0;
-	color_str = ft_convert_base(color, "0123456789abcdef", "0123456789");
-	new_color = atoi(color);
+	//color_str = ft_convert_base(color, "0123456789abcdef", "0123456789");
+	new_color = hexToDec(color);
+	printf("color : %d\n", new_color);
+	//new_color = atoi(color_str);
 	while (y < image->tranform->size->height)
 	{
 		x = 0;
 		while (x < image->tranform->size->width)
 		{
-			solib_put_pixel_img(image, x, y, new_color);
+			*(unsigned int *)(image->data->addr + ((x + y * image->solib->windows->width) * (image->data->bpp / 8))) = new_color;
 			x++;
 		}
 		y++;
@@ -310,14 +354,64 @@ t_solib_image *solib_new_img(t_solib *solib, t_solib_construct *construct, t_sol
 	return (image);
 }
 
+void	draw_rectangle(t_data *data, char *color) {
+	int		x;
+	int		y;
+	int		max_x;
+	int		max_y;
+
+	// Convertit la couleur hexadécimale en décimal (rouge=208, vert=115, bleu=35)
+	y = 0;
+	max_x = data->solib->windows->width;
+	max_y = data->solib->windows->height;
+	while (y < max_y)
+	{
+		x = 0;
+		while (x < max_x)
+		{
+			*(unsigned int *)(data->addr + ((x + y * data->solib->windows->width) * (data->bits_per_pixel / 8))) = hexToDec(color);
+			x++;
+		}
+		y++;
+	}
+}
+
+void	put_image_to_data(t_data *data, int x, int y, int width, int height, char *color) {
+	int	i;
+	int	j;
+	i = 0;
+	while (i < height)
+	{
+		j = 0;
+		while (j < width)
+		{
+			*(unsigned int *)(data->addr + ((x + j + (y + i) * data->solib->windows->width) * (data->bits_per_pixel / 8))) = hexToDec(color);
+			j++;
+		}
+		i++;
+	}
+}
+
 t_solib_display *solib_display_init(t_solib *solib)
 {
 	t_solib_display *display;
+	t_data	data;
 
 	display = (t_solib_display *)solib_malloc(solib, sizeof(t_solib_display));
 	display->solib = solib;
 	display->size = solib_new_size(solib, solib->windows->width, solib->windows->height);
-	display->area = solib_new_img(
+
+	data.img_ptr = mlx_new_image(solib->minilibx, solib->windows->width, solib->windows->height);
+	data.addr = mlx_get_data_addr(data.img_ptr, &data.bits_per_pixel, &data.line_length, &data.endian);
+	data.solib = solib;
+
+	//draw_rectangle(&data, "d07323");
+	put_image_to_data(&data, 0, 0, 1905, 900, "d07323");
+	put_image_to_data(&data, 0, 0, 500, 500, "1DAB6F");
+
+	mlx_put_image_to_window(solib->minilibx, solib->windows->window, data.img_ptr, 0, 0);
+
+	/*display->area = solib_new_img(
 		solib,
 		solib->new->construct(
 			solib,
@@ -327,8 +421,7 @@ t_solib_display *solib_display_init(t_solib *solib)
 			solib,
 			solib->new->vector2(solib, 0, 0),
 			display->size,
-			solib->new->quate(solib, 0, 0, 0)));
-		printf("hey\n");
+			solib->new->quate(solib, 0, 0, 0)));*/
 	return (display);
 
 	/*solib->windows->ratio = ((float)solib->windows->width / (float)solib->windows->height);
