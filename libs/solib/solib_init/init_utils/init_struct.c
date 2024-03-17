@@ -381,7 +381,7 @@ void	draw_rectangle(t_data *data, char *color) {
 void	put_image_to_data(t_data *data, int x, int y, int width, int height, char *color) {
 	int	i;
 	int	j;
-	int	decalage = 100;
+	int	decalage = 0;
 	i = decalage;
 	while (i < height)
 	{
@@ -442,6 +442,26 @@ typedef struct {
     int x;
     int y;
 } Position;
+
+typedef struct {
+	t_solib_transform	*transform;
+	int bpp;
+	int endian;
+	int line_len;
+} sprite_data;
+
+typedef struct {
+	char	*name;
+    char	*adress; //addr
+	void	*ptr;
+	sprite_data	*origin;
+	sprite_data	*data;
+} sprite;
+
+typedef struct {
+	t_solib_transform	*tranform;
+    sprite				*sprite;
+} grosse_image;
 
 Size calculate_final_size(Size content_size, Size target_size) {
     // Calculer le ratio de mise à l'échelle pour la largeur et la hauteur
