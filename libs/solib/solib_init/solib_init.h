@@ -46,7 +46,7 @@ void				solib_time_init(t_solib *solib,
 void				solib_new_init(t_solib *solib);
 
 //ui
-t_solib_canvas		*solib_new_canvas(t_solib_display *display,
+t_solib_canvas		*solib_new_canvas(t_solib *solib,
 						t_solib_construct *construct, t_solib_transform *transform);
 //t_solib_image		*solib_new_image_tmp(t_solib_image *parent,
 //						t_solib_construct *construct, t_solib_transform *transform);
@@ -63,7 +63,7 @@ unsigned int		solib_get_pixel_img(t_solib_image *img, int x, int y);
 t_solib_vector2		*solib_new_vector2(t_solib *solib, float x, float y);
 t_solib_quate		*solib_new_quate(t_solib *solib, float x, float y, float z);
 t_solib_size		*solib_new_size(t_solib *solib, float width, float height);
-t_solib_transform	*solib_new_transform(t_solib *solib, t_solib_vector2 *vector2, t_solib_size *size,t_solib_quate *quate);
-t_solib_construct	*solib_new_construct(t_solib *solib, char *name, char *args);
+t_solib_transform	*solib_new_transform(t_solib *solib, t_solib_vector2 *vector2, t_solib_size *size);
+t_solib_construct	*solib_new_construct(t_solib *solib, char *name, char *args, t_bool enabled);
 
 #endif
