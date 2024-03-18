@@ -23,6 +23,7 @@ void	solib_new_init(t_solib *solib)
 	event_new->vector2 = solib_new_vector2;
 	event_new->size = solib_new_size;
 	event_new->canvas = solib_new_canvas;
+	event_new->display = solib_new_display;
 	//event_new->image = solib_new_image_tmp;
 	
 

@@ -49,11 +49,7 @@ int	solib_render_callback(t_solib *solib)
 	/*solib_put_image(solib->display->area, solib->display->current->background,
 			solib->display->current->background->tranform,
 	));*/
-	/*mlx_put_image_to_window(
-		solib->minilibx, solib->windows->window,
-		solib->display->area->data->img_ptr,
-		solib->display->area->tranform->pos->x,
-		solib->display->area->tranform->pos->y);*/
+	mlx_put_image_to_window(solib->minilibx, solib->windows->window, solib->display->area->data->ptr, 0, 0);
 	return (0);
 }
 

@@ -22,36 +22,20 @@ int key_test(t_solib *solib, int keycode)
 
 int solib_start(t_solib *solib)
 {
-	(void)solib;
 	solib->events->key_press = key_test;
 
-	t_solib_display *display = solib_display_init(solib);
+	t_solib_display *display = solib->new->display(solib,
+						solib->new->construct(solib, "display", "171717", FALSE));
+
+	t_solib_canvas *canva = solib->new->canvas(solib,
+		solib->new->construct(solib,
+			"canva1", "2122121", TRUE),
+		solib->new->transform(solib,
+			solib->new->vector2(solib, 0, 0),
+			solib->new->size(solib, 1920, 1080)));
+
 	(void)display;
-	//printf("main------%0.2f -- %0.2f\n\n", solib->display->area->tranform->size->width, solib->display->area->tranform->size->height);
-
-	/*t_solib_canvas	*canva = solib->new->canvas(
-		solib->display,
-		solib->new->construct(solib, "menu", "test.xpm"),
-		solib->new->transform(
-			solib,
-			solib->new->vector2(solib, 0,0),
-			solib->new->size(solib, display->size->width, display->size->height),
-			solib->new->quate(solib, 0, 0, 0)));
-
-	display->current = canva;
-	printf("main------%0.2f -- %0.2f\n\n", canva->background->tranform->size->width, canva->background->tranform->size->height);
-
-	t_solib_image *image1 = solib->new->image(
-    solib->display->area,
-    solib->new->construct(solib, "image1", "ring.xpm"),
-    solib->new->transform(
-		solib,
-        solib->new->vector2(solib, 0, 0),
-        solib->new->size(solib, 1920, 1080),
-        solib->new->quate(solib, 0, 0, 0)));
-
-
-	(void)image1;*/
+	(void)canva;
 	return (0);
 }
 
@@ -67,36 +51,6 @@ int solib_update(t_solib *solib)
 int solib_render(t_solib *solib)
 {
 	(void)solib;
-	/*int i;
-	int j;
-	int t;
-	char **strs;
-
-	t = 500;
-	(void)solib;
-	strs = (char **)malloc(sizeof(char *) * (t + 1));
-	i = 0;
-	j = 0;
-	while (i < t)
-	{
-		strs[i] = (char *)malloc(sizeof(char) * (t + 1));
-		while (j < t)
-		{
-			strs[i][j] = 'v';
-			j++;
-		}
-		strs[i][j] = '\0';
-		j = 0;
-		i++;
-	}
-	strs[i] = 0;
-	i = 0;
-	while (i < t)
-	{
-		free(strs[i]);
-		i++;
-	}
-	free(strs);*/
 	return (0);
 }
 

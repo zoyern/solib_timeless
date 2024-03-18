@@ -134,13 +134,11 @@ typedef struct s_solib_image
 typedef struct s_solib_canvas {
 	t_solib_construct	*construct;
 	t_solib_vector2		*ratio;
-	t_solib_transform	*transform; // 1920 par 1080
-	t_solib_transform	*origin; // 1600 par 900
-	t_solib_image		*image;
+	t_solib_sprite		*background;
 }	t_solib_canvas;
 
 typedef struct s_solib_display {
-	t_solib_image		*area; 
+	t_solib_sprite		*area; 
 	t_solib_canvas		*current;
 	t_solib_canvas		*canvas;
 }	t_solib_display;
@@ -158,6 +156,7 @@ typedef struct s_solib_new
     t_solib_construct	*(*construct)(t_solib *solib, char *name, char *args, t_bool enabled);
     t_solib_vector2	*(*vector2)(t_solib *solib, float x, float y);
     t_solib_size	*(*size)(t_solib *solib, float width, float height);
+    t_solib_display	*(*display)(t_solib *solib, t_solib_construct *construct);
     t_solib_canvas	*(*canvas)(t_solib *solib, t_solib_construct *construct, t_solib_transform	*transform);
     t_solib_image	*(*image)(t_solib_image *parent, t_solib_construct *construct, t_solib_transform *transform);
 } t_solib_new;

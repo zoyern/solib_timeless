@@ -77,143 +77,6 @@ t_solib_construct *solib_new_construct(t_solib *solib, char *name, char *args, t
 	return (construct);
 }
 
-void solib_put_pixel_img(t_solib_image *img, float x, float y, int color)
-{
-	char *dst;
-
-	if (color == (int)0xFF000000)
-		return;
-	if (x >= 0 && y >= 0 && x < img->tranform->size->width && y < img->tranform->size->height)
-	{
-		dst = img->sprite->data->adress + ((int)y * img->sprite->data->line_len + (int)x * (img->sprite->data->bpp / 8));
-		*(unsigned int *)dst = color;
-	}
-}
-
-unsigned int solib_get_pixel_img(t_solib_image *img, int x, int y)
-{
-	return (*(unsigned int *)((img->sprite->data->adress + (y * img->sprite->data->line_len) + (x * img->sprite->data->bpp / 8))));
-}
-
-/*void solib_put_image(t_solib_image *parent, t_solib_image *child, t_solib_transform *transform)
-{
-	int index;
-	float ratio_x;
-	float ratio_y;
-	float ratio_x2;
-	float ratio_y2;
-	float test_x;
-	float test_y;
-	//float vec_x;
-	//float vec_y;
-	//float ratio_display;
-	float y;
-	float x;
-
-	y = 0;
-	x = 0;
-
-	//ratio_x = child->size->width / transform->size->width;
-	//ratio_y = child->size->height / transform->size->height;
-	//test_x = transform->size->width / parent->size->width;
-	//test_y = transform->size->height / parent->size->height;
-	(void)test_x;
-	(void)test_y;
-
-	//float size_w =  child->size->width  (parent->display->resolution->x / parent->display->size->width);
-	//float size_h =  child->size->height (parent->display->resolution->y / parent->display->size->height);
-
-	//ratio_x2 = child->data->size->width / size_w;
-	//ratio_y2 = child->data->size->height / size_h;
-	//vec_x = ((float)child->solib->display->resolution->x / (float)child->solib->display->size->width);
-	//vec_y = ((float)child->solib->display->resolution->y / (float)child->solib->display->size->height);
-	//printf("display : %0.2f -- %0.2f ------ %0.2f -- %0.2f\n", (child->data->size->width * test_x) / (parent->display->resolution->x / parent->display->size->width), (child->data->size->height * test_y) / (parent->display->resolution->y / parent->display->size->height),  child->size->width, parent->display->size->height);
-	//printf("display : %0.2f -- %0.2f ------ %0.3f -- %0.3f\n", parent->data->size->width , parent->data->size->height , parent->size->width, parent->size->height);
-	//printf("x %d - y %d -- ratiox : %0.3f -- ratioy : %0.3f -- ratiox : %0.3f -- ratioy : %0.3f\n - width : %0.3f -- height : %0.3f\n - width : %0.3f -- height : %0.3f\n\n", (int)((float)transform->pos->x + x + parent->pos->x), (int)((float)transform->pos->y + y + parent->pos->y), ratio_x, ratio_y,ratio_x2, ratio_y2, transform->size->width, transform->size->height, size_w, size_h);
-
-	while (y < size_h )
-	{
-		x = 0;
-		while (x < size_w)
-		{
-			//printf("%0.3f --- %0.3f --- %0.3f --- %3d --- %3d\n", x, (float)(transform->size->width * ratio_x / vec_x), (float)(transform->size->height * ratio_y / vec_y), (int)(x * vec_x), (int)(y * vec_y));
-			index = solib_get_pixel_img(child,(int)( x * ratio_x2 / 1.2f), (int)( y * ratio_y2 / 1.2f));
-			//printf("%d:%d,", (int)( x * ratio_x2),  (int)( y * ratio_y2));
-			(void)index;
-			solib_put_pixel_img(parent, (int)(transform->pos->x + x), (int)(y + transform->pos->y), index);
-			x++;
-		}
-		//printf(" t - %d -- %d\n", (int)( x * ratio_x), (int)( y * ratio_y));
-		//printf("\n");
-		y++;
-	}
-	//printf("\n\n\n\n");
-}*/
-
-/*void put_img_to_img_2(t_solib *solib, t_solib_image *dst, t_solib_image *src, int pos_x, int pos_y, float width, float height)
-{
-	int index;
-	float ratio_x;
-	float ratio_y;
-	//float ratio_display;
-	float y;
-	float x;
-
-	y = 0;
-	x = 0;
-
-	//ratio_x = (float)src->size->width / width;
-	//ratio_y = (float)src->size->height / height;
-
-	//printf("x %d - y %d -- ratiox : %0.3f -- ratioy : %0.3f\n - width : %0.3f -- height : %0.3f\n - width : %0.3f -- height : %0.3f\n\n", (int)((float)pos_x + x + solib->display->pos->x), (int)((float)pos_y + y + solib->display->pos->y), ratio_x, ratio_y, width, height, (float)(width / vec_x), (float)(height / vec_y));
-
-	while (y < (float)((height / solib->display->ratio)))
-	{
-		x = 0;
-		while (x < (float)(width / solib->display->ratio))
-		{
-			index = solib_get_pixel_img(src,(int)(x  * ratio_x *  solib->display->ratio), (int)(y * ratio_y * solib->display->ratio));
-			solib_put_pixel_img(dst, (int)((float)pos_x + x), (int)((float)pos_y + y), index);
-			x++;
-		}
-		y++;
-	}
-}*/
-
-t_solib_image_data *solib_new_image_data(t_solib *solib, t_solib_image *image, char *background)
-{
-	t_solib_image_data *data;
-	int width;
-	int height;
-
-	(void)image;
-	width = 0;
-	height = 0;
-
-	data = (t_solib_image_data *)solib_malloc(solib, sizeof(t_solib_image_data));
-	if (!background)
-	{
-		// data->img_ptr = mlx_new_image(solib->minilibx, image->size->width, image->size->height);
-		// width = image->size->width;
-		// height = image->size->height;
-	}
-	else
-	{
-		data->img_ptr = mlx_xpm_file_to_image(solib->minilibx, background, &width, &height);
-		if (!data->img_ptr)
-		{
-			// data->img_ptr = mlx_new_image(solib->minilibx, image->size->width, image->size->height);
-			// width = image->size->width;
-			// height = image->size->height;
-			write(2, "File could not be read\n", 23);
-		}
-	}
-	data->size = solib->new->size(solib, width, height);
-	data->addr = mlx_get_data_addr(data->img_ptr, &(data->bpp),
-								   &(data->line_len), &(data->endian));
-	return (data);
-}
-
 void destroy_image(t_solib *solib, t_solib_image img)
 {
 	if (solib->minilibx)
@@ -255,112 +118,6 @@ int hexToDec(char *hex) {
 }
 
 
-
-void draw_image(t_solib *solib, t_solib_image *image, t_solib_transform *transform, char *color)
-{
-	int x;
-	int y;
-	//char *color_str;
-	int new_color;
-
-	(void)transform;
-	y = 0;
-	//color_str = ft_convert_base(color, "0123456789abcdef", "0123456789");
-	new_color = hexToDec(color);
-	printf("color : %d\n", new_color);
-	//new_color = atoi(color_str);
-	while (y < image->tranform->size->height)
-	{
-		x = 0;
-		while (x < image->tranform->size->width)
-		{
-			*(unsigned int *)(image->sprite->data->adress + ((x + y * solib->windows->width) * (image->sprite->data->bpp / 8))) = new_color;
-			x++;
-		}
-		y++;
-	}
-}
-
-
-
-void	draw_rectangle(t_data *data, char *color) {
-	int		x;
-	int		y;
-	int		max_x;
-	int		max_y;
-
-	// Convertit la couleur hexadécimale en décimal (rouge=208, vert=115, bleu=35)
-	y = 0;
-	max_x = data->solib->windows->width;
-	max_y = data->solib->windows->height;
-	while (y < max_y)
-	{
-		x = 0;
-		while (x < max_x)
-		{
-			*(unsigned int *)(data->addr + ((x + y * data->solib->windows->width) * (data->bits_per_pixel / 8))) = hexToDec(color);
-			x++;
-		}
-		y++;
-	}
-}
-
-
-
-void	put_image_to_data(t_data *data, int x, int y, int width, int height, char *color) {
-	int	i;
-	int	j;
-	int	decalage = 0;
-	i = decalage;
-	while (i < height)
-	{
-		j = decalage;
-		while (j < width)
-		{//                  l'addr du parent x pos j counter  taille du parent surface ecrivable
-			*(unsigned int *)(data->addr + ((x + j + (y + i) * (data->solib->windows->width)) * (data->bits_per_pixel / 8))) = hexToDec(color);
-			j++; // on diminue ou agrandi en fonction d'un ratio 
-		}
-		i++;
-	}
-}
-
-// avoir un canvas pour tout ce qui est ui
-// 
-
-// data :
-// la copy de mon addr d'origine la pos x et y la size
-
-void	put_image_to_data_test(t_data *data, int x, int y, int width, int height, char *addr) {
-	int	i;
-	int	j;
-	i = 0;
-	while (i < height)
-	{
-		j = 0;
-		while (j < width)
-		{//                  l'addr du parent x pos j counter  taille du parent surface ecrivable
-			*(unsigned int *)(data->addr + ((x + j + (y + i) * (data->solib->windows->width)) * (data->bits_per_pixel / 8))) = *(unsigned int *)(addr + ((x + j + (y + i) * (data->solib->windows->width)) * (data->bits_per_pixel / 8)));
-			j++;
-		}
-		i++;
-	}
-}
-
-#include <string.h>
-
-/*t_solib_image_data {
-	char *image; //addr
-	char *origin;
-}
-
-t_solib_image {
-	t_solib_image_data = data
-}*/
-
-// j'ai besoin d'un addr d'une pos et d'une size
-// si je veux afficher malloc + memcpy = copy de ce qu'il y a dans un 
-
-
 t_solib_vector2 *calculate_ratio_size(t_solib *solib, t_solib_size *content_size, t_solib_size *target_size, t_solib_size **out) {
     // Calculer le ratio de mise à l'échelle pour la largeur et la hauteur
     float ratio_content = ((float)content_size->width / (float)content_size->height);
@@ -370,12 +127,11 @@ t_solib_vector2 *calculate_ratio_size(t_solib *solib, t_solib_size *content_size
 		ratio = solib->new->vector2(solib,  (float)target_size->width / ((float)content_size->height * (float)ratio_target), (float)target_size->height / (float)content_size->height);
 	else
 		ratio = solib->new->vector2(solib,  (float)target_size->width / (float)content_size->width, (float)target_size->height / ((float)content_size->width / (float)ratio_target));
-	if (!*out)
-		*out = solib->new->size(solib, (int)((float)target_size->width / ratio->x), (int)((float)target_size->height / ratio->y));
+	*out = solib->new->size(solib, (int)((float)target_size->width / ratio->x), (int)((float)target_size->height / ratio->y));
 	return (ratio);
 }
 
-void	*solib_image_xpm(t_solib *solib, t_solib_construct *construct, t_solib_size **out)
+void	*solib_image_xpm(t_solib *solib, t_solib_construct *construct, t_solib_size **out, t_bool *is_immage)
 {
 	void			*ptr;
 	int				width;
@@ -388,9 +144,10 @@ void	*solib_image_xpm(t_solib *solib, t_solib_construct *construct, t_solib_size
 	ptr = mlx_xpm_file_to_image(solib->minilibx, construct->args, &height, &height);
 	if (!ptr)
 	{
-		construct->args = "d81832";
+		*is_immage = FALSE;
 		return (NULL);
 	}
+	*is_immage = TRUE;
 	*out = solib->new->size(solib, width, height);
 	return (ptr);
 }
@@ -414,21 +171,63 @@ void	solib_sprite_adress(t_solib_sprite_data *data)
 											  &(data->line_len), &(data->endian));
 }
 
-// 1920 par 1080 
+/*void solib_put_pixel_img(t_solib_sprite_data *data, float x, float y, int color)
+{
+	char *dst;
+
+	if (color == (int)0xFF000000)
+		return;
+	if (x >= 0 && y >= 0 && x < data->transform->size->width && y < data->transform ->size->height)
+	{
+		dst = data->adress + ((int)y * data->line_len + (int)x * (data->bpp / 8));
+		*(unsigned int *)dst = color;
+	}
+}*/
+
+
 void	solib_fill_sprite_color(t_solib_sprite_data *data, char *color) {
 	int	i;
 	int	j;
+	int c;
 	i = 0;
+
+	c = hexToDec(color);
+	if (c < 0)
+		c = hexToDec("FB335B");
+	if (c < 0)
+		c = 16462683;
+
 	while (i < data->transform->size->height)
 	{
 		j = 0;
 		while (j < data->transform->size->width)
 		{//                  l'addr du parent x pos j counter  taille du parent surface ecrivable
-			*(unsigned int *)(data->adress + ((j + (i) * (data->transform->size->width)) * (data->bpp / 8))) = hexToDec(color);
+			*(unsigned int *)(data->adress + ((j + i * data->transform->size->width) * (data->bpp / 8))) = c;
 			j++; // on diminue ou agrandi en fonction d'un ratio 
 		}
 		i++;
 	}
+}
+
+void	put_canva_display(t_solib_display *display, t_solib_canvas *canva) {
+	int	i;
+	int	j;
+	i = 0;
+	t_solib_vector2	*origin;
+
+	origin = canva->background->data->transform->origin;
+	while (i < canva->background->data->transform->size->height)
+	{
+		j = 0;
+		while (j < canva->background->data->transform->size->width)
+		{//                  l'addr du parent x pos j counter  taille du parent surface ecrivable
+			*(unsigned int *)(display->area->data->adress + (((int)origin->x + j + ((int)origin->y + i) * (display->area->data->transform->size->width)) * (display->area->data->bpp / 8))) = *(unsigned int *)(canva->background->data->adress + ((j + i * canva->background->data->transform->size->width) * (canva->background->data->bpp / 8)));
+			j++;
+		}
+		i++;
+	}
+
+	printf("hey\n");
 }
 
 /*void	*get_xpm_resized(t_solib *solib, t_solib_construct *construct, t_solib_size **out)
@@ -442,17 +241,21 @@ void	solib_fill_sprite_color(t_solib_sprite_data *data, char *color) {
 t_solib_vector2	*fill_origin_data(t_solib *solib, t_solib_sprite_data *data, t_solib_sprite_data *origin)
 {
 	t_solib_vector2	*ratio;
+	//size_si_origin_dois_etre_mis_sans_redimentionné l'imag
+	t_solib_size	*size_redem;
 
-	ratio = calculate_ratio_size(solib, data->transform->size, origin->transform->size, NULL);
+	ratio = calculate_ratio_size(solib, data->transform->size, origin->transform->size, &size_redem);
 	int	i;
 	int	j;
 	int yop;
 	i = 0;
+	printf("origin size %d - %d\n", data->transform->size->width, data->transform->size->height);
+
 	while (i < data->transform->size->height)
 	{
 		j = 0;
 		while (j < data->transform->size->width)
-		{//                  l'addr du parent x pos j counter  taille du parent surface ecrivable
+		{
 			yop = (0 + (j / ratio->x) + (0 + (i / ratio->y)) * (data->transform->size->width));
 			*(unsigned int *)(data->adress + ((0 + j + (0 + i) * (data->transform->size->width)) * (data->bpp / 8))) = *(unsigned int *)(origin->adress + ((int)yop * (origin->bpp / 8)));
 			j++;
@@ -471,28 +274,26 @@ void	solib_sprite_data(t_solib *solib, t_solib_sprite *sprite, t_solib_transform
 	sprite->origin = (t_solib_sprite_data  *)solib_malloc(solib, sizeof(t_solib_sprite_data ));
 
 	sprite->data->is_image = FALSE;
-	sprite->origin->is_image = FALSE;
 	sprite->origin->ptr = NULL;
+	sprite->origin->is_image = FALSE;
 	sprite->data->transform = transform;
 	sprite->origin->transform = solib->new->transform(solib, transform->origin, transform->size);
 	sprite->data->ptr = solib_image_base(solib, transform, &sprite->data->transform->size);
 	if (!sprite->data->ptr)
 		solib_close(solib);
 	if (sprite->construct->args)// calcule de origin 
-			sprite->origin->ptr = solib_image_xpm(solib, sprite->construct, &sprite->origin->transform->size);
+			sprite->origin->ptr = solib_image_xpm(solib, sprite->construct, &sprite->origin->transform->size, &sprite->origin->is_image);
+	
 	if (!sprite->origin->ptr)
 	{
 		sprite->origin->ptr = solib_image_base(solib, sprite->data->transform, &sprite->origin->transform->size);
 		if (!sprite->origin->ptr)
 			solib_close(solib);
-		//fill l'image avec de la couleur
-		sprite->origin->is_image = FALSE;
 	}
-	else
-		sprite->origin->is_image = TRUE;
+	sprite->data->is_image = sprite->origin->is_image;
 	solib_sprite_adress(sprite->origin);
 	solib_sprite_adress(sprite->data);
-	if (sprite->construct->args && !sprite->origin)
+	if (sprite->construct->args && !sprite->origin->is_image)
 		solib_fill_sprite_color(sprite->origin, sprite->construct->args);
 	sprite->ratio = fill_origin_data(solib, sprite->data, sprite->origin);
 }
@@ -525,119 +326,50 @@ t_solib_image	*solib_new_imagette(t_solib *solib, t_solib_construct *construct, 
 	return (image);
 }
 
-t_solib_display *solib_display_init(t_solib *solib)
-{
-	t_solib_display *display;
-	t_data	data;
-	//t_data	data2;
-
-	display = (t_solib_display *)solib_malloc(solib, sizeof(t_solib_display));
-
-	display->area = 
-
-	data.img_ptr = mlx_new_image(solib->minilibx, solib->windows->width, solib->windows->height);
-	//data2.img_ptr = mlx_new_image(solib->minilibx, solib->windows->width, solib->windows->height);
-	data.addr = mlx_get_data_addr(data.img_ptr, &data.bits_per_pixel, &data.line_length, &data.endian);
-	//data2.addr = mlx_get_data_addr(data2.img_ptr, &data2.bits_per_pixel, &data2.line_length, &data2.endian);
-	data.solib = solib;
-	//data2.solib = solib;
-
-	//printf("hey2 -- len : %ld addr :%s\n", strlen(data2.addr), data2.addr);
-
-	t_solib_size *content_size = solib->new->size(solib, solib->windows->width, solib->windows->height);
-
-    // Taille cible
-	t_solib_size *target_size = solib->new->size(solib, 1920, 1080);
-
-	
-
-	t_solib_size *final_size;
-	t_solib_vector2 *final_ratio = calculate_ratio_size(solib, content_size, target_size, &final_size);
-
-	 printf("Ratio de mise a l'echelle : %d - %d\n", final_size->width, final_size->height);
-
-	//draw_rectangle(&data, "d07323");
-	put_image_to_data(&data, 0, 0, solib->windows->width, solib->windows->height, "171717");
-	//put_image_to_data(&data2, 0, 0, 400, 500, "4886E4");
-	float	posx = ((float)solib->windows->width - final_size->width) / 2;
-	float	posy = ((float)solib->windows->height - final_size->height) / 2;
-
-	//float resolutionx = 1920; // dois faire ma fenetre final dans ma fenetre principal
-	//float resolutiony = 1080;
-
-	//float	windoww	= 1905; // fenetre principal
-
-	//float	windowh = 900;
-
-
-	//float ratiox = (float)windoww / (float)resolutionx;
-	//float ratioy = (float)windowh / (float)resolutiony;
-
-	printf("- %d - %d --- %0.2f - %0.2f --- %d - %d\n", (target_size->width), (target_size->height), final_ratio->x, final_ratio->y, (int)((float)target_size->width / final_ratio->x), (int)((float)target_size->height / final_ratio->y));
-	(void)posx;
-	(void)posy;
-	put_image_to_data(&data, (int)posx, (int)posy, (int)(final_size->width), (int)(final_size->height), "212121");
-	//put_image_to_data(&data, 600, 200, 250, 250, "35140D");
-
-	//put_image_to_data_test(&data, 0, 0, 400, 600, data2.addr);
-
-	mlx_put_image_to_window(solib->minilibx, solib->windows->window, data.img_ptr, 0, 0);
-
-	/*display->area = solib_new_img(
-		solib,
-		solib->new->construct(
-			solib,
-			"display",
-			"d07323"),
-		solib->new->transform(
-			solib,
-			solib->new->vector2(solib, 0, 0),
-			display->size,
-			solib->new->quate(solib, 0, 0, 0)));*/
-	return (display);
-
-	/*solib->windows->ratio = ((float)solib->windows->width / (float)solib->windows->height);
-	display->ratio = (resolution_x / resolution_y);
-
-	if (solib->windows->ratio > display->ratio)
-		display_size = solib_new_size(solib, (int)((float)solib->windows->height * display->ratio), solib->windows->height);
-	else
-		display_size = solib_new_size(solib, solib->windows->width, (int)((float)solib->windows->width / display->ratio));
-
-	printf("----\nhori :\nresolution_x : %0.2f\n win_x : %d\nratio : %0.6f\nnew width : %0.2f\n--\nhori :\nresolution_x : %0.2f\n win_x : %d\nratio : %0.6f\nnew height : %0.2f\n--------\n", resolution_x, solib->windows->width, solib->windows->ratio, display->size->width, resolution_y, solib->windows->height, display->ratio, display->size->height);
-	// Calcul des coordonnées de début pour centrer l'image
-	solib->display = display;
-	display->area = solib_new_image(
-		solib,
-		solib->new->construct(solib, "display", NULL),
-		solib->new->transform(
-			solib,
-			display->pos,
-			display_size,
-			solib->new->quate(solib, 0, 0, 0)
-		));
-	return (display);*/
-}
-
-// je creer
-
 t_solib_canvas *solib_new_canvas(t_solib *solib, t_solib_construct *construct, t_solib_transform *transform)
 {
+	
 	if (!solib->display)
 		return (NULL);
 	t_solib_canvas *canva;
-	(void)construct;
-	(void)transform;
+	t_solib_size	*final_size;
 
 	canva = (t_solib_canvas *)solib_malloc(solib, sizeof(t_solib_canvas));
-	/*canva->background = solib_new_image_tmp(display->area, construct,
-							display->solib->new->transform(
-								display->solib,
-								transform->pos,
-								transform->size,
-								transform->quate));*/
+	
+	canva->ratio = calculate_ratio_size(solib,
+									solib->display->area->data->transform->size,
+									transform->size, &final_size);
+	float	posx = ((float)solib->display->area->data->transform->size->width - final_size->width) / 2;
+	float	posy = ((float)solib->display->area->data->transform->size->height - final_size->height) / 2;
+	printf("testeeeeee : %0.2f -- %0.2f\n", transform->origin->x, transform->origin->y);
+	// utilise le final size
+	transform->origin->x = posx;
+	transform->origin->y = posy;
+	transform->size = final_size;
+	canva->background = solib_new_sprite(solib,	construct, transform);
+	//canva->area = solib_new_sprite(solib,	construct, transform);
+	put_canva_display(solib->display, canva);
+	//fill_origin_data(solib, solib->display->area->data, canva->background->data);
 	return (canva);
 }
+
+t_solib_display *solib_new_display(t_solib *solib, t_solib_construct *construct)
+{
+	t_solib_display *display;
+
+	display = (t_solib_display *)solib_malloc(solib, sizeof(t_solib_display));
+
+	//put_image_to_data(&data, 0, 0, solib->windows->width, solib->windows->height, "171717");
+	display->area = solib_new_sprite(solib,
+						construct,
+						solib->new->transform(solib,
+							solib->new->vector2(solib, 0, 0),
+							solib->new->size(solib, solib->windows->width, solib->windows->height)));
+	solib->display = display;
+	return (display);
+}
+
+// je creer
 
 /*for (float y = 0; y < ring.h; y += 2)
 	{

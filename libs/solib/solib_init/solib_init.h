@@ -46,14 +46,14 @@ void				solib_time_init(t_solib *solib,
 void				solib_new_init(t_solib *solib);
 
 //ui
+t_solib_display		*solib_new_display(t_solib *solib, t_solib_construct *construct);
 t_solib_canvas		*solib_new_canvas(t_solib *solib,
 						t_solib_construct *construct, t_solib_transform *transform);
 //t_solib_image		*solib_new_image_tmp(t_solib_image *parent,
 //						t_solib_construct *construct, t_solib_transform *transform);
 t_solib_image_data	*solib_new_image_data(t_solib *solib, t_solib_image *image, char *background);
-t_solib_image		*solib_new_image(t_solib *solib, t_solib_construct *construct, t_solib_transform *transform);
+//t_solib_image		*solib_new_image(t_solib *solib, t_solib_construct *construct, t_solib_transform *transform);
 void				destroy_image(t_solib *solib, t_solib_image img);
-t_solib_display		*solib_display_init(t_solib *solib);
 void				solib_put_pixel_img(t_solib_image *img, float x, float y, int color);
 unsigned int		solib_get_pixel_img(t_solib_image *img, int x, int y);
 //void				solib_put_image(t_solib_image *parent, t_solib_image *child, t_solib_transform *transform);
@@ -65,5 +65,6 @@ t_solib_quate		*solib_new_quate(t_solib *solib, float x, float y, float z);
 t_solib_size		*solib_new_size(t_solib *solib, float width, float height);
 t_solib_transform	*solib_new_transform(t_solib *solib, t_solib_vector2 *vector2, t_solib_size *size);
 t_solib_construct	*solib_new_construct(t_solib *solib, char *name, char *args, t_bool enabled);
+
 
 #endif
