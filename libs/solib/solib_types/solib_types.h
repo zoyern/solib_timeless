@@ -33,7 +33,7 @@ typedef struct s_solib_size {
 }	t_solib_size;
 
 typedef struct s_solib_transform {
-	t_solib_vector2	*pos;
+	t_solib_vector2	*origin;
 	t_solib_size	*size;
 }	t_solib_transform;
 
@@ -87,7 +87,6 @@ typedef struct s_solib_image_data
 typedef struct s_solib_button
 {
 	t_solib_size		*size;
-	t_solib_vector2		*pos;
 	t_solib_image_data	*data;
 } t_solib_button;
 
@@ -109,17 +108,19 @@ typedef struct s_solib_image_func
 } t_solib_image_func;
 
 typedef struct {
+	t_bool	is_image;
+	t_solib_transform	*transform; // 41 par 39
+	char	*adress; //addr // j'ai
+	void	*ptr;	
 	int bpp;
 	int endian;
 	int line_len;
 } t_solib_sprite_data;
 
-typedef struct {
-	char	*adress; //addr // j'ai
-	void	*ptr;			// j'ai
-	t_bool	is_image;
+typedef struct {		// j'ai
 	t_solib_construct	*construct; // j'ai
-	t_solib_transform	*origin; // 41 par 39
+	t_solib_vector2		*ratio;
+	t_solib_sprite_data	*origin; // 41 par 39
 	t_solib_sprite_data	*data;
 } t_solib_sprite;
 

@@ -61,7 +61,7 @@ t_solib_transform *solib_new_transform(t_solib *solib, t_solib_vector2 *vector2,
 	t_solib_transform *transform;
 
 	transform = (t_solib_transform *)solib_malloc(solib, sizeof(t_solib_transform));
-	transform->pos = vector2;
+	transform->origin = vector2;
 	transform->size = size;
 	return (transform);
 }
@@ -85,14 +85,14 @@ void solib_put_pixel_img(t_solib_image *img, float x, float y, int color)
 		return;
 	if (x >= 0 && y >= 0 && x < img->tranform->size->width && y < img->tranform->size->height)
 	{
-		dst = img->sprite->adress + ((int)y * img->sprite->data->line_len + (int)x * (img->sprite->data->bpp / 8));
+		dst = img->sprite->data->adress + ((int)y * img->sprite->data->line_len + (int)x * (img->sprite->data->bpp / 8));
 		*(unsigned int *)dst = color;
 	}
 }
 
 unsigned int solib_get_pixel_img(t_solib_image *img, int x, int y)
 {
-	return (*(unsigned int *)((img->sprite->adress + (y * img->sprite->data->line_len) + (x * img->sprite->data->bpp / 8))));
+	return (*(unsigned int *)((img->sprite->data->adress + (y * img->sprite->data->line_len) + (x * img->sprite->data->bpp / 8))));
 }
 
 /*void solib_put_image(t_solib_image *parent, t_solib_image *child, t_solib_transform *transform)
@@ -216,8 +216,13 @@ t_solib_image_data *solib_new_image_data(t_solib *solib, t_solib_image *image, c
 
 void destroy_image(t_solib *solib, t_solib_image img)
 {
-	if (img.sprite->ptr && solib->minilibx)
-		mlx_destroy_image(solib->minilibx, img.sprite->ptr);
+	if (solib->minilibx)
+	{
+		if (img.sprite->data->ptr)
+			mlx_destroy_image(solib->minilibx, img.sprite->data->ptr);
+		if (img.sprite->origin->ptr)
+			mlx_destroy_image(solib->minilibx, img.sprite->origin->ptr);
+	}
 }
 
 int hexToDec(char *hex) {
@@ -269,7 +274,7 @@ void draw_image(t_solib *solib, t_solib_image *image, t_solib_transform *transfo
 		x = 0;
 		while (x < image->tranform->size->width)
 		{
-			*(unsigned int *)(image->sprite->adress + ((x + y * solib->windows->width) * (image->sprite->data->bpp / 8))) = new_color;
+			*(unsigned int *)(image->sprite->data->adress + ((x + y * solib->windows->width) * (image->sprite->data->bpp / 8))) = new_color;
 			x++;
 		}
 		y++;
@@ -365,7 +370,8 @@ t_solib_vector2 *calculate_ratio_size(t_solib *solib, t_solib_size *content_size
 		ratio = solib->new->vector2(solib,  (float)target_size->width / ((float)content_size->height * (float)ratio_target), (float)target_size->height / (float)content_size->height);
 	else
 		ratio = solib->new->vector2(solib,  (float)target_size->width / (float)content_size->width, (float)target_size->height / ((float)content_size->width / (float)ratio_target));
-	*out = solib->new->size(solib, (int)((float)target_size->width / ratio->x), (int)((float)target_size->height / ratio->y));
+	if (!*out)
+		*out = solib->new->size(solib, (int)((float)target_size->width / ratio->x), (int)((float)target_size->height / ratio->y));
 	return (ratio);
 }
 
@@ -402,44 +408,96 @@ void	*solib_image_base(t_solib *solib,  t_solib_transform *transform, t_solib_si
 	return (ptr);
 }
 
-void	solib_sprite_adress(t_solib_sprite *sprite)
+void	solib_sprite_adress(t_solib_sprite_data *data)
 {
-	sprite->adress = mlx_get_data_addr(sprite->ptr, &(sprite->data->bpp),
-											  &(sprite->data->line_len), &(sprite->data->endian));
+	data->adress = mlx_get_data_addr(data->ptr, &(data->bpp),
+											  &(data->line_len), &(data->endian));
 }
 
 // 1920 par 1080 
-void	solib_fill_sprite_color(t_solib_sprite *sprite, char *color) {
+void	solib_fill_sprite_color(t_solib_sprite_data *data, char *color) {
 	int	i;
 	int	j;
 	i = 0;
-	while (i < sprite->origin->size->height)
+	while (i < data->transform->size->height)
 	{
 		j = 0;
-		while (j < sprite->origin->size->width)
+		while (j < data->transform->size->width)
 		{//                  l'addr du parent x pos j counter  taille du parent surface ecrivable
-			*(unsigned int *)(sprite->adress + ((j + (i) * (sprite->origin->size->width)) * (sprite->data->bpp / 8))) = hexToDec(color);
+			*(unsigned int *)(data->adress + ((j + (i) * (data->transform->size->width)) * (data->bpp / 8))) = hexToDec(color);
 			j++; // on diminue ou agrandi en fonction d'un ratio 
 		}
 		i++;
 	}
 }
 
-void	solib_sprite_data(t_solib *solib, t_solib_sprite *sprite)
+/*void	*get_xpm_resized(t_solib *solib, t_solib_construct *construct, t_solib_size **out)
+{
+	void *ptr;
+
+	ptr = solib_image_xpm(solib, sprite->construct, &sprite->origin->size);
+	if (!ptr);
+}*/
+
+t_solib_vector2	*fill_origin_data(t_solib *solib, t_solib_sprite_data *data, t_solib_sprite_data *origin)
+{
+	t_solib_vector2	*ratio;
+
+	ratio = calculate_ratio_size(solib, data->transform->size, origin->transform->size, NULL);
+	int	i;
+	int	j;
+	int yop;
+	i = 0;
+	while (i < data->transform->size->height)
+	{
+		j = 0;
+		while (j < data->transform->size->width)
+		{//                  l'addr du parent x pos j counter  taille du parent surface ecrivable
+			yop = (0 + (j / ratio->x) + (0 + (i / ratio->y)) * (data->transform->size->width));
+			*(unsigned int *)(data->adress + ((0 + j + (0 + i) * (data->transform->size->width)) * (data->bpp / 8))) = *(unsigned int *)(origin->adress + ((int)yop * (origin->bpp / 8)));
+			j++;
+		}
+		i++;
+	}
+	return (ratio);
+}
+
+//permet de reload origin et data en fonction de construct args
+
+void	solib_sprite_data(t_solib *solib, t_solib_sprite *sprite, t_solib_transform *transform)
 {
 
 	sprite->data = (t_solib_sprite_data  *)solib_malloc(solib, sizeof(t_solib_sprite_data ));
-	if (sprite->construct->args)
-			sprite->ptr = solib_image_xpm(solib, sprite->construct, &sprite->origin->size);
-	if (!sprite->ptr)
+	sprite->origin = (t_solib_sprite_data  *)solib_malloc(solib, sizeof(t_solib_sprite_data ));
+
+	sprite->data->is_image = FALSE;
+	sprite->origin->is_image = FALSE;
+	sprite->origin->ptr = NULL;
+	sprite->data->transform = transform;
+	sprite->origin->transform = solib->new->transform(solib, transform->origin, transform->size);
+	sprite->data->ptr = solib_image_base(solib, transform, &sprite->data->transform->size);
+	if (!sprite->data->ptr)
+		solib_close(solib);
+	if (sprite->construct->args)// calcule de origin 
+			sprite->origin->ptr = solib_image_xpm(solib, sprite->construct, &sprite->origin->transform->size);
+	if (!sprite->origin->ptr)
 	{
-		sprite->ptr = solib_image_base(solib, sprite->origin, &sprite->origin->size);
-		if (!sprite->ptr)
+		sprite->origin->ptr = solib_image_base(solib, sprite->data->transform, &sprite->origin->transform->size);
+		if (!sprite->origin->ptr)
 			solib_close(solib);
-		sprite->is_image = FALSE;
+		//fill l'image avec de la couleur
+		sprite->origin->is_image = FALSE;
 	}
-	solib_sprite_adress(sprite);
+	else
+		sprite->origin->is_image = TRUE;
+	solib_sprite_adress(sprite->origin);
+	solib_sprite_adress(sprite->data);
+	if (sprite->construct->args && !sprite->origin)
+		solib_fill_sprite_color(sprite->origin, sprite->construct->args);
+	sprite->ratio = fill_origin_data(solib, sprite->data, sprite->origin);
 }
+
+//creer un nouveau sprite et redimentionne a la size voulu en gardant en memoire l'origin pour reinitialisé si besoin ou changement de resolution
 
 t_solib_sprite	*solib_new_sprite(t_solib *solib, t_solib_construct *construct, t_solib_transform *transform)
 {
@@ -447,12 +505,8 @@ t_solib_sprite	*solib_new_sprite(t_solib *solib, t_solib_construct *construct, t
 
 	sprite = (t_solib_sprite *)solib_malloc(solib, sizeof(t_solib_sprite));
 	sprite->construct = construct;
-	sprite->origin = transform;
-	sprite->is_image = TRUE;
 
-	solib_sprite_data(solib, sprite);
-	if (!sprite->is_image)
-		solib_fill_sprite_color(sprite, construct->args);
+	solib_sprite_data(solib, sprite, transform);
 	if (construct->enabled)
 		printf("afficher le sprite dans l'iterface de jeux et pas dans l'interface canva\n");
 	return (sprite);
