@@ -23,7 +23,141 @@ typedef struct	s_data {
 	t_solib *solib;
 }				t_data;
 
-char *ft_convert_base(char *nbr, char *base_from, char *base_to);
+unsigned long	ft_strlen(const char *s)
+{
+	unsigned long	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+char	*ft_strdup(const char *s)
+{
+	unsigned long	len;
+	char			*t;
+
+	len = ft_strlen(s);
+	t = (char *)malloc(sizeof(char) * (len + 1));
+	if (!t)
+		return (NULL);
+	while (*s)
+		*t++ = *s++;
+	*t = '\0';
+	return (t -= len);
+}
+
+char	*lower_case(char *dest, char *src)
+{
+	unsigned int i;
+
+	i = 0;
+	while (src[i] != '\0')
+	{
+		dest[i] = src[i];
+		if (src[i] >= 'A' && src[i] <= 'Z')
+			dest[i] += 32;
+		i++;
+	}
+	dest[i] = src[i];
+	return (dest);
+}
+
+int	get_base_length(char *base)
+{
+	int	base_length;
+	int	j;
+
+	base_length = 0;
+	while (base[base_length])
+	{
+		if (base[base_length] == '-' || base[base_length] == '+')
+			return (0);
+		j = base_length + 1;
+		while (base[j])
+		{
+			if (base[base_length] == base[j])
+				return (0);
+			++j;
+		}
+		++base_length;
+	}
+	if (base_length < 2)
+		return (0);
+	return (base_length);
+}
+
+int	check_errors(char *str, char *base)
+{
+	int	i;
+	int	j;
+	int	start;
+
+	start = 0;
+	while (str[start] != '\0' && (str[start] == ' ' || str[start] == '\t' ||
+		str[start] == '\r' || str[start] == '\n' || str[start] == '\v' ||
+		str[start] == '\f'))
+		start++;
+	i = start;
+	while (str[i])
+	{
+		j = 0;
+		while (base[j] && (str[i] != base[j] ||
+				(str[i] == '-' || str[i] == '+')))
+			++j;
+		if (str[i] != base[j] && str[i] != '-' && str[i] != '+')
+			return (0);
+		i++;
+	}
+	if (i == 0)
+		return (0);
+	return (1);
+}
+
+int	get_nb(char c, char *base)
+{
+	int	i;
+
+	i = 0;
+	while (base[i] && base[i] != c)
+		i++;
+	return (i);
+}
+
+int	solib_convert_color(char *color)
+{
+	int	s;
+	int	i;
+	int	res;
+	int	negative;
+	int	base_length;
+
+	char	*base = "0123456789abcdef";
+	char	*str = ft_strdup(color);
+	lower_case(str, color);
+
+	if (!(base_length = get_base_length(base)) || !check_errors(str, base))
+		return (0);
+	s = 0;
+	while (str[s] != '\0' && (str[s] == ' ' || str[s] == '\t' || str[s] == '\r'
+			|| str[s] == '\n' || str[s] == '\v' || str[s] == '\f'))
+		s++;
+	i = s - 1;
+	res = 0;
+	negative = 1;
+	while (str[++i] && (((str[i] == '-' || str[i] == '+') && i == s) ||
+			(str[i] != '-' && str[i] != '+')))
+	{
+		if (str[i] == '-')
+			negative = -1;
+		else if (str[i] != '+')
+			res = (res * base_length) + (get_nb(str[i], base));
+	}
+	free(str);
+	return (res * negative);
+}
+
 
 t_solib_vector2 *solib_new_vector2(t_solib *solib, float x, float y)
 {
@@ -87,36 +221,6 @@ void destroy_image(t_solib *solib, t_solib_image img)
 			mlx_destroy_image(solib->minilibx, img.sprite->origin->ptr);
 	}
 }
-
-int hexToDec(char *hex) {
-    int decimal = 0;
-    int i = 0;
-
-    // Parcours chaque caractère de l'hexadécimal
-    while (hex[i] != '\0') {
-        char currentChar = hex[i];
-        int currentValue;
-
-        // Convertit le caractère hexadécimal en décimal
-        if (currentChar >= '0' && currentChar <= '9') {
-            currentValue = currentChar - '0';
-        } else if (currentChar >= 'a' && currentChar <= 'f') {
-            currentValue = 10 + currentChar - 'a';
-        } else if (currentChar >= 'A' && currentChar <= 'F') {
-            currentValue = 10 + currentChar - 'A';
-        } else {
-            printf("Caractère hexadécimal invalide: %c\n", currentChar);
-            return -1;
-        }
-
-        // Met à jour la valeur décimale
-        decimal = decimal * 16 + currentValue;
-        i++;
-    }
-
-    return decimal;
-}
-
 
 t_solib_vector2 *calculate_ratio_size(t_solib *solib, t_solib_size *content_size, t_solib_size *target_size, t_solib_size **out) {
     // Calculer le ratio de mise à l'échelle pour la largeur et la hauteur
@@ -184,25 +288,39 @@ void	solib_sprite_adress(t_solib_sprite_data *data)
 	}
 }*/
 
+void	put_pixel_img(t_solib_sprite_data *data, int x, int y, int color)
+{
+	char	*dst;
+
+	if (color == (int)0xFF000000)
+		return ;	
+	dst = (data->adress + ((x + (y) * (data->transform->size->width)) * (data->bpp / 8)));
+	*(unsigned int *) dst = color;
+}
+
+unsigned int	get_pixel_img(t_solib_sprite_data *data, int x, int y) {
+	return (*(unsigned int *)(data->adress + ((x + (y) * (data->transform->size->width)) * (data->bpp / 8))));
+}
+
+
 
 void	solib_fill_sprite_color(t_solib_sprite_data *data, char *color) {
 	int	i;
 	int	j;
 	int c;
 	i = 0;
-
-	c = hexToDec(color);
+	c = solib_convert_color(color);
 	if (c < 0)
-		c = hexToDec("FB335B");
+		c = solib_convert_color("FB335B");
 	if (c < 0)
 		c = 16462683;
-
+	printf("---------------- test : %d - %d\n", (int)data->transform->origin->x, (int)data->transform->size->height);
 	while (i < data->transform->size->height)
 	{
 		j = 0;
 		while (j < data->transform->size->width)
 		{//                  l'addr du parent x pos j counter  taille du parent surface ecrivable
-			*(unsigned int *)(data->adress + ((j + i * data->transform->size->width) * (data->bpp / 8))) = c;
+			put_pixel_img(data, (int)data->transform->origin->x + j, (int)data->transform->origin->y + i, c);
 			j++; // on diminue ou agrandi en fonction d'un ratio 
 		}
 		i++;
@@ -213,21 +331,20 @@ void	put_canva_display(t_solib_display *display, t_solib_canvas *canva) {
 	int	i;
 	int	j;
 	i = 0;
-	t_solib_vector2	*origin;
+	//t_solib_vector2	*origin;
 
-	origin = canva->background->data->transform->origin;
+	//origin = canva->background->data->transform->origin;
 	while (i < canva->background->data->transform->size->height)
 	{
 		j = 0;
 		while (j < canva->background->data->transform->size->width)
 		{//                  l'addr du parent x pos j counter  taille du parent surface ecrivable
-			*(unsigned int *)(display->area->data->adress + (((int)origin->x + j + ((int)origin->y + i) * (display->area->data->transform->size->width)) * (display->area->data->bpp / 8))) = *(unsigned int *)(canva->background->data->adress + ((j + i * canva->background->data->transform->size->width) * (canva->background->data->bpp / 8)));
+			put_pixel_img(display->area->data, (int)canva->background->data->transform->origin->x + j, (int)canva->background->data->transform->origin->y + i, get_pixel_img(canva->background->data, j, i));
+			//*(unsigned int *)(display->area->data->adress + (((int)origin->x + j + ((int)origin->y + i) * (display->area->data->transform->size->width)) * (display->area->data->bpp / 8))) = *(unsigned int *)(canva->background->data->adress + ((j + i * canva->background->data->transform->size->width) * (canva->background->data->bpp / 8)));
 			j++;
 		}
 		i++;
 	}
-
-	printf("hey\n");
 }
 
 /*void	*get_xpm_resized(t_solib *solib, t_solib_construct *construct, t_solib_size **out)
@@ -247,7 +364,7 @@ t_solib_vector2	*fill_origin_data(t_solib *solib, t_solib_sprite_data *data, t_s
 	ratio = calculate_ratio_size(solib, data->transform->size, origin->transform->size, &size_redem);
 	int	i;
 	int	j;
-	int yop;
+	//int yop;
 	i = 0;
 	printf("origin size %d - %d\n", data->transform->size->width, data->transform->size->height);
 
@@ -256,8 +373,10 @@ t_solib_vector2	*fill_origin_data(t_solib *solib, t_solib_sprite_data *data, t_s
 		j = 0;
 		while (j < data->transform->size->width)
 		{
-			yop = (0 + (j / ratio->x) + (0 + (i / ratio->y)) * (data->transform->size->width));
-			*(unsigned int *)(data->adress + ((0 + j + (0 + i) * (data->transform->size->width)) * (data->bpp / 8))) = *(unsigned int *)(origin->adress + ((int)yop * (origin->bpp / 8)));
+			put_pixel_img(data, j, i, get_pixel_img(origin, j / ratio->x, i / ratio->y));
+
+			//yop = (0 + (j / ratio->x) + (0 + (i / ratio->y)) * (origin->transform->size->width));
+			//*(unsigned int *)(data->adress + ((0 + j + (0 + i) * (data->transform->size->width)) * (data->bpp / 8))) = *(unsigned int *)(origin->adress + ((int)yop * (origin->bpp / 8)));
 			j++;
 		}
 		i++;

@@ -29,7 +29,7 @@ int solib_start(t_solib *solib)
 
 	t_solib_canvas *canva = solib->new->canvas(solib,
 		solib->new->construct(solib,
-			"canva1", "2122121", TRUE),
+			"canva1", "212121", TRUE),
 		solib->new->transform(solib,
 			solib->new->vector2(solib, 0, 0),
 			solib->new->size(solib, 1920, 1080)));
