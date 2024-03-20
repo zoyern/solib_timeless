@@ -6,12 +6,12 @@
 /*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 18:00:14 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/15 20:19:26 by almounib         ###   ########.fr       */
+/*   Updated: 2024/03/20 15:48:00 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "solong.h"
-#include "../libs/solib/solib_init/solib_init.h"
+#include "../libs/solib/src/solib_init/solib_init.h"
 
 int key_test(t_solib *solib, int keycode)
 {

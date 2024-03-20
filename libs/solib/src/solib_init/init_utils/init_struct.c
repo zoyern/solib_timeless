@@ -6,7 +6,7 @@
 /*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 21:06:48 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/15 20:19:42 by almounib         ###   ########.fr       */
+/*   Updated: 2024/03/20 15:48:52 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,6 +266,7 @@ void solib_write_pixel(t_solib_sprite_data *data, int x, int y, int color)
 {
 	char *dst;
 
+	dst = NULL;
 	if (color == (int)0xFF000000)
 		return;
 	if (x >= 0 && y >= 0 && x < data->transform->size->width && y < data->transform->size->height)

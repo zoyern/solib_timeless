@@ -6,7 +6,7 @@
 /*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 03:55:15 by marvin            #+#    #+#             */
-/*   Updated: 2024/02/28 09:32:17 by almounib         ###   ########.fr       */
+/*   Updated: 2024/03/20 16:01:01 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <stdio.h>
 # include <unistd.h>
 
-# include "../minilibx/mlx.h"
+# include "../libs/minilibx/mlx.h"
 # include "./solib_types/solib_types.h"
 
 //Setup
