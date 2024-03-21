@@ -24,7 +24,7 @@ void	solib_new_init(t_solib *solib)
 	event_new->size = solib_new_size;
 	event_new->canvas = solib_new_canvas;
 	event_new->display = solib_new_display;
-	//event_new->image = solib_new_image_tmp;
+	event_new->so = solib_new_so;
 	
 
 	solib->new = event_new;

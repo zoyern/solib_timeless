@@ -13,11 +13,10 @@
 include solib.mk
 
 NAME		= solib
-CFLAG		= -Wall -Wextra -Werror -g3 -gdwarf-4
+CFLAG		= -Wall -Wextra -Werror -I$(SOLIB_DIR) -I$(MINILIBX_PATH) -g3 -gdwarf-4
 AR			= ar rc
 LIB			= ranlib
-MINILIBX    = libs/minilibx
-LDFLAGS 	= -L./minilibx-linux -lX11 -lXext
+LDFLAGS 	= -L$(MINILIBX_PATH) -lmlx_Linux -lmlx -lX11 -lXext
 CC			= cc
 
 $(SOLIB_BUILD_DIR)/%.o: $(SOLIB_DIR)/%.c
@@ -34,9 +33,9 @@ all : $(NAME)
 
 $(NAME): $(SOLIB_OBJ) 
 	@echo $(SOLIB_OBJ)
-	${AR} $(SOLIB_BUILD_DIR)/${NAME}.a ${SOLIB_OBJ}
+	${AR} $(SOLIB_BUILD_DIR)/${NAME}.a ${SOLIB_OBJ} $(wildcard $(MINILIBX_PATH)/obj/*.o)
 			${LIB} $(SOLIB_BUILD_DIR)/${NAME}.a
-	@$(CC) $(SOLIB_OBJ) -o $(SOLIB_BUILD_DIR)/$(NAME) $(CFLAG) $(LDFLAGS) $(MINILIBX)/libmlx.a
+	@$(CC) $(SOLIB_OBJ) -o $(SOLIB_BUILD_DIR)/$(NAME) $(CFLAG) $(LDFLAGS) $(SOLIB_LIB)
 	@clear
 
 clear :
@@ -59,9 +58,9 @@ fclean : clean
 
 aclean : fclean cleanlib clear
 
-minlibx :
-	@git clone https://github.com/42Paris/minilibx-linux.git $(MINILIBX)
-	make -C ./libs/minilibx re
+minilibx :
+	@git clone https://github.com/42Paris/minilibx-linux.git libs/minilibx
+	make -C libs/minilibx
 	clear
 	
 cleanlib :

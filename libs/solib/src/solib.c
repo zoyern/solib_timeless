@@ -38,17 +38,13 @@ int solib_close(t_solib *solib)
 
 int	solib_update_callback(t_solib *solib)
 {
-	solib_update(solib);
+	if (solib->func->upate)
+		solib->func->upate(solib, solib->environement);
 	return (0);
 }
 
 int	solib_render_callback(t_solib *solib)
 {
-	solib_render(solib);
-	//printf("\n\n\n\n----------------------------------------------\n\n\n\n");
-	/*solib_put_image(solib->display->area, solib->display->current->background,
-			solib->display->current->background->tranform,
-	));*/
 	mlx_put_image_to_window(solib->minilibx, solib->windows->window, solib->display->area->data->ptr, 0, 0);
 	return (0);
 }
@@ -63,32 +59,40 @@ int solib_loop(t_solib *solib)
 	return (0);
 }
 
-t_bool solib_init(char *name, int width, int height, int target_frame)
+int solib_start(t_solib *solib, t_solib_construct *construct, t_solib_vector2 *vector2, t_solib_init *init)
+{
+	solib->minilibx = mlx_init();
+	if (!solib->minilibx)
+		return (solib_close(solib));
+	solib->target_frame = 60;
+	solib_func_init(solib, init);
+	solib_windows_init(solib, construct->name, vector2->x, vector2->y);
+	solib_inputs_init(solib);
+	solib_events_init(solib);
+	solib_time_init(solib, SIMUL_MHZ, 240, solib->target_frame);
+	solib->close = solib_close;
+	solib_hooks(solib);
+	if (solib->func->start(solib, solib->environement))
+		solib->close(solib);
+	mlx_loop_hook(solib->minilibx, solib_loop, solib);
+	mlx_loop(solib->minilibx);
+	solib_close(solib);
+	return (0);
+}
+
+
+t_solib *sonew(void)
 {
 	t_solib *solib;
 
 	solib = (t_solib *)malloc(sizeof(t_solib));
 	if (!solib)
-		return (TRUE);
+		return (NULL);
 	solib_memory_init(solib);
-	solib->minilibx = mlx_init();
-	if (!solib->minilibx)
-		return (solib_close(solib));
-	solib->target_frame = target_frame;
 	solib_new_init(solib);
-	solib_windows_init(solib, name, width, height);
-	solib_inputs_init(solib);
-	solib_events_init(solib);
-	solib_time_init(solib, SIMUL_MHZ, 240, target_frame);
 	solib->close = solib_close;
-	solib_hooks(solib);
-	if (solib_start(solib))
-		solib_close(solib);
-	//solib_free(solib, solib->inputs);
-	//solib_memory_show(solib);
-	//solib_memory_show(solib);
-	mlx_loop_hook(solib->minilibx, solib_loop, solib);
-	mlx_loop(solib->minilibx);
-	solib_close(solib);
-	return (FALSE);
+	solib->start = solib_start;
+	solib->malloc = solib_malloc;
+	solib->free = solib_free;
+	return (solib);
 }

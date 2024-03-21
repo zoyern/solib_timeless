@@ -156,6 +156,18 @@ t_solib_vector2 *solib_new_vector2(t_solib *solib, float x, float y)
 	return (vector2);
 }
 
+t_solib_init	*solib_new_so(t_solib *solib, void *environement, int (*start)(t_solib *solib, void *environement), int (*update)(t_solib *solib, void *environement))
+{
+	t_solib_init	*func;
+
+	func = (t_solib_init *)solib_malloc(solib, sizeof(t_solib_init));
+
+	func->environement = environement;
+	func->func1 = start;
+	func->func2 = update;
+	return (func);
+}
+
 t_solib_quate *solib_new_quate(t_solib *solib, float x, float y, float z)
 {
 	t_solib_quate *quate;
@@ -358,14 +370,14 @@ void solib_sprite_data(t_solib *solib, t_solib_sprite *sprite, t_solib_transform
 	sprite->origin->transform = solib->new->transform(solib, transform->origin, transform->size);
 	sprite->data->ptr = solib_image_base(solib, transform, &sprite->data->transform->size);
 	if (!sprite->data->ptr)
-		solib_close(solib);
+		solib->close(solib);
 	if (sprite->construct->args)
 		sprite->origin->ptr = solib_image_xpm(solib, sprite->construct, &sprite->origin->transform->size, &sprite->origin->is_image);
 	if (!sprite->origin->ptr)
 	{
 		sprite->origin->ptr = solib_image_base(solib, sprite->data->transform, &sprite->origin->transform->size);
 		if (!sprite->origin->ptr)
-			solib_close(solib);
+			solib->close(solib);
 	}
 	sprite->data->is_image = sprite->origin->is_image;
 	solib_sprite_adress(sprite->origin);

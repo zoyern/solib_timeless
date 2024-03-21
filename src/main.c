@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "solong.h"
-#include "../libs/solib/src/solib_init/solib_init.h"
 
 int key_test(t_solib *solib, int keycode)
 {
@@ -20,8 +19,10 @@ int key_test(t_solib *solib, int keycode)
 	return (0);
 }
 
-int solib_start(t_solib *solib)
+int start(t_solib *solib, void *env)
 {
+	printf("hey\n");
+	(void)env;
 	solib->events->key_press = key_test;
 
 	t_solib_display *display = solib->new->display(solib,
@@ -39,8 +40,9 @@ int solib_start(t_solib *solib)
 	return (0);
 }
 
-int solib_update(t_solib *solib)
+int update(t_solib *solib, void *env)
 {
+	(void)env;
 	(void)solib;
 	/*printf("fpsupdate : %d -- fpsrender : %d -- ms : %0.3f\n",
 		solib->time->update.fps, solib->time->render.fps,
@@ -48,19 +50,38 @@ int solib_update(t_solib *solib)
 	return (0);
 }
 
-int solib_render(t_solib *solib)
+t_environement	*environement_init()
 {
-	(void)solib;
-	return (0);
+	t_environement *env;
+
+	env = malloc(sizeof(t_environement));
+	env->x = 15;
+	env->y = 10;
+	env->mavalue = 60;
+	return (env);
 }
 
-int	main(int argc, char const *argv[])
+
+//solib = solib_init("solong",1905, 1050, 60);
+//if (solib_init("solong", 1905, 675, 60))
+int	main(int argc, char const **argv)
 {
 	(void)argc;
 	(void)argv;
-	//solib = solib_init("solong",1905, 1050, 60);
-	//if (solib_init("solong", 1905, 675, 60))
-	if (solib_init("solong", 1905, 675, 60))
+
+	t_environement *env;
+
+	env = environement_init(argc, argv);
+	(void)env;
+	t_solib	*solib = sonew();
+	(void)solib;
+	int error = solib->start(
+		solib,
+		solib->new->construct(solib, "solong", NULL, TRUE),
+		solib->new->vector2(solib, 1905, 675),
+		solib->new->so(solib, env, start, update)
+	);
+	if (error)
 		return (1);
 	return (0);
 }

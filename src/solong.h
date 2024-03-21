@@ -14,6 +14,13 @@
 # define SOLONG_H
 
 # include "../libs/solib/src/solib.h"
-# include "../libs/solib/src/solib_utils.h"
+
+
+typedef struct s_environement {
+	float	x;
+	float	y;
+	float	mavalue;
+}	t_environement;
+
 
 #endif

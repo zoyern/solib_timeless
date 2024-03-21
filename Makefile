@@ -16,9 +16,9 @@ include libs/solib/solib.mk
 SRC_DIR		= src
 BUILD_DIR	= build
 BUILD_DIR_OBJ = build/obj
-NAME		= program
+NAME		= solong
 CFLAG		= -Wall -Wextra -Werror -g3 -gdwarf-4
-LDFLAGS 	= 
+LDFLAGS 	= -L$(MINILIBX_PATH) -lmlx_Linux -lmlx -lX11 -lXext
 SRC_FILE	= $(wildcard $(SRC_DIR)/*.c)
 
 OBJ			= $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR_OBJ)/%.o, $(SRC_FILE))
@@ -38,9 +38,8 @@ $(BUILD_DIR_OBJ)/%.o: $(SRC_DIR)/%.c
 all : $(NAME)
 
 $(NAME): $(OBJ) 
-	@echo $($(dir $(OBJ)))
 	$(SOLIB_RE)
-	@$(CC) $(OBJ) -o $(BUILD_DIR)/$(NAME) $(CFLAG) $(LDFLAGS) $(SOLIB_LIB)
+	@$(CC) $(OBJ) -o $(BUILD_DIR)/$(NAME) $(CFLAG) $(SOLIB_LIB) $(LDFLAGS)
 	cp $(SOLIB_HEAD) src/solib.h
 	@clear
 	./$(BUILD_DIR)/$(NAME)
