@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../solib_init/solib_init.h"
+#include "utils.h"
 
 t_solib_timing	get_time_by_millis(double millis)
 {

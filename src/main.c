@@ -45,9 +45,9 @@ int update(t_solib *solib, void *env)
 {
 	(void)env;
 	(void)solib;
-	/*printf("fpsupdate : %d -- fpsrender : %d -- ms : %0.3f\n",
+	printf("fpsupdate : %d -- fpsrender : %d -- ms : %0.3f\n",
 		solib->time->update.fps, solib->time->render.fps,
-		solib->time->ticks.millis);*/
+		solib->time->ticks.millis);
 	return (0);
 }
 
@@ -72,14 +72,13 @@ int	main(int argc, char const **argv)
 
 	t_environement *env;
 
-	env = environement_init(argc, argv);
-	(void)env;
+	env = environement_init();
 	t_solib	*solib = sonew();
 	(void)solib;
 	int error = solib->start(
 		solib,
 		solib->new->construct(solib, "solong", NULL, TRUE),
-		solib->new->vector2(solib, 1905, 675),
+		solib->new->vector2(solib, 1000, 600),
 		solib->new->so(solib, env, start, update)
 	);
 	if (error)

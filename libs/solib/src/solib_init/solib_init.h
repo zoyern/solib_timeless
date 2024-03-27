@@ -17,7 +17,8 @@
 # include "../solib.h"
 # include "../ui/ui.h"
 # include "../utils/utils.h"
-#include "../solib_hooks/solib_hooks.h"
+#include "../hooks/solib_hooks.h"
+#include "../hooks/solib_hooks.h"
 #include "../solib.h"
 
 //solib
@@ -60,10 +61,8 @@ t_solib_canvas		*solib_new_canvas(t_solib *solib,
 void				destroy_image(t_solib *solib, t_solib_image img);
 //utils :
 t_solib_vector2		*solib_new_vector2(t_solib *solib, float x, float y);
-t_solib_quate		*solib_new_quate(t_solib *solib, float x, float y, float z);
 t_solib_size		*solib_new_size(t_solib *solib, float width, float height);
 t_solib_transform	*solib_new_transform(t_solib *solib, t_solib_vector2 *vector2, t_solib_size *size);
 t_solib_construct	*solib_new_construct(t_solib *solib, char *name, char *args, t_bool enabled);
-t_solib_funcs		*solib_new_so(t_solib *solib, void *environement, int (*start)(t_solib *solib, void *environement), int (*update)(t_solib *solib, void *environement));
-
+t_solib_funcs		*solib_new_funcs(t_solib *solib, void *environement, int (*start)(t_solib *solib, void *environement), int (*update)(t_solib *solib, void *environement));
 #endif

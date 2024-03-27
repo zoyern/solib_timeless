@@ -18,13 +18,13 @@ void	solib_new_init(t_solib *solib)
 
 	event_new = solib_malloc(solib, sizeof(t_solib_new));
 	event_new->transform = solib_new_transform;
-	event_new->quate = solib_new_quate;
+	event_new->quate = NULL;
 	event_new->construct = solib_new_construct;
 	event_new->vector2 = solib_new_vector2;
 	event_new->size = solib_new_size;
 	event_new->canvas = solib_new_canvas;
 	event_new->display = solib_new_display;
-	event_new->so = solib_new_so;
+	event_new->so = solib_new_funcs;
 	
 
 	solib->new = event_new;

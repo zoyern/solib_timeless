@@ -25,6 +25,8 @@
 		"solib_def.h": "c",
 		"string.h": "c",
 		"utils.h": "c",
-		"ui.h": "c"
+		"ui.h": "c",
+		"exemple.h": "c",
+		"unistd.h": "c"
 	}
 }
