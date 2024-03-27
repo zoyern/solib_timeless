@@ -45,9 +45,9 @@ int update(t_solib *solib, void *env)
 {
 	(void)env;
 	(void)solib;
-	printf("fpsupdate : %d -- fpsrender : %d -- ms : %0.3f\n",
+	/*printf("fpsupdate : %d -- fpsrender : %d -- ms : %0.3f\n",
 		solib->time->update.fps, solib->time->render.fps,
-		solib->time->ticks.millis);
+		solib->time->ticks.millis);*/
 	return (0);
 }
 
