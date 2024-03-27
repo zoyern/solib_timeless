@@ -1,21 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   solib_utils.h                                      :+:      :+:    :+:   */
+/*   solib_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/28 06:40:28 by almounib          #+#    #+#             */
-/*   Updated: 2024/02/28 09:27:50 by almounib         ###   ########.fr       */
+/*   Created: 2024/03/20 15:37:18 by almounib          #+#    #+#             */
+/*   Updated: 2024/03/20 16:15:37 by almounib         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SOLIB_UTILS_H
-# define SOLIB_UTILS_H
+#include "exemple.h"
 
-//Utils
-t_solib_timing	get_time_by_millis(double millis);
-double			fps_to_ms(int fps);
-int				ms_to_fps(double ms);
-
-#endif
+int main(int argc, char const *argv[])
+{
+	(void)argc;
+	(void)argv;
+	printf("salut\n");
+	void *mlxptr = mlx_init();
+	int w = 0;
+	int h = 0;
+	mlx_get_screen_size(mlxptr, &w, &h);
+	printf("windows size : %d width -- %d height\n", w, h);
+	return 0;
+}

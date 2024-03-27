@@ -35,6 +35,7 @@ int start(t_solib *solib, void *env)
 			solib->new->vector2(solib, 0, 0),
 			solib->new->size(solib, 1920, 1080)));
 
+	display->canvas = canva;
 	(void)display;
 	(void)canva;
 	return (0);

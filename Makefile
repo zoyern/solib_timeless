@@ -40,7 +40,6 @@ all : $(NAME)
 $(NAME): $(OBJ) 
 	$(SOLIB_RE)
 	@$(CC) $(OBJ) -o $(BUILD_DIR)/$(NAME) $(CFLAG) $(SOLIB_LIB) $(LDFLAGS)
-	cp $(SOLIB_HEAD) src/solib.h
 	@clear
 	./$(BUILD_DIR)/$(NAME)
 

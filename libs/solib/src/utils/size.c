@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   solib.h                                            :+:      :+:    :+:   */
+/*   size.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/29 03:55:15 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/20 16:01:01 by almounib         ###   ########.fr       */
+/*   Created: 2024/03/22 14:18:58 by marvin            #+#    #+#             */
+/*   Updated: 2024/03/22 14:18:58 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SOLIB_H
-# define SOLIB_H
+#include "utils.h"
 
-# define SIMUL_CYCLES 15000
-# define SIMUL_MHZ 3700
+t_solib_size *solib_new_size(t_solib *solib, float width, float height)
+{
+	t_solib_size *size;
 
-# include <stdlib.h>
-# include <stdio.h>
-# include <unistd.h>
-
-# include "./solib_types/solib_types.h"
-
-t_solib *sonew(void);
-
-#endif
+	size = (t_solib_size *)solib->malloc(solib, sizeof(t_solib_size));
+	size->width = width;
+	size->height = height;
+	return (size);
+}

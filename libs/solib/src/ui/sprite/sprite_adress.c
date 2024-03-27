@@ -1,27 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   solib.h                                            :+:      :+:    :+:   */
+/*   sprite_adress.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: almounib <almounib@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/29 03:55:15 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/20 16:01:01 by almounib         ###   ########.fr       */
+/*   Created: 2024/03/22 14:37:18 by marvin            #+#    #+#             */
+/*   Updated: 2024/03/22 14:37:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SOLIB_H
-# define SOLIB_H
+#include "../ui.h"
 
-# define SIMUL_CYCLES 15000
-# define SIMUL_MHZ 3700
+void solib_sprite_adress(t_solib_sprite_data *data)
+{
+	data->adress = mlx_get_data_addr(data->ptr, &(data->bpp),
+									 &(data->line_len), &(data->endian));
+}
 
-# include <stdlib.h>
-# include <stdio.h>
-# include <unistd.h>
-
-# include "./solib_types/solib_types.h"
-
-t_solib *sonew(void);
-
-#endif

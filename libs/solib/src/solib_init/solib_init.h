@@ -15,7 +15,10 @@
 
 # include "../../libs/minilibx/mlx.h"
 # include "../solib.h"
-# include "../solib_utils.h"
+# include "../ui/ui.h"
+# include "../utils/utils.h"
+#include "../solib_hooks/solib_hooks.h"
+#include "../solib.h"
 
 //solib
 int					solib_close(t_solib *solib);
@@ -47,7 +50,7 @@ void				solib_time_init(t_solib *solib,
 						int mhz, int targf_update, int targf_render);
 //new :
 void				solib_new_init(t_solib *solib);
-void				solib_func_init(t_solib *solib, t_solib_init *init);
+void				solib_funcs_init(t_solib *solib, t_solib_funcs *init);
 
 //ui
 t_solib_display		*solib_new_display(t_solib *solib, t_solib_construct *construct);
@@ -61,6 +64,6 @@ t_solib_quate		*solib_new_quate(t_solib *solib, float x, float y, float z);
 t_solib_size		*solib_new_size(t_solib *solib, float width, float height);
 t_solib_transform	*solib_new_transform(t_solib *solib, t_solib_vector2 *vector2, t_solib_size *size);
 t_solib_construct	*solib_new_construct(t_solib *solib, char *name, char *args, t_bool enabled);
-t_solib_init		*solib_new_so(t_solib *solib, void *environement, int (*start)(t_solib *solib, void *environement), int (*update)(t_solib *solib, void *environement));
+t_solib_funcs		*solib_new_so(t_solib *solib, void *environement, int (*start)(t_solib *solib, void *environement), int (*update)(t_solib *solib, void *environement));
 
 #endif

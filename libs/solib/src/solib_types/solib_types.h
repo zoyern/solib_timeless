@@ -149,11 +149,11 @@ typedef struct s_solib_construct {
 	t_bool	enabled;
 }	t_solib_construct;
 
-typedef struct s_solib_init {
+typedef struct s_solib_funcs {
 	void	*environement;
 	int		(*func1)(t_solib *solib, void *environement);
 	int		(*func2)(t_solib *solib, void *environement);
-}	t_solib_init;
+}	t_solib_funcs;
 
 typedef struct s_solib_new
 {
@@ -165,7 +165,7 @@ typedef struct s_solib_new
     t_solib_display	*(*display)(t_solib *solib, t_solib_construct *construct);
     t_solib_canvas	*(*canvas)(t_solib *solib, t_solib_construct *construct, t_solib_transform	*transform);
     t_solib_image	*(*image)(t_solib_image *parent, t_solib_construct *construct, t_solib_transform *transform);
-    t_solib_init	*(*so)(t_solib *solib, void *environement, int (*start)(t_solib *solib, void *environement), int (*update)(t_solib *solib, void *environement));
+    t_solib_funcs	*(*so)(t_solib *solib, void *environement, int (*start)(t_solib *solib, void *environement), int (*update)(t_solib *solib, void *environement));
 } t_solib_new;
 
 typedef struct s_solib_func
@@ -175,7 +175,6 @@ typedef struct s_solib_func
     int		(*render)(t_solib *solib, void *environement);
     int		(*start)(t_solib *solib, void *environement);
 } t_solib_func;
-
 
 typedef struct s_solib_get
 {
@@ -203,7 +202,7 @@ typedef struct s_solib{
 	void			*environement;
 	int				target_frame;
 	int				(*close)(t_solib *solib);
-	int				(*start)(t_solib *solib, t_solib_construct *construct, t_solib_vector2 *vector2, t_solib_init *init);
+	int				(*start)(t_solib *solib, t_solib_construct *construct, t_solib_vector2 *vector2, t_solib_funcs *init);
 	void			*(*malloc)(t_solib *solib, int size);
 	t_bool			(*free)(t_solib *solib, void *ptr);
 }	t_solib;

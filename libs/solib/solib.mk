@@ -22,7 +22,7 @@ SOLIB_BUILD_OBJ	= $(patsubst %/,%,$(SOLIB_PATH))/build/obj
 SPECIFIED_SRC_DIRS	=	$(SOLIB_DIR)/solib_hooks $(SOLIB_DIR)/solib_init $(SOLIB_DIR)/solib_keys \
 						$(SOLIB_DIR)/solib_memory $(SOLIB_DIR)/solib_time $(SOLIB_DIR)/solib_types \
 						$(SOLIB_DIR)/solib_ui $(SOLIB_DIR)/solib_init/init_utils $(SOLIB_DIR)/solib_types \
-						$(SOLIB_DIR)
+						$(SOLIB_DIR) $(SOLIB_DIR)/ui/canvas $(SOLIB_DIR)/ui/sprite $(SOLIB_DIR)/utils
 #SOLIB_FILE		= $(wildcard $(SOLIB_DIR)/*.c) ./exemple/main_solib.c
 SOLIB_FILE = $(foreach d,$(SPECIFIED_SRC_DIRS),$(wildcard $(addprefix $(d)/*,*.c))) ./exemple/solib_main.c 
 SOLIB_RE			= make -C $(SOLIB_PATH) re

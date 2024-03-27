@@ -23,6 +23,8 @@
 		"solib_types_time.h": "c",
 		"solib_err.h": "c",
 		"solib_def.h": "c",
-		"string.h": "c"
+		"string.h": "c",
+		"utils.h": "c",
+		"ui.h": "c"
 	}
 }

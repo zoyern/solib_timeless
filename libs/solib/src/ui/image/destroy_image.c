@@ -1,16 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   solib_ui.h                                         :+:      :+:    :+:   */
+/*   destroy_image.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 00:32:10 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/03 00:32:10 by marvin           ###   ########.fr       */
+/*   Created: 2024/03/22 14:33:03 by marvin            #+#    #+#             */
+/*   Updated: 2024/03/22 14:33:03 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SOLIB_UI_H
-# define SOLIB_UI_H
+#include "../solib.h"
 
-#endif
+void destroy_image(t_solib *solib, t_solib_image img)
+{
+	if (solib->minilibx)
+	{
+		if (img.sprite->data->ptr)
+			mlx_destroy_image(solib->minilibx, img.sprite->data->ptr);
+		if (img.sprite->origin->ptr)
+			mlx_destroy_image(solib->minilibx, img.sprite->origin->ptr);
+	}
+}

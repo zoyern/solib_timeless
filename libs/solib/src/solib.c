@@ -10,9 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "solib.h"
-#include "solib_utils.h"
-#include "solib_hooks/solib_hooks.h"
 #include "solib_init/solib_init.h"
 
 int solib_close(t_solib *solib)
@@ -46,6 +43,7 @@ int	solib_update_callback(t_solib *solib)
 int	solib_render_callback(t_solib *solib)
 {
 	mlx_put_image_to_window(solib->minilibx, solib->windows->window, solib->display->area->data->ptr, 0, 0);
+	mlx_put_image_to_window(solib->minilibx, solib->windows->window, solib->display->area->data->ptr, 0, 0);
 	return (0);
 }
 
@@ -59,13 +57,13 @@ int solib_loop(t_solib *solib)
 	return (0);
 }
 
-int solib_start(t_solib *solib, t_solib_construct *construct, t_solib_vector2 *vector2, t_solib_init *init)
+int solib_start(t_solib *solib, t_solib_construct *construct, t_solib_vector2 *vector2, t_solib_funcs *init)
 {
 	solib->minilibx = mlx_init();
 	if (!solib->minilibx)
 		return (solib_close(solib));
 	solib->target_frame = 60;
-	solib_func_init(solib, init);
+	solib_funcs_init(solib, init); 
 	solib_windows_init(solib, construct->name, vector2->x, vector2->y);
 	solib_inputs_init(solib);
 	solib_events_init(solib);
@@ -79,7 +77,6 @@ int solib_start(t_solib *solib, t_solib_construct *construct, t_solib_vector2 *v
 	solib_close(solib);
 	return (0);
 }
-
 
 t_solib *sonew(void)
 {

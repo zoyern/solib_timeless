@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   solib_new_func.c                                   :+:      :+:    :+:   */
+/*   funcs.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/21 17:23:32 by marvin            #+#    #+#             */
-/*   Updated: 2024/03/21 17:23:32 by marvin           ###   ########.fr       */
+/*   Created: 2024/03/22 14:26:21 by marvin            #+#    #+#             */
+/*   Updated: 2024/03/22 14:26:21 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "solib_init.h"
+#include "utils.h"
 
-void	solib_func_init(t_solib *solib, t_solib_init *init)
+t_solib_funcs	*solib_new_funcs(t_solib *solib, void *environement, int (*start)(t_solib *solib, void *environement), int (*update)(t_solib *solib, void *environement))
 {
-	t_solib_func	*funcs;
+	t_solib_funcs	*funcs;
 
-	funcs = solib->malloc(solib, sizeof(t_solib_func));
-	solib->environement = init->environement;
-	funcs->start = init->func1;
-	funcs->upate = init->func2;
-	funcs->on_destroy = NULL;
-	solib->func = funcs;
+	funcs = (t_solib_funcs *)solib->malloc(solib, sizeof(t_solib_funcs));
+
+	funcs->environement = environement;
+	funcs->func1 = start;
+	funcs->func2 = update;
+	return (funcs);
 }

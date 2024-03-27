@@ -32,11 +32,10 @@ $(SOLIB_BUILD_OBJ)/%.o: $(SOLIB_DIR)/%.c
 all : $(NAME)
 
 $(NAME): $(SOLIB_OBJ) 
-	@echo $(SOLIB_OBJ)
 	${AR} $(SOLIB_BUILD_DIR)/${NAME}.a ${SOLIB_OBJ} $(wildcard $(MINILIBX_PATH)/obj/*.o)
 			${LIB} $(SOLIB_BUILD_DIR)/${NAME}.a
-	@$(CC) $(SOLIB_OBJ) -o $(SOLIB_BUILD_DIR)/$(NAME) $(CFLAG) $(LDFLAGS) $(SOLIB_LIB)
 	@clear
+	@$(CC) $(SOLIB_OBJ) -o $(SOLIB_BUILD_DIR)/$(NAME) $(CFLAG) $(LDFLAGS) $(SOLIB_LIB)
 
 clear :
 	@clear
