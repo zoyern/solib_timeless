@@ -17,9 +17,8 @@
 # include "../solib.h"
 # include "../ui/ui.h"
 # include "../utils/utils.h"
-#include "../hooks/solib_hooks.h"
-#include "../hooks/solib_hooks.h"
-#include "../solib.h"
+# include "../hooks/solib_hooks.h"
+# include "../solib.h"
 
 //solib
 int					solib_close(t_solib *solib);
